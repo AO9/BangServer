@@ -1,5 +1,7 @@
 package com.gto.bang.service;
 
+import java.util.List;
+
 import com.gto.bang.vo.ExperienceVO;
 
 /**
@@ -7,6 +9,8 @@ import com.gto.bang.vo.ExperienceVO;
  */
 public interface ExperienceService {
     Boolean createNewExperience(ExperienceVO experienceVO);
+	ExperienceVO getExperienceDetail(Integer id);
+	List<ExperienceVO> getExperienceList(Integer beginId);
 }
 
 

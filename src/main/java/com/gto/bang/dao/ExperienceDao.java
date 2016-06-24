@@ -1,5 +1,7 @@
 package com.gto.bang.dao;
 
+import java.util.List;
+
 import com.gto.bang.vo.ExperienceVO;
 
 /**
@@ -8,4 +10,6 @@ import com.gto.bang.vo.ExperienceVO;
 public interface ExperienceDao {
 
     Boolean createNewExperience(ExperienceVO experienceVO);
+	ExperienceVO getExperienceDetail(Integer id);
+	List<ExperienceVO> getExperienceList(Integer beginId);
 }

@@ -3,6 +3,7 @@ package com.gto.bang.controller;
 import com.gto.bang.common.constant.Constant;
 import com.gto.bang.common.net.Response;
 import com.gto.bang.service.AccountService;
+import com.gto.bang.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,21 +27,21 @@ public class AccountController extends BaseController {
     public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
 
-        Response<String> res=new Response<String>();
+        Response<UserVo> res=new Response<UserVo>();
 
         String [] params=new String[]{"username","password"};
         if(super.nonNullValidate(request,params)){
             System.out.println("========== login impl");
-            boolean result= accountService.validate(request.getParameter("username").toString(),request.getParameter("password").toString());
-            if (result){
-                res.setData(Constant.SUCCESS);
+            UserVo userBo = accountService.validate(request.getParameter("username").toString(),request.getParameter("password").toString());
+            if (userBo!=null){
+                res.setData(userBo);
             }else {
                 res.setStatus(Constant.ERROR_STATUS);
-                res.setData(Constant.FAILE);
+                res.setData(null);
             }
         }else{
             res.setStatus(Constant.ERROR_STATUS);
-            res.setData(Constant.FAILE);
+            res.setData(null);
         }
         super.flushResponse(response,res);
     }
@@ -57,6 +58,7 @@ public class AccountController extends BaseController {
             res.setData(Constant.FAILE);
         }
 
+        // 注册的时候还要增加判断,username不能重复
         boolean result=accountService.register(request.getParameter("username").toString(),request.getParameter("password").toString(),request.getParameter("phone").toString());
         if(result){
             res.setData(Constant.SUCCESS);

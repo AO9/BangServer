@@ -2,6 +2,7 @@ package com.gto.bang.service.impl;
 
 import com.gto.bang.dao.AccountDao;
 import com.gto.bang.service.AccountService;
+import com.gto.bang.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,9 @@ public class AccountServiceImpl implements AccountService {
     private AccountDao accountDao;
 
     @Override
-    public boolean validate(String username, String password) {
-        int num=accountDao.validate(username,password);
-        boolean result=num>0?true:false;
-        return result;
+    public UserVo validate(String username, String password) {
+        UserVo userBo=accountDao.validate(username,password);
+        return userBo;
     }
 
     @Override

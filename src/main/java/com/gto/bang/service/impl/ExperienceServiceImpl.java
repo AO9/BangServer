@@ -1,13 +1,12 @@
 package com.gto.bang.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.gto.bang.dao.ExperienceDao;
 import com.gto.bang.service.ExperienceService;
 import com.gto.bang.vo.ExperienceVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by shenjialong on 16/6/23.
@@ -24,13 +23,13 @@ public class ExperienceServiceImpl implements ExperienceService {
 
 	@Override
 	public ExperienceVO getExperienceDetail(Integer id) {
-
-		return null;
+		ExperienceVO vo=dao.getExperienceDetail(id);
+		return vo;
 	}
 
 	@Override
 	public List<ExperienceVO> getExperienceList(Integer beginId) {
 
-		return null;
+		return dao.getExperienceList(beginId);
 	}
 }

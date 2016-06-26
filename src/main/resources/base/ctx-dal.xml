@@ -14,7 +14,7 @@
     <bean id="db_data_source" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <!-- Connection Info -->
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/bang" />
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/bang?useUnicode=true&amp;characterEncoding=UTF-8" />
         <property name="username" value="root" />
         <property name="password" value="123" />
         <property name="maxActive" value="50" />

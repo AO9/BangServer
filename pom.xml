@@ -220,6 +220,8 @@
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-mapper-asl</artifactId>
+      <type>jar</type>
+      <scope>compile</scope>
       <version>1.9.6</version>
     </dependency>
     <!-- Jedis -->

@@ -1,10 +1,12 @@
 package com.gto.bang.service;
 
+import com.gto.bang.vo.UserVo;
+
 /**
  * Created by shenjialong on 16/6/19.
  */
 public interface AccountService {
-    boolean validate(String username,String password);
+    UserVo validate(String username, String password);
 
     boolean register(String username,String password,String phone);
 }

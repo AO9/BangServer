@@ -1,9 +1,11 @@
 package com.gto.bang.dao.impl;
 
 import com.gto.bang.dao.AccountDao;
+import com.gto.bang.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -19,12 +21,19 @@ public class AccountDaoImpl implements AccountDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
     @Override
-    public int validate(String username, String password) {
-        String sql = "SELECT count(1) FROM user WHERE username=? and password=?" ;
-        int num=jdbcTemplate.queryForObject(sql,new Object[]{ username,password },Integer.class);
-        LOGGER.info("validate num:"+num);
-        return num;
+    public UserVo validate(String username, String password) {
+
+        UserVo vo;
+        String sql = "SELECT * FROM user WHERE username=? and password=?";
+        try {
+            vo = (UserVo) jdbcTemplate.queryForObject(sql, new Object[]{username,password}, new UserVo());
+        }catch (EmptyResultDataAccessException e){
+            vo=null;
+        }
+        return vo;
+
     }
 
     @Override

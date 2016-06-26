@@ -32,6 +32,13 @@
     <!--<bean id="accountService" class="com.gto.bang.service.impl.AccountServiceImpl">-->
     <!--</bean>-->
 
+
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+        </property>
+    </bean>
+
     <bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <property name="corePoolSize" value="12" />
         <property name="maxPoolSize" value="128" />

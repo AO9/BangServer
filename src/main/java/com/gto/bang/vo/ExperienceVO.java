@@ -1,20 +1,27 @@
 package com.gto.bang.vo;
 
 import org.apache.commons.net.ntp.TimeStamp;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Created by shenjialong on 16/6/23.
  */
-public class ExperienceVO {
+public class ExperienceVO implements RowMapper<ExperienceVO>, Serializable {
     int id;
     String eTitle;
     int eUserid;
     String eContent;
-    TimeStamp eCreateTime;
+    String eCreateTime;
     TimeStamp eUpdateTime;
     String eKeyword;
 
-    public int getId() {
+    public ExperienceVO(){}
+
+   public int getId() {
         return id;
     }
 
@@ -46,11 +53,11 @@ public class ExperienceVO {
         this.eContent = eContent;
     }
 
-    public TimeStamp geteCreateTime() {
+    public String geteCreateTime() {
         return eCreateTime;
     }
 
-    public void seteCreateTime(TimeStamp eCreateTime) {
+    public void seteCreateTime(String eCreateTime) {
         this.eCreateTime = eCreateTime;
     }
 
@@ -68,5 +75,16 @@ public class ExperienceVO {
 
     public void seteKeyword(String eKeyword) {
         this.eKeyword = eKeyword;
+    }
+
+    @Override
+    public ExperienceVO mapRow(ResultSet rs, int i) throws SQLException {
+        ExperienceVO evo  = new ExperienceVO();
+        evo.setId(rs.getInt("id"));
+        evo.seteKeyword(rs.getString("ekeyword"));
+        evo.seteTitle(rs.getString("etitle"));
+        evo.seteContent(rs.getString("econtent"));
+        evo.seteCreateTime(rs.getTimestamp("ecreatetime").toString());
+        return evo;
     }
 }

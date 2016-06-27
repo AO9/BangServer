@@ -36,9 +36,22 @@ public class AccountDaoImpl implements AccountDao {
 
     }
 
+    public boolean isExist(String username){
+        String sql = "SELECT count(1) FROM user WHERE username=?";
+        int result =  jdbcTemplate.queryForInt(sql, new Object[]{username});
+        if (result>0){
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public int insert(String username, String password, String phone) {
         LOGGER.info("注册用户username:{},password:{},phone:{}",password,phone);
+
+        if(!isExist(username)){
+            return 0;
+        }
 
         String sql = "insert into user (username,password,phone) values (?,?,?)" ;
         int num=jdbcTemplate.update(sql,new Object[]{ username,password,phone },new int[]{Types.VARCHAR,Types.VARCHAR,Types.VARCHAR});

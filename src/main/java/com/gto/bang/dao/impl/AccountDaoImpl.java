@@ -28,7 +28,7 @@ public class AccountDaoImpl implements AccountDao {
         UserVo vo;
         String sql = "SELECT * FROM user WHERE username=? and password=?";
         try {
-            vo = (UserVo) jdbcTemplate.queryForObject(sql, new Object[]{username,password}, new UserVo());
+            vo = jdbcTemplate.queryForObject(sql, new Object[]{username,password}, new UserVo());
         }catch (EmptyResultDataAccessException e){
             vo=null;
         }
@@ -38,11 +38,8 @@ public class AccountDaoImpl implements AccountDao {
 
     public boolean isExist(String username){
         String sql = "SELECT count(1) FROM user WHERE username=?";
-        int result =  jdbcTemplate.queryForInt(sql, new Object[]{username});
-        if (result>0){
-            return false;
-        }
-        return true;
+        int result =  jdbcTemplate.queryForInt(sql, username);
+        return result <= 0;
     }
 
     @Override

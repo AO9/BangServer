@@ -8,9 +8,10 @@ import java.util.List;
  * Created by shenjialong on 16/6/19.
  */
 public interface QuestionService {
-    Boolean createNewExperience(QuestionVO experienceVO);
-	QuestionVO getExperienceDetail(Integer id);
-	List<QuestionVO> getExperienceList(Integer beginId);
+    Boolean createNewQuestion(QuestionVO experienceVO);
+	QuestionVO getQuestionDetail(Integer id);
+	List<QuestionVO> getQuestionList(Integer beginId);
+	List<QuestionVO> getQuestionListByUserid(Integer userid, Integer beginId);
 }
 
 

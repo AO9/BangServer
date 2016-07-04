@@ -144,10 +144,7 @@ public class StringUtil {
     // 校验一组对象是否为空
     public static boolean isEmpty(Object object)
     {
-        if(object==null|| StringUtils.isEmpty(object.toString())){
-            return true;
-        }
-        return false;
+        return object == null || StringUtils.isEmpty(object.toString());
     }
 
 

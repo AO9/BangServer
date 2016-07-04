@@ -4,6 +4,7 @@ import com.gto.bang.common.constant.Constant;
 import com.gto.bang.common.net.Response;
 import com.gto.bang.service.ExperienceService;
 import com.gto.bang.vo.ExperienceVO;
+import com.gto.bang.vo.QuestionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,11 +31,12 @@ public class ExperienceController extends BaseController {
     public void eGetList(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Response<List<ExperienceVO>> res = new Response<List<ExperienceVO>>();
         response.setContentType("text/html;charset=utf-8");
-		Object beginId = request.getParameter("beginId");
-		if (null == beginId) {
-			res.setStatus(Constant.ERROR_STATUS);
+		Object startId = request.getParameter("startId");
+		if (null ==startId ) {
+			super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
+			return;
 		} else {
-			Integer bid = Integer.valueOf(beginId.toString());
+			Integer bid = Integer.valueOf(startId.toString());
 			List<ExperienceVO> experienceVO = experienceService
 					.getExperienceList(bid);
 			res.setData(experienceVO);
@@ -50,7 +52,8 @@ public class ExperienceController extends BaseController {
         response.setContentType("text/html;charset=utf-8");
         Object id=request.getParameter("id");
 		if (null == id) {
-			res.setStatus(Constant.ERROR_STATUS);
+			super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
+			return;
 		} else {
 			Integer i = Integer.valueOf(id.toString());
 			ExperienceVO experienceVO = experienceService
@@ -61,12 +64,11 @@ public class ExperienceController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/eCreate.ajax")
+    @RequestMapping(value = "/eCreate.ajax",method = RequestMethod.GET)
     @ResponseBody
-    public void eCreate(@ModelAttribute ExperienceVO experienceVO, HttpServletRequest request, HttpServletResponse response) throws IOException {
-//		request.setCharacterEncoding("utf8");
-		System.out.println("pre-----"+experienceVO.geteTitle());
-
+    public void eCreate( HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.setCharacterEncoding("utf8");
+		ExperienceVO experienceVO=new ExperienceVO();
 
 		response.setContentType("text/html;charset=utf-8");
         Response<String> res=new Response<String>();
@@ -75,20 +77,36 @@ public class ExperienceController extends BaseController {
         String [] params=new String[]{"etitle","euserid","econtent","ekeyword"};
         if(super.nonNullValidate(request,params)){
 
-			experienceVO.seteTitle(new String(request.getParameter("etitle").getBytes("iso-8859-1"),"UTF-8"));
+			experienceVO.seteTitle(new String(request.getParameter("etitle").toString().getBytes("iso-8859-1"),"UTF-8"));
 			experienceVO.seteUserid(Integer.valueOf(request.getParameter("euserid").toString()));
 			experienceVO.seteContent(new String(request.getParameter("econtent").getBytes("iso-8859-1"),"UTF-8"));
 			experienceVO.seteKeyword(new String(request.getParameter("ekeyword").getBytes("iso-8859-1"),"UTF-8"));
-			System.out.println("---------title:"+new String(request.getParameter("etitle").getBytes("iso-8859-1"),"UTF-8"));
 			result = experienceService.createNewExperience(experienceVO);
 			res.setData(Constant.SUCCESS);
 		}
 		if (!result) {
-			res.setStatus(Constant.ERROR_STATUS);
-			res.setData(Constant.FAILE);
+			super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
+			return;
         }
         super.flushResponse(response,res);
     }
+
+	@RequestMapping(value = "/eGetMyList.ajax")
+	@ResponseBody
+	public void qGetMyList(@ModelAttribute QuestionVO questionVO, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Response<List<ExperienceVO>> res = new Response<List<ExperienceVO>>();
+		response.setContentType("text/html;charset=utf-8");
+		if (null == request.getParameter("startId")||null==request.getParameter("userId")) {
+			super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
+			return;
+		} else {
+			Integer startId = Integer.valueOf(request.getParameter("startId").toString());
+			Integer userId = Integer.valueOf(request.getParameter("userId").toString());
+			List<ExperienceVO> vo = experienceService.getExperienceListByUserid(userId,startId);
+			res.setData(vo);
+		}
+		super.flushResponse(response, res);
+	}
 
 
 }

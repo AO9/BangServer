@@ -23,6 +23,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public boolean register(String username, String password, String phone) {
         int num=accountDao.insert(username,password,phone);
-        return num==1?true:false;
+        return num == 1;
     }
 }

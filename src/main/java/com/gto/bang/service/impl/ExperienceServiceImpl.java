@@ -28,8 +28,12 @@ public class ExperienceServiceImpl implements ExperienceService {
 	}
 
 	@Override
-	public List<ExperienceVO> getExperienceList(Integer beginId) {
+	public List<ExperienceVO> getExperienceList(Integer startId) {
+		return dao.getExperienceList(startId);
+	}
 
-		return dao.getExperienceList(beginId);
+	@Override
+	public List<ExperienceVO> getExperienceListByUserid(Integer userid, Integer startId) {
+		return dao.getExperienceListByUserid(userid,startId);
 	}
 }

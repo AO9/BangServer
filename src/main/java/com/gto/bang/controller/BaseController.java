@@ -1,6 +1,9 @@
 package com.gto.bang.controller;
 
+import com.gto.bang.common.constant.Constant;
 import com.gto.bang.common.json.JsonUtil;
+import com.gto.bang.common.net.ErrorCode;
+import com.gto.bang.common.net.Response;
 import com.gto.bang.common.string.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +15,22 @@ import java.io.PrintWriter;
  * Created by shenjialong on 16/6/19.
  */
 public abstract class BaseController {
+
+
+    // 输出结果
+    public void flushResponse4Error(HttpServletResponse response, Response res,String errorMessage) throws IOException {
+
+
+        res.setStatus(Constant.ERROR_STATUS);
+        ErrorCode errorCode=new ErrorCode();
+        errorCode.setMessage(errorMessage);
+        res.setErrorCode(errorCode);
+
+        PrintWriter writer = response.getWriter();
+        writer.println(JsonUtil.obj2Str(res));
+        writer.flush();
+        writer.close();
+    }
 
     // 输出结果
     public void flushResponse(HttpServletResponse response, Object res) throws IOException {
@@ -34,4 +53,19 @@ public abstract class BaseController {
 
         return  true;
     }
+
+
+    /**
+     * 中文转换
+     * @param request
+     * @param feildName
+     * @return
+     * @throws IOException
+     */
+    public String trancferChinnese(HttpServletRequest request, String feildName) throws IOException {
+
+        String value=new String(request.getParameter(feildName).getBytes("iso-8859-1"),"UTF-8");
+        return  value;
+    }
+
 }

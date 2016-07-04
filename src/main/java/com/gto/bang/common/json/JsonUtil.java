@@ -24,17 +24,17 @@ public abstract class JsonUtil {
     }
 
     public static final <T> T str2Obj(String s, Class<T> valueType) throws JsonParseException,
-            JsonMappingException, IOException {
-        return (T) mapper.readValue(s, valueType);
+            IOException {
+        return mapper.readValue(s, valueType);
     }
 
     public static final <T> T str2Obj(String s, TypeReference<T> typeReference)
-            throws JsonParseException, JsonMappingException, IOException {
+            throws JsonParseException, IOException {
         return (T) mapper.readValue(s, typeReference);
     }
 
-    public static final String obj2Str(Object obj) throws JsonGenerationException,
-            JsonMappingException, IOException {
+    public static final String obj2Str(Object obj) throws
+            IOException {
         return mapper.writeValueAsString(obj);
     }
 }

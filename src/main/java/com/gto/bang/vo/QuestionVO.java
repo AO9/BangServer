@@ -1,6 +1,5 @@
 package com.gto.bang.vo;
 
-import org.apache.commons.net.ntp.TimeStamp;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.io.Serializable;
@@ -13,10 +12,10 @@ import java.sql.SQLException;
 public class QuestionVO implements RowMapper<QuestionVO>, Serializable {
     int id;
     String qTitle;
-    Integer qUserid;
+    int qUserid;
     String qContent;
     String qCreateTime;
-    TimeStamp qUpdateTime;
+    String qUpdateTime;
     String qAnwserNum;
 
     public QuestionVO(){}
@@ -37,11 +36,11 @@ public class QuestionVO implements RowMapper<QuestionVO>, Serializable {
         this.qTitle = qTitle;
     }
 
-    public Integer getqUserid() {
+    public int getqUserid() {
         return qUserid;
     }
 
-    public void setqUserid(Integer qUserid) {
+    public void setqUserid(int qUserid) {
         this.qUserid = qUserid;
     }
 
@@ -61,11 +60,11 @@ public class QuestionVO implements RowMapper<QuestionVO>, Serializable {
         this.qCreateTime = qCreateTime;
     }
 
-    public TimeStamp getqUpdateTime() {
+    public String getqUpdateTime() {
         return qUpdateTime;
     }
 
-    public void setqUpdateTime(TimeStamp qUpdateTime) {
+    public void setqUpdateTime(String qUpdateTime) {
         this.qUpdateTime = qUpdateTime;
     }
 
@@ -89,6 +88,8 @@ public class QuestionVO implements RowMapper<QuestionVO>, Serializable {
         vo.setqTitle(rs.getString("qtitle"));
         vo.setqContent(rs.getString("qcontent"));
         vo.setqCreateTime(rs.getTimestamp("qcreatetime").toString());
+        vo.setqUserid(rs.getInt("quserid"));
+        vo.setqUpdateTime(rs.getTimestamp("qupdatetime").toString());
         return vo;
     }
 }

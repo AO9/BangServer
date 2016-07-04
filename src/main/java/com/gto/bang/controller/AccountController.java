@@ -32,18 +32,15 @@ public class AccountController extends BaseController {
         String [] params=new String[]{"username","password"};
         if(super.nonNullValidate(request,params)){
             System.out.println("========== login impl");
-            UserVo userBo = accountService.validate(request.getParameter("username").toString(),request.getParameter("password").toString());
+            UserVo userBo = accountService.validate(super.trancferChinnese(request,"username"),request.getParameter("password").toString());
             if (userBo!=null){
                 res.setData(userBo);
-            }else {
-                res.setStatus(Constant.ERROR_STATUS);
-                res.setData(null);
+                super.flushResponse(response,res);
+                return;
             }
-        }else{
-            res.setStatus(Constant.ERROR_STATUS);
-            res.setData(null);
+            super.flushResponse4Error(response,res,Constant.LOGIN_INFO_ERROR);
         }
-        super.flushResponse(response,res);
+        super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
     }
 
     @RequestMapping(value = "/register.ajax", method = RequestMethod.GET)
@@ -54,18 +51,19 @@ public class AccountController extends BaseController {
         String [] params=new String[]{"username","password","phone"};
 
         if(!super.nonNullValidate(request,params)){
-            res.setStatus(Constant.ERROR_STATUS);
-            res.setData(Constant.FAILE);
+            super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
         }
 
         // 注册的时候还要增加判断,username不能重复
-        boolean result=accountService.register(request.getParameter("username").toString(),request.getParameter("password").toString(),request.getParameter("phone").toString());
+        boolean result=accountService.register(super.trancferChinnese(request,"username"),request.getParameter("password").toString(),request.getParameter("phone").toString());
         if(result){
-            res.setData(Constant.SUCCESS);
+            res.setData(Constant.REGISTER_SUCCESS);
+            super.flushResponse(response,res);
+            return;
         }else{
-            res.setData(Constant.FAILE);
+            super.flushResponse4Error(response,res,Constant.REGISTER_FAILE);
+            return;
         }
 
-        super.flushResponse(response,res);
     }
 }

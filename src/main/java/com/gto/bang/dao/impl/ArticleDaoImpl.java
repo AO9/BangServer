@@ -33,18 +33,30 @@ public class ArticleDaoImpl implements ArticleDao{
                 articleVO.getType(),articleVO.getTitle());
         int num;
         StringBuilder sql=new StringBuilder();
+        Object[] params;
+        int [] types;
+        System.out.println("系统时间:"+df.format(new Date()));
+        // params里面的参数数量与sql语句中的占位符数量保持一致,否则异常
         if(Constant.ART_EXPERIENCE==articleVO.getType()){
             sql.append("insert into article (title,authorid,content,createtime,updatetime,type,keyword) values (?,?,?,?,?,?,?)");
+            params=new Object[]{articleVO.getTitle(),
+                    articleVO.getAuthorId(), articleVO.getContent(),
+                    df.format(new Date()), df.format(new Date()),
+                    articleVO.getType(),articleVO.getKeyword()};
+            types=new int[]{Types.VARCHAR,
+                    Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.TIMESTAMP,Types.INTEGER,
+                    Types.VARCHAR};
         }else {
             sql.append("insert into article (title,authorid,content,createtime,updatetime,type) values (?,?,?,?,?,?)");
+            params=new Object[]{articleVO.getTitle(),
+                    articleVO.getAuthorId(), articleVO.getContent(),
+                    df.format(new Date()), df.format(new Date()),
+                    articleVO.getType()};
+            types=new int[]{Types.VARCHAR,
+                    Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.TIMESTAMP,Types.INTEGER};
         }
 
-        num = jdbcTemplate.update(sql.toString(), new Object[]{articleVO.getTitle(),
-                articleVO.getAuthorId(), articleVO.getContent(),
-                df.format(new Date()), df.format(new Date()),
-                articleVO.getType(),articleVO.getKeyword(),articleVO.getKeyword()}, new int[]{Types.VARCHAR,
-                Types.INTEGER, Types.VARCHAR, Types.DATE, Types.DATE,Types.INTEGER,
-                Types.VARCHAR,Types.VARCHAR});
+        num = jdbcTemplate.update(sql.toString(), params, types);
         return num >= 1;
 
     }
@@ -86,7 +98,7 @@ public class ArticleDaoImpl implements ArticleDao{
         LOGGER.info("[Article][getArticleListByUserid] by startId:{}", startId);
         StringBuilder sb =new StringBuilder("select * from article");
         Object [] params=new Object[]{authorId,startId,type};
-        sb.append(" where authorid=? and id>? and type=?");
+        sb.append(" where authorid=? and id>=? and type=?");
         sb.append(" order by createtime desc limit 20");
         List<Map<String,Object>> maps= jdbcTemplate.queryForList(sb.toString(),params);
         list=transfer(maps);
@@ -108,11 +120,12 @@ public class ArticleDaoImpl implements ArticleDao{
             vo.setId(Integer.valueOf(map.get("id").toString()));
             vo.setType(Integer.valueOf(map.get("type").toString()));
             vo.setAuthorId(Integer.valueOf(map.get("authorid").toString()));
-            vo.setKeyword(map.get("keyword").toString());
+            // 经验有keyword属性,问答无该属性
+            vo.setKeyword(map.get("keyword")==null?null:map.get("keyword").toString());
             vo.setTitle(map.get("title").toString());
             vo.setContent(map.get("content").toString());
             vo.setCreateTime(map.get("createtime").toString());
-            vo.setUpdateTime(map.get("udpatetime").toString());
+            vo.setUpdateTime(map.get("updatetime").toString());
             list.add(vo);
         }
         return list;

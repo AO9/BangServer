@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * 文章(经验|问答控制器)
  * Created by shenjialong on 16/6/21.
  */
 @Controller
@@ -78,9 +79,9 @@ public class ArticleController extends BaseController {
 
 			int type=Integer.valueOf(request.getParameter("type").toString());
 			articleVO.setType(type);
-			articleVO.setTitle(new String(super.trancferChinnese(request,"title")));
+			articleVO.setTitle(super.trancferChinnese(request,"title"));
 			articleVO.setAuthorId(Integer.valueOf(request.getParameter("authorid").toString()));
-			articleVO.setContent(new String(super.trancferChinnese(request,"content")));
+			articleVO.setContent(super.trancferChinnese(request,"content"));
 
 			// 问答有关键字字段
 			if(Constant.ART_EXPERIENCE==type){
@@ -89,8 +90,7 @@ public class ArticleController extends BaseController {
 					super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
 					return;
 				}
-				String keyword=keywordObj.toString();
-				articleVO.setKeyword(keyword);
+				articleVO.setKeyword(super.trancferChinnese(request,"keyword"));
 			}
 
 			result = articleService.createNewArticle(articleVO);
@@ -105,6 +105,12 @@ public class ArticleController extends BaseController {
 
     }
 
+	/**
+	 * 我的(经验\问答)列表
+	 * @param request
+	 * @param response
+	 * @throws IOException
+     */
 	@RequestMapping(value = "/getMyArticleList.ajax")
 	@ResponseBody
 	public void getMyArticleList( HttpServletRequest request, HttpServletResponse response) throws IOException {

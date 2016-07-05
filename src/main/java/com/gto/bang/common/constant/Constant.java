@@ -22,7 +22,7 @@ public abstract class Constant {
     public static final int READ=1;
 
     // 文章类别
-    public static final int ART_QUESTION=1;
-    public static final int ART_EXPERIENCE=2;
+    public static final int ART_QUESTION=2;
+    public static final int ART_EXPERIENCE=1;
 
 }

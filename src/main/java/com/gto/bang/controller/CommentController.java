@@ -51,13 +51,15 @@ public class CommentController extends BaseController {
     public void createNewComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Response<List<CommentVO>> res = new Response<List<CommentVO>>();
         response.setContentType("text/html;charset=utf-8");
-        Object useridObj =request.getParameter("userid");
+        System.out.println("request.getCharacterEncoding():"+request.getCharacterEncoding());
+        System.out.println("request.getContentType():"+request.getContentType());
+        Object useridObj =request.getParameter("userId");
         //type字段用于区分是 经验与问答
         Object typeObj=request.getParameter("type");
         Object artIdObj=request.getParameter("artId");
         boolean result=false;
 
-        Boolean isThrough=super.nonNullValidate(request,new String[]{"userid","username","content","type","artId","artTitle"});
+        Boolean isThrough=super.nonNullValidate(request,new String[]{"userId","username","content","type","artId","artTitle"});
         if(!isThrough){
             super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
             return;
@@ -78,15 +80,52 @@ public class CommentController extends BaseController {
                 super.flushResponse4Error(response,res, Constant.PARAM_FORMAT_ERROR);
                 return;
             }
-        }
-        if(!result){
-            super.flushResponse4Error(response,res,Constant.SAVE_ERROR);
-            return;
-        }
-        super.flushResponse(response, res);
+            if(!result){
+                super.flushResponse4Error(response,res,Constant.SAVE_ERROR);
+                return;
+            }
+            super.flushResponse(response, res);
         }
 
     }
+
+
+    /**
+     * 获取我的消息列表
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping(value = "/getMyComments.ajax")
+    @ResponseBody
+    public void getMyMessages(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Response<List<CommentVO>> res = new Response<List<CommentVO>>();
+        response.setContentType("text/html;charset=utf-8");
+        Object useridObj =request.getParameter("authorid");
+        Object startIdObj=request.getParameter("startid");
+
+        Boolean isThrough=super.nonNullValidate(request,new String[]{"authorid","startid"});
+        if(!isThrough){
+            super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
+            return;
+        }else{
+            try {
+
+                Integer userid = Integer.valueOf(useridObj.toString());
+                Integer startId = Integer.valueOf(startIdObj.toString());
+                List<CommentVO> list = commentService.getCommentsByAuthorId(userid,startId);
+                res.setData(list);
+
+            }catch (NumberFormatException e){
+                super.flushResponse4Error(response,res, Constant.PARAM_FORMAT_ERROR);
+                return;
+            }
+        }
+
+        super.flushResponse(response, res);
+    }
+
+}
 
 
 

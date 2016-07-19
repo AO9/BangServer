@@ -25,4 +25,8 @@ public abstract class Constant {
     public static final int ART_QUESTION=2;
     public static final int ART_EXPERIENCE=1;
 
+    // 终端类型
+    public static final String APP="1";
+    public static final String PC="2";
+
 }

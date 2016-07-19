@@ -67,7 +67,7 @@ public class ArticleDaoImpl implements ArticleDao{
         LOGGER.info("[ArticleDaoImpl][getArticleDetail] by id:{},id:{}", id);
         String sql = "SELECT * FROM article WHERE id in (?)";
         try {
-            vo = (ArticleVO) jdbcTemplate.queryForObject(sql, new Object[]{id}, new ArticleVO());
+            vo = jdbcTemplate.queryForObject(sql, new Object[]{id}, new ArticleVO());
         }catch (EmptyResultDataAccessException e){
             vo=null;
         }
@@ -105,6 +105,23 @@ public class ArticleDaoImpl implements ArticleDao{
         return list;
     }
 
+    @Override
+    public List<Integer> getArticleIdList(Integer authorId) {
+
+        List<Integer> list=new ArrayList<Integer>();
+        LOGGER.info("[Article][getArticleIdList] by authorId:{}", authorId);
+        StringBuilder sb =new StringBuilder("select id from article");
+        Object [] params=new Object[]{authorId};
+        sb.append(" where authorid=?");
+        sb.append(" order by createtime desc limit 20");
+        List<Map<String,Object>> maps= jdbcTemplate.queryForList(sb.toString(),params);
+        LOGGER.info("list:"+list);
+        for(int i=0;i<maps.size();i++){
+            list.add(Integer.valueOf(maps.get(i).get("id").toString()));
+        }
+        return list;
+    }
+
 
     /**
      * 结果转换
@@ -131,8 +148,4 @@ public class ArticleDaoImpl implements ArticleDao{
         return list;
     }
 
-    @Override
-    public List<Integer> getExpArtIdsByUserid(int userid) {
-        return null;
-    }
 }

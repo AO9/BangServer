@@ -39,4 +39,14 @@ public class ArticleServiceImpl implements ArticleService {
 
 		return dao.getArticleListByUserid(authorId,startId,type);
 	}
+
+	/**
+	 * 获取用户的文章id数量
+	 * @param authorId
+	 * @return
+     */
+	@Override
+	public List<Integer> getArticleIdList(Integer authorId) {
+		return dao.getArticleIdList(authorId);
+	}
 }

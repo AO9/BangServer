@@ -25,6 +25,12 @@ public class ArticleController extends BaseController {
     @Autowired
 	ArticleService articleService;
 
+	/**
+	 * 获取文章列表数据 type来区分经验列表或问答列表
+	 * @param request
+	 * @param response
+	 * @throws IOException
+     */
     @RequestMapping(value = "/getArticleList.ajax", method = RequestMethod.GET)
     @ResponseBody
     public void getArticleList(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -63,7 +69,7 @@ public class ArticleController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/create.ajax",method = RequestMethod.GET)
+    @RequestMapping(value = "/create.ajax")
     @ResponseBody
     public void create( HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("utf8");
@@ -123,8 +129,8 @@ public class ArticleController extends BaseController {
 			Integer startid = Integer.valueOf(request.getParameter("startid").toString());
 			Integer authorid = Integer.valueOf(request.getParameter("authorid").toString());
 			Integer type = Integer.valueOf(request.getParameter("type").toString());
-			List<ArticleVO> vo = articleService.getArticleListByUserid(authorid,startid,type);
-			res.setData(vo);
+			List<ArticleVO> list = articleService.getArticleListByUserid(authorid,startid,type);
+			res.setData(list);
 		}
 		super.flushResponse(response, res);
 	}

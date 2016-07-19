@@ -13,5 +13,5 @@ public interface ArticleDao {
 	ArticleVO getArticleDetail(Integer id);
 	List<ArticleVO> getArticleList(Integer beginId,Integer type);
 	List<ArticleVO> getArticleListByUserid(Integer userid, Integer startId,Integer type);
-	List<Integer>  getExpArtIdsByUserid(int userid);
+	List<Integer> getArticleIdList(Integer authorId);
 }

@@ -11,4 +11,6 @@ public interface CommentDao {
     boolean createNewComment(CommentVO vo);
     List<CommentVO> getCommentList(Integer type, Integer artId, Integer startId);
     List<CommentVO> getUnReadCommentListByArtIds(List<Integer> artIds,int type);
+
+    List<CommentVO> getCommentListByArtIds(String artIds,int startId);
 }

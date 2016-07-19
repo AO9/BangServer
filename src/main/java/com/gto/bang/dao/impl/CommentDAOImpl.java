@@ -54,18 +54,8 @@ public class CommentDAOImpl implements CommentDao {
             sb.append(" order by createtime desc limit 20");
 
             List<Map<String,Object>> maps= jdbcTemplate.queryForList(sb.toString(),params);
-            for(int i=0;i<maps.size();i++){
-                Map<String,Object> map=maps.get(i);
-                CommentVO vo  = new CommentVO();
-                vo.setActId(Integer.valueOf(map.get("artid").toString()));
-                vo.setCreatetime(map.get("createtime").toString());
-                vo.setUsername(map.get("username").toString());
-                vo.setUserId(Integer.valueOf(map.get("userid").toString()));
-                vo.setContent(map.get("content").toString());
-                vo.setId(Integer.valueOf(map.get("id").toString()));
-                vo.setType(Integer.valueOf(map.get("type").toString()));
-                list.add(vo);
-            }
+
+            list=transfer(maps);
 
             return list;
 
@@ -104,6 +94,46 @@ public class CommentDAOImpl implements CommentDao {
         sb.append(" order by createtime desc limit 20");
 
         List<Map<String,Object>> maps= jdbcTemplate.queryForList(sb.toString(),params);
+        list=transfer(maps);
+
+        return list;
+
+
+    }
+
+
+    /**
+     * 根据文章IDS来获取评论列表,一次最多获取最新的20条
+     * 还没有调试成功!artIds这个没有弄对,写死貌似可以
+     * @param artIds
+     * @param startId
+     * @return
+     */
+    @Override
+    public List<CommentVO> getCommentListByArtIds(String artIds, int startId) {
+        List<CommentVO> list=new ArrayList<CommentVO>();
+        LOGGER.info("[Comment][getCommentListByArtIds] by artIds:{}", artIds.toString());
+        StringBuilder sb =new StringBuilder("select * from comment");
+        sb.append(" where  artid in (?)");
+        sb.append(" and id>=?");
+        System.out.println("artIds:"+artIds+" IS "+"7,6,5,1,2,3,4".equals(artIds));
+        Object [] params=new Object[]{artIds,"1"};
+        sb.append(" order by createtime desc limit 20");
+        List<Map<String,Object>> maps= jdbcTemplate.queryForList(sb.toString(),params);
+        list=transfer(maps);
+
+        return list;
+    }
+
+
+    /**
+     * 结果转换
+     * @param maps
+     * @return
+     */
+    public  List<CommentVO> transfer (List<Map<String,Object>> maps){
+
+        List<CommentVO> list=new ArrayList<CommentVO>();
         for(int i=0;i<maps.size();i++){
             Map<String,Object> map=maps.get(i);
             CommentVO vo  = new CommentVO();
@@ -118,10 +148,7 @@ public class CommentDAOImpl implements CommentDao {
             vo.setArtTitle(map.get("arttitle").toString());
             list.add(vo);
         }
-
         return list;
-
-
     }
 
 

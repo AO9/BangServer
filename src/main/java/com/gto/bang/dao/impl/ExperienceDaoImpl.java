@@ -53,7 +53,7 @@ public class ExperienceDaoImpl implements ExperienceDao {
 		LOGGER.info("[experience][getExperienceDetail] by id:{},id:{}", id);
 		String sql = "SELECT * FROM experience WHERE id in (?)";
 		try {
-			vo = (ExperienceVO) jdbcTemplate.queryForObject(sql, new Object[]{id}, new ExperienceVO());
+			vo = jdbcTemplate.queryForObject(sql, new Object[]{id}, new ExperienceVO());
 		}catch (EmptyResultDataAccessException e){
 			vo=null;
 		}

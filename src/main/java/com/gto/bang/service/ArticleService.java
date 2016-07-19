@@ -12,6 +12,7 @@ public interface ArticleService {
 	ArticleVO getArticleDetail(Integer id);
 	List<ArticleVO> getArticleList(Integer startId,Integer type);
 	List<ArticleVO> getArticleListByUserid(Integer authorId, Integer startId,Integer type);
+	List<Integer> getArticleIdList(Integer authorId);
 }
 
 

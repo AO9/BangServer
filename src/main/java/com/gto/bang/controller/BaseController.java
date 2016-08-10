@@ -2,7 +2,6 @@ package com.gto.bang.controller;
 
 import com.gto.bang.common.constant.Constant;
 import com.gto.bang.common.json.JsonUtil;
-import com.gto.bang.common.net.ErrorCode;
 import com.gto.bang.common.net.Response;
 import com.gto.bang.common.string.StringUtil;
 
@@ -22,9 +21,7 @@ public abstract class BaseController {
 
 
         res.setStatus(Constant.ERROR_STATUS);
-        ErrorCode errorCode=new ErrorCode();
-        errorCode.setMessage(errorMessage);
-        res.setErrorCode(errorCode);
+        res.setData(errorMessage);
 
         PrintWriter writer = response.getWriter();
         writer.println(JsonUtil.obj2Str(res));

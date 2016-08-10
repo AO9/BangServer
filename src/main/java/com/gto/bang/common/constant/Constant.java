@@ -7,8 +7,10 @@ package com.gto.bang.common.constant;
 public abstract class Constant {
 
     public static final String SUCCESS ="success";
+    public static final String SERVER_FAIL ="后台服务异常,请稍后重试";
     public static final String REGISTER_SUCCESS ="注册成功";
-    public static final String REGISTER_FAILE ="注册失败";
+    public static final String REGISTER_FAILE ="服务异常,请稍后重试";
+    public static final String REGISTER_DUL ="注册失败,该昵称已存在!";
     public static final String PARAM_ERROR ="参数异常";
     public static final String PARAM_FORMAT_ERROR ="参数格式转换异常";
     public static final String SAVE_ERROR ="保存失败";
@@ -28,5 +30,7 @@ public abstract class Constant {
     // 终端类型
     public static final String APP="1";
     public static final String PC="2";
+
+    public static final String EMPYT="";
 
 }

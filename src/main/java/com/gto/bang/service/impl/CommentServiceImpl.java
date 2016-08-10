@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
      * @return
      */
     @Override
-    public List<CommentVO> getCommentsByAuthorId(Integer authorId, Integer startId) {
+    public List<CommentVO> getCommentsByAuthorId(Integer authorId, Integer startId,String status) {
         List<Integer> list=articleService.getArticleIdList(authorId);
 
         StringBuffer sb=new StringBuffer();
@@ -59,7 +59,12 @@ public class CommentServiceImpl implements CommentService {
         }
         LOGGER.info("[getCommentsByAuthorId] authorId:{},list<integer>:{}",
                 authorId,sb.toString());
-        return commentDao.getCommentListByArtIds(sb.toString(),startId);
+        return commentDao.getCommentListByArtIds(sb.toString(),startId,status);
+    }
+
+    @Override
+    public Boolean udpateStatus(String ids) {
+        return commentDao.updateStatus(ids);
     }
 
 

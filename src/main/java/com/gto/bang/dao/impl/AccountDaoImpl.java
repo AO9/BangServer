@@ -47,7 +47,7 @@ public class AccountDaoImpl implements AccountDao {
         LOGGER.info("注册用户username:{},password:{},phone:{}",password,phone);
 
         if(!isExist(username)){
-            return 0;
+            return -1;
         }
 
         String sql = "insert into user (username,password,phone) values (?,?,?)" ;

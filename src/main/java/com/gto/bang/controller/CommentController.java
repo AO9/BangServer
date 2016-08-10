@@ -98,31 +98,84 @@ public class CommentController extends BaseController {
      */
     @RequestMapping(value = "/getMyComments.ajax")
     @ResponseBody
-    public void getMyMessages(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void getMyComments(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Response<List<CommentVO>> res = new Response<List<CommentVO>>();
         response.setContentType("text/html;charset=utf-8");
         Object useridObj =request.getParameter("authorid");
         Object startIdObj=request.getParameter("startid");
-
         Boolean isThrough=super.nonNullValidate(request,new String[]{"authorid","startid"});
         if(!isThrough){
             super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
             return;
         }else{
             try {
-
                 Integer userid = Integer.valueOf(useridObj.toString());
                 Integer startId = Integer.valueOf(startIdObj.toString());
-                List<CommentVO> list = commentService.getCommentsByAuthorId(userid,startId);
+                List<CommentVO> list = commentService.getCommentsByAuthorId(userid,startId,null);
                 res.setData(list);
+            }catch (NumberFormatException e){
+                super.flushResponse4Error(response,res, Constant.PARAM_FORMAT_ERROR);
+                return;
+            }
+        }
+        super.flushResponse(response, res);
+    }
+
+    @RequestMapping(value = "/getMyUnReadCommentsNum.ajax")
+    @ResponseBody
+    public void getMyUnReadCommentsNum(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Response<String> res = new Response<String>();
+        response.setContentType("text/html;charset=utf-8");
+        Object useridObj =request.getParameter("authorid");
+        Object startIdObj=request.getParameter("startid");
+        Boolean isThrough=super.nonNullValidate(request,new String[]{"authorid","startid"});
+        if(!isThrough){
+            super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
+            return;
+        }else{
+            try {
+                Integer userid = Integer.valueOf(useridObj.toString());
+                Integer startId = Integer.valueOf(startIdObj.toString());
+                List<CommentVO> list = commentService.getCommentsByAuthorId(userid,startId,"0");
+
+                if(null!=list){
+                    res.setData(String.valueOf(list.size()));
+                }else{
+                    res.setData("0");
+                }
 
             }catch (NumberFormatException e){
                 super.flushResponse4Error(response,res, Constant.PARAM_FORMAT_ERROR);
                 return;
             }
         }
-
         super.flushResponse(response, res);
+    }
+
+
+    @RequestMapping(value = "/cUpdateStatus.ajax")
+    @ResponseBody
+    public void updateStatus( HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf8");
+        response.setContentType("text/html;charset=utf-8");
+        Response<String> res=new Response<String>();
+        boolean result = false;
+
+        String [] params=new String[]{"commentIds"};
+
+        if(super.nonNullValidate(request,params)){
+
+            String commentIds=request.getParameter("commentIds").toString();
+            result = commentService.udpateStatus(commentIds);
+        }
+        if (!result) {
+            super.flushResponse4Error(response,res,Constant.SERVER_FAIL);
+            return;
+        }else{
+            res.setData(Constant.SUCCESS);
+            super.flushResponse(response,res);
+        }
+
     }
 
 }

@@ -20,8 +20,17 @@ public class ArticleVO implements RowMapper<ArticleVO>, Serializable {
     String createTime;
     String updateTime;
     String keyword;
+    String username;
 
     public ArticleVO(){}
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public int getId() {
         return id;

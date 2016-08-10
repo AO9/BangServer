@@ -64,10 +64,16 @@ public class ArticleDaoImpl implements ArticleDao{
     @Override
     public ArticleVO getArticleDetail(Integer id) {
         ArticleVO vo;
-        LOGGER.info("[ArticleDaoImpl][getArticleDetail] by id:{},id:{}", id);
-        String sql = "SELECT * FROM article WHERE id in (?)";
+        LOGGER.info("[ArticleDaoImpl][getArticleDetail] by id:{}", id);
+        String sql = "SELECT user.username,article.id,type," +
+                " title,authorid,content,article.createtime,article.updatetime,keyword" +
+                " FROM article left join user on (article.authorid=user.id) " +
+                " WHERE article.id in (?)";
         try {
-            vo = jdbcTemplate.queryForObject(sql, new Object[]{id}, new ArticleVO());
+            List<Map<String,Object>> maps= jdbcTemplate.queryForList(sql, id);
+            List<ArticleVO> list=transfer(maps);
+            vo = list.get(0);
+//            jdbcTemplate.queryForObject(sql, new Object[]{id}, new ArticleVO());
         }catch (EmptyResultDataAccessException e){
             vo=null;
         }
@@ -84,7 +90,8 @@ public class ArticleDaoImpl implements ArticleDao{
     public List<ArticleVO> getArticleList(Integer startId, Integer type) {
         List<ArticleVO> list=new ArrayList<ArticleVO>();
         LOGGER.info("[ArticleDaoImpl][getArticleList] by startId:{},type:{}", startId,type);
-        String sql = "SELECT * FROM article WHERE id >=? and type=?";
+        String sql = "SELECT article.id,type,title,authorid,content,article.createtime,article.updatetime,keyword,username" +
+                " FROM article left JOIN user on(article.authorid=user.id) WHERE article.id >=? and type=? order by createtime desc";
         Object [] params=new Object[]{startId,type};
         List<Map<String,Object>> maps= jdbcTemplate.queryForList(sql, params);
         list=transfer(maps);
@@ -143,6 +150,7 @@ public class ArticleDaoImpl implements ArticleDao{
             vo.setContent(map.get("content").toString());
             vo.setCreateTime(map.get("createtime").toString());
             vo.setUpdateTime(map.get("updatetime").toString());
+            vo.setUsername(map.get("username")==null?Constant.EMPYT:map.get("username").toString());
             list.add(vo);
         }
         return list;

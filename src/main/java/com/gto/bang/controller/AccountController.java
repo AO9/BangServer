@@ -43,26 +43,31 @@ public class AccountController extends BaseController {
         super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
     }
 
-    @RequestMapping(value = "/register.ajax", method = RequestMethod.GET)
+    @RequestMapping(value = "/register.ajax")
     @ResponseBody
     public void register(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Response<String> res=new Response<String >();
+        Response<UserVo> res=new Response<UserVo >();
         response.setContentType("text/html;charset=utf-8");
         String [] params=new String[]{"username","password","phone"};
+
 
         if(!super.nonNullValidate(request,params)){
             super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
         }
 
+        System.out.println("username:"+request.getParameter("username")+" password:"+request.getParameter("password"));
         // 注册的时候还要增加判断,username不能重复
-        boolean result=accountService.register(super.trancferChinnese(request,"username"),request.getParameter("password").toString(),request.getParameter("phone").toString());
-        if(result){
-            res.setData(Constant.REGISTER_SUCCESS);
+        int result=accountService.register(super.trancferChinnese(request,"username"),request.getParameter("password").toString(),request.getParameter("phone").toString());
+        System.out.println("before:"+request.getParameter("username")+" after:"+super.trancferChinnese(request,"username"));
+        if(result==1){
+            UserVo userBo = accountService.validate(super.trancferChinnese(request,"username"),request.getParameter("password").toString());
+            res.setData(userBo);
+            System.out.println("返回啦 userBo:"+userBo.toString());
             super.flushResponse(response,res);
-            return;
+        }else if(result==-1){
+            super.flushResponse4Error(response,res,Constant.REGISTER_DUL);
         }else{
             super.flushResponse4Error(response,res,Constant.REGISTER_FAILE);
-            return;
         }
 
     }

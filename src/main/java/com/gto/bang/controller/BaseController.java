@@ -60,11 +60,9 @@ public abstract class BaseController {
      * @throws IOException
      */
     public String trancferChinnese(HttpServletRequest request, String feildName) throws IOException {
-
-        System.out.println("before:"+request.getParameter(feildName).toString());
-
         // client为 移动端时不要转码,移动端直接用utf-8请求
         if(null!=request.getParameter("client")&&request.getParameter("client").toString().equals(Constant.PC)){
+            System.out.println("before:"+request.getParameter(feildName).toString());
             String value=new String(request.getParameter(feildName).getBytes("iso-8859-1"),"UTF-8");
             System.out.println("after:"+value);
             return  value;

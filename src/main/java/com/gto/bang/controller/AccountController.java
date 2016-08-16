@@ -7,7 +7,6 @@ import com.gto.bang.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,7 @@ public class AccountController extends BaseController {
 
     @Autowired
     AccountService accountService;
-    @RequestMapping(value = "/login.ajax", method = RequestMethod.GET)
+    @RequestMapping(value = "/login.ajax")
     @ResponseBody
     public void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
@@ -31,8 +30,11 @@ public class AccountController extends BaseController {
 
         String [] params=new String[]{"username","password"};
         if(super.nonNullValidate(request,params)){
-            System.out.println("========== login impl");
-            UserVo userBo = accountService.validate(super.trancferChinnese(request,"username"),request.getParameter("password").toString());
+            String username=super.trancferChinnese(request,"username").toString();
+            String password=super.trancferChinnese(request,"password").toString();
+
+            System.out.println("login controller username:"+username);
+            UserVo userBo = accountService.validate(username,password);
             if (userBo!=null){
                 res.setData(userBo);
                 super.flushResponse(response,res);
@@ -55,14 +57,13 @@ public class AccountController extends BaseController {
             super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
         }
 
-        System.out.println("username:"+request.getParameter("username")+" password:"+request.getParameter("password"));
         // 注册的时候还要增加判断,username不能重复
         int result=accountService.register(super.trancferChinnese(request,"username"),request.getParameter("password").toString(),request.getParameter("phone").toString());
-        System.out.println("before:"+request.getParameter("username")+" after:"+super.trancferChinnese(request,"username"));
+        System.out.println("register controller request  before:"+request.getParameter("username")+" after:"+super.trancferChinnese(request,"username"));
         if(result==1){
             UserVo userBo = accountService.validate(super.trancferChinnese(request,"username"),request.getParameter("password").toString());
             res.setData(userBo);
-            System.out.println("返回啦 userBo:"+userBo.toString());
+            System.out.println("register controller response userBo:"+userBo.toString());
             super.flushResponse(response,res);
         }else if(result==-1){
             super.flushResponse4Error(response,res,Constant.REGISTER_DUL);

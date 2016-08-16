@@ -88,7 +88,7 @@ public class ArticleController extends BaseController {
 			articleVO.setTitle(super.trancferChinnese(request,"title"));
 			articleVO.setAuthorId(Integer.valueOf(request.getParameter("authorid").toString()));
 			articleVO.setContent(super.trancferChinnese(request,"content"));
-
+			System.out.println("article create.ajax type:"+type);
 			// 问答有关键字字段
 			if(Constant.ART_EXPERIENCE==type){
 				Object keywordObj=request.getParameter("keyword");

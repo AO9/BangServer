@@ -17,16 +17,20 @@
         </property>
     </bean>
 
-    <!-- 线下数据源 -->
+    <!-- 线上数据源 -->
     <bean id="db_data_source" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/bang?useUnicode=true&amp;characterEncoding=UTF-8" />
-        <property name="username" value="root" />
-        <property name="password" value="123" />
+        <property name="url" value="jdbc:mysql://sqld.duapp.com:4050/DBcTQtTWTJqwuEqETUES?useUnicode=true&amp;characterEncoding=UTF-8" />
+        <property name="username" value="0ef8531106d04c648da6a886f995edc1" />
+        <property name="password" value="289e1273785b4eaca068cbe71d8ebafc" />
         <property name="maxActive" value="50" />
         <property name="maxIdle" value="5" />
-        <property name="initialSize" value="10"/>
-        <property name="timeBetweenEvictionRunsMillis" value="3600000" />
-        <property name="minEvictableIdleTimeMillis" value="3600000" />
+        <property name="minIdle" value="2" />
+        <property name="initialSize" value="5"/>
+        <property name="timeBetweenEvictionRunsMillis" value="1800000" />
+        <property name="minEvictableIdleTimeMillis" value="1800000" />
+        <!--因为百度mysql公有服务是短链接,所以特增加如下重试机制-->
+        <property name="validationQuery" value="SELECT 1" />
+        <property name="testOnBorrow" value="true"/>
     </bean>
 </beans>

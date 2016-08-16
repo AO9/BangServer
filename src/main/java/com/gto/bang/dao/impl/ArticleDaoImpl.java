@@ -35,7 +35,7 @@ public class ArticleDaoImpl implements ArticleDao{
         StringBuilder sql=new StringBuilder();
         Object[] params;
         int [] types;
-        System.out.println("系统时间:"+df.format(new Date()));
+        System.out.println("ArticleDaoImpl:createNewArticle");
         // params里面的参数数量与sql语句中的占位符数量保持一致,否则异常
         if(Constant.ART_EXPERIENCE==articleVO.getType()){
             sql.append("insert into article (title,authorid,content,createtime,updatetime,type,keyword) values (?,?,?,?,?,?,?)");
@@ -64,6 +64,7 @@ public class ArticleDaoImpl implements ArticleDao{
     @Override
     public ArticleVO getArticleDetail(Integer id) {
         ArticleVO vo;
+        System.out.println("ArticleDaoImpl:getArticleDetail"+id);
         LOGGER.info("[ArticleDaoImpl][getArticleDetail] by id:{}", id);
         String sql = "SELECT user.username,article.id,type," +
                 " title,authorid,content,article.createtime,article.updatetime,keyword" +
@@ -89,6 +90,7 @@ public class ArticleDaoImpl implements ArticleDao{
     @Override
     public List<ArticleVO> getArticleList(Integer startId, Integer type) {
         List<ArticleVO> list=new ArrayList<ArticleVO>();
+        System.out.println("ArticleDaoImpl:getArticleList type:"+type);
         LOGGER.info("[ArticleDaoImpl][getArticleList] by startId:{},type:{}", startId,type);
         String sql = "SELECT article.id,type,title,authorid,content,article.createtime,article.updatetime,keyword,username" +
                 " FROM article left JOIN user on(article.authorid=user.id) WHERE article.id >=? and type=? order by createtime desc";
@@ -102,6 +104,7 @@ public class ArticleDaoImpl implements ArticleDao{
     public List<ArticleVO> getArticleListByUserid(Integer authorId, Integer startId,Integer type) {
 
         List<ArticleVO> list=new ArrayList<ArticleVO>();
+        System.out.println("ArticleDaoImpl:getArticleListByUserid type:"+type);
         LOGGER.info("[Article][getArticleListByUserid] by startId:{}", startId);
         StringBuilder sb =new StringBuilder("select * from article");
         Object [] params=new Object[]{authorId,startId,type};
@@ -115,6 +118,7 @@ public class ArticleDaoImpl implements ArticleDao{
     @Override
     public List<Integer> getArticleIdList(Integer authorId) {
 
+        System.out.println("ArticleDaoImpl:getArticleIdList type:"+authorId);
         List<Integer> list=new ArrayList<Integer>();
         LOGGER.info("[Article][getArticleIdList] by authorId:{}", authorId);
         StringBuilder sb =new StringBuilder("select id from article");

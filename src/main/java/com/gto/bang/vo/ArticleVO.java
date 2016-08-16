@@ -22,6 +22,16 @@ public class ArticleVO implements RowMapper<ArticleVO>, Serializable {
     String keyword;
     String username;
 
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    String answer;
+
     public ArticleVO(){}
 
     public String getUsername() {

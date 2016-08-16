@@ -12,25 +12,11 @@
 						http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
     <context:annotation-config />
-
     <import resource="ctx-dal.xml" />
-    <!--<import resource="ctx-sal.xml" />-->
-    <!--<import resource="quartz-config.xml" />-->
-
-
     <context:component-scan base-package="com.gto.bang">
     </context:component-scan>
-
     <mvc:annotation-driven />
     <mvc:default-servlet-handler/>
-    <!--<bean id="demoDao" class="com.gto.bang.dao.impl.DemoDaoImpl">-->
-    <!--</bean>-->
-    <!--<bean id="accountDao" class="com.gto.bang.dao.impl.AccountDaoImpl">-->
-    <!--</bean>-->
-    <!--<bean id="demoService" class="com.gto.bang.service.impl.DemoServiceImpl">-->
-    <!--</bean>-->
-    <!--<bean id="accountService" class="com.gto.bang.service.impl.AccountServiceImpl">-->
-    <!--</bean>-->
 
 
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">

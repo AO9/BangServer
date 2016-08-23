@@ -56,6 +56,8 @@ public class CommentServiceImpl implements CommentService {
                     sb.append(","+list.get(i));
                 }
             }
+        }else{
+            return null;
         }
         LOGGER.info("[getCommentsByAuthorId] authorId:{},list<integer>:{}",
                 authorId,sb.toString());

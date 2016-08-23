@@ -62,6 +62,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public List<MessageVO> getMessageList(int userId, int status) {
+        return messageDao.getMessageList(userId,status);
+    }
+
+    @Override
     public Boolean udpateStatus(String ids) {
         return messageDao.updateStatus(ids);
     }

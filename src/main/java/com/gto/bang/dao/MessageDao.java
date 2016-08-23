@@ -13,6 +13,8 @@ public interface MessageDao {
 //    List<MessageVO> getMessageByArtId(int userId, int msgType, int artId, int startId);
     List<MessageVO> getSystemMessage(int userId,int startId);
 
+    List<MessageVO> getMessageList(int userId,int status);
+
     Boolean updateStatus(String ids);
 //    /**
 //     * 获取未读的消息列表

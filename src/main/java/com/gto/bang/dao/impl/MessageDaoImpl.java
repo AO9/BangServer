@@ -54,20 +54,7 @@ public class MessageDaoImpl implements MessageDao {
         System.out.println("设置已读状态 返回值 num:"+num);
         return num >= 1;
     }
-//
-//    @Override
-//    public List<MessageVO> getMessageByArtId(int userId, int msgType, int artId, int startId) {
-//
-//        List<MessageVO> list=new ArrayList<MessageVO>();
-//        LOGGER.info("[Message][getMessageByArtId] by userid:{} artId:{}", userId,artId);
-//        StringBuilder sb =new StringBuilder("select * from message");
-//        Object [] params=new Object[]{userId,msgType,artId,startId};
-//        sb.append(" where userid=? and msgtype=? and artid=? and id>=?");
-//        sb.append(" order by createtime desc limit 20");
-//        List<Map<String,Object>> maps= jdbcTemplate.queryForList(sb.toString(),params);
-//        list=transfer(maps);
-//        return list;
-//    }
+
     @Override
     public List<MessageVO> getSystemMessage(int userId, int startId) {
 
@@ -83,10 +70,19 @@ public class MessageDaoImpl implements MessageDao {
         return list;
     }
 
-//    @Override
-//    public List<MessageVO> getMessageList(int userId, int startId) {
-//        return null;
-//    }
+    @Override
+    public List<MessageVO> getMessageList(int userId, int status) {
+        List<MessageVO> list=new ArrayList<MessageVO>();
+        LOGGER.info("[Message][getMessageList] by userid:{} status:{}", userId,status);
+        StringBuilder sb =new StringBuilder("select * from message");
+        Object [] params=new Object[]{userId,status};
+        sb.append(" where userid=? and status=? ");
+        sb.append(" order by createtime desc");
+        List<Map<String,Object>> maps= jdbcTemplate.queryForList(sb.toString(),params);
+        list=transfer(maps);
+        return list;
+    }
+
 
     /**
      * 转换成vo list
@@ -101,10 +97,8 @@ public class MessageDaoImpl implements MessageDao {
             vo.setCreatetime(map.get("createtime").toString());
             vo.setStatus(Integer.valueOf(map.get("status").toString()));
             vo.setId(Integer.valueOf(map.get("id").toString()));
-//            vo.setMsgType(Integer.valueOf(map.get("msgtype").toString()));
             vo.setUserId(Integer.valueOf(map.get("userid").toString()));
             vo.setMsgInfo(map.get("msginfo").toString());
-//            vo.setArtId(Integer.valueOf(map.get("arrid").toString()));
             list.add(vo);
         }
         return list;

@@ -89,6 +89,34 @@ public class MessageController extends BaseController {
     }
 
 
+    @RequestMapping(value = "/numOfUnReadSystemMessage.ajax", method = RequestMethod.GET)
+    @ResponseBody
+    public void numOfUnReadSystemMessage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Response<String> res = new Response<String>();
+        response.setContentType("text/html;charset=utf-8");
+        if (null==request.getParameter("userId")) {
+            super.flushResponse4Error(response,res, Constant.PARAM_ERROR);
+            return;
+        } else {
+            try{
+                Integer userId = Integer.valueOf(request.getParameter("userId").toString());
+                List<MessageVO> list = messageService.getMessageList(userId,Constant.UNREAD);
+
+                if(null==list||list.size()==0){
+                    res.setData("0");
+                }else{
+                    res.setData(String.valueOf(list.size()));
+                }
+                super.flushResponse(response, res);
+            }catch (NumberFormatException e){
+                super.flushResponse4Error(response,res, Constant.PARAM_FORMAT_ERROR);
+                return;
+            }
+        }
+
+    }
+
+
 
     @RequestMapping(value = "/mUpdateStatus.ajax")
     @ResponseBody

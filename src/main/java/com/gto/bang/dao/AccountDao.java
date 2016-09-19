@@ -8,5 +8,7 @@ import com.gto.bang.vo.UserVo;
 public interface AccountDao {
     UserVo validate(String username, String password);
 
-    int insert(String username,String password,String phone);
+    UserVo userInfo(String authorId);
+
+    int insert(String username,String password,String phone,String school,String education);
 }

@@ -1,5 +1,6 @@
 package com.gto.bang.vo;
 
+import com.gto.bang.common.string.StringUtil;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.io.Serializable;
@@ -115,7 +116,9 @@ public class ArticleVO implements RowMapper<ArticleVO>, Serializable {
         vo.setType(rs.getInt("type"));
         vo.setKeyword(rs.getString("keyword"));
         vo.setContent(rs.getString("content"));
-        vo.setCreateTime(rs.getTimestamp("createtime").toString());
+        String createtime=rs.getTimestamp("createtime").toString();
+        createtime= StringUtil.formatToDateTime(createtime);
+        vo.setCreateTime(createtime);
         vo.setUpdateTime(rs.getTimestamp("updatetime").toString());
         return vo;
     }

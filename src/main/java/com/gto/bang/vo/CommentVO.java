@@ -1,5 +1,6 @@
 package com.gto.bang.vo;
 
+import com.gto.bang.common.string.StringUtil;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.io.Serializable;
@@ -114,7 +115,9 @@ public class CommentVO  implements RowMapper<CommentVO>, Serializable {
         vo.setContent(rs.getString("content"));
         vo.setUserId(rs.getInt("userid"));
         vo.setUsername(rs.getString("username"));
-        vo.setCreatetime(rs.getTimestamp("c").toString());
+        String createtime=rs.getTimestamp("createtime").toString();
+        createtime= StringUtil.formatToDateTime(createtime);
+        vo.setCreatetime(createtime);
         vo.setType(rs.getInt("type"));
         vo.setActId(rs.getInt("actId"));
         return vo;

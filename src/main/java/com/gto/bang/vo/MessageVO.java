@@ -1,5 +1,6 @@
 package com.gto.bang.vo;
 
+import com.gto.bang.common.string.StringUtil;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.io.Serializable;
@@ -85,7 +86,9 @@ public class MessageVO implements RowMapper<MessageVO>, Serializable {
         vo.setUserId(rs.getInt("userid"));
         vo.setArtId(rs.getInt("artid"));
         vo.setMsgType(rs.getInt("msgtype"));
-        vo.setCreatetime(rs.getTimestamp("createtime").toString());
+        String createtime=rs.getTimestamp("createtime").toString();
+        createtime= StringUtil.formatToDateTime(createtime);
+        vo.setCreatetime(createtime);
         vo.setMsgInfo(rs.getString("msginfo"));
         vo.setId(rs.getInt("id"));
         return vo;

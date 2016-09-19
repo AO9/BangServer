@@ -1,5 +1,6 @@
 package com.gto.bang.dao.impl;
 
+import com.gto.bang.common.string.StringUtil;
 import com.gto.bang.dao.MessageDao;
 import com.gto.bang.vo.MessageVO;
 import org.slf4j.Logger;
@@ -94,7 +95,9 @@ public class MessageDaoImpl implements MessageDao {
         for(int i=0;i<maps.size();i++){
             Map<String,Object> map=maps.get(i);
             MessageVO vo  = new MessageVO();
-            vo.setCreatetime(map.get("createtime").toString());
+            String createtime=map.get("createtime").toString();
+            createtime= StringUtil.formatToDateTime(createtime);
+            vo.setCreatetime(createtime);
             vo.setStatus(Integer.valueOf(map.get("status").toString()));
             vo.setId(Integer.valueOf(map.get("id").toString()));
             vo.setUserId(Integer.valueOf(map.get("userid").toString()));

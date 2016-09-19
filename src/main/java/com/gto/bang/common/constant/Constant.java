@@ -15,6 +15,7 @@ public abstract class Constant {
     public static final String PARAM_FORMAT_ERROR ="参数格式转换异常";
     public static final String SAVE_ERROR ="保存失败";
     public static final String LOGIN_INFO_ERROR ="账户名或者密码错误";
+    public static final String USER_INFO_ERROR ="获取用户信息失败";
 
     public static final int ERROR_STATUS =0;
     public static final int SUCCESS_STATUS =1;

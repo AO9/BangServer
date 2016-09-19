@@ -21,8 +21,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public int register(String username, String password, String phone) {
-        int num=accountDao.insert(username,password,phone);
+    public UserVo userInfo(String authorId) {
+        return accountDao.userInfo(authorId);
+    }
+
+    @Override
+    public int register(String username, String password, String phone,String school,String education) {
+        int num=accountDao.insert(username,password,phone,school,education);
         return num;
     }
 }

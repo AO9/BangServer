@@ -26,9 +26,23 @@ public class AccountDaoImpl implements AccountDao {
     public UserVo validate(String username, String password) {
 
         UserVo vo;
-        String sql = "SELECT * FROM user WHERE username=? and password=?";
+        String sql = "SELECT id,username,password,phone,email,city,education,school,createtime FROM user WHERE username=? and password=?";
         try {
             vo = jdbcTemplate.queryForObject(sql, new Object[]{username,password}, new UserVo());
+        }catch (EmptyResultDataAccessException e){
+            vo=null;
+        }
+        return vo;
+
+    }
+
+    @Override
+    public UserVo userInfo(String authorId) {
+
+        UserVo vo;
+        String sql = "SELECT id,username,password,phone,email,city,education,school,createtime FROM user WHERE id=?";
+        try {
+            vo = jdbcTemplate.queryForObject(sql, new Object[]{authorId}, new UserVo());
         }catch (EmptyResultDataAccessException e){
             vo=null;
         }
@@ -43,15 +57,15 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public int insert(String username, String password, String phone) {
-        LOGGER.info("注册用户username:{},password:{},phone:{}",password,phone);
+    public int insert(String username, String password, String phone,String school,String education) {
+        LOGGER.info("注册用户username:{},password:{}",username,password);
 
         if(!isExist(username)){
             return -1;
         }
 
-        String sql = "insert into user (username,password,phone) values (?,?,?)" ;
-        int num=jdbcTemplate.update(sql,new Object[]{ username,password,phone },new int[]{Types.VARCHAR,Types.VARCHAR,Types.VARCHAR});
+        String sql = "insert into user (username,password,phone,school,education) values (?,?,?,?,?)" ;
+        int num=jdbcTemplate.update(sql,new Object[]{ username,password,phone,school,education },new int[]{Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR});
         return num;
 
     }

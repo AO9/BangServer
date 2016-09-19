@@ -1,5 +1,6 @@
 package com.gto.bang.vo;
 
+import com.gto.bang.common.string.StringUtil;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.io.Serializable;
@@ -18,6 +19,9 @@ public class UserVo implements RowMapper<UserVo>,Serializable {
     String email;
     String city;
     String createtime;
+    // 0828增加以下两个字段:学历 学校
+    String education;
+    String school;
 
     public int getId() {
         return id;
@@ -75,6 +79,22 @@ public class UserVo implements RowMapper<UserVo>,Serializable {
         this.createtime = createtime;
     }
 
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
     @Override
     public UserVo mapRow(ResultSet rs, int i) throws SQLException {
         UserVo userBo = new UserVo();
@@ -84,6 +104,11 @@ public class UserVo implements RowMapper<UserVo>,Serializable {
         userBo.setEmail(rs.getString("email"));
         userBo.setPassword(rs.getString("password"));
         userBo.setPhone(rs.getString("phone"));
+        userBo.setSchool(rs.getString("school"));
+        userBo.setEducation(rs.getString("education"));
+        String createtime=rs.getTimestamp("createtime").toString();
+        createtime=StringUtil.formatToDateTime(createtime);
+        userBo.setCreatetime(createtime);
         return userBo;
     }
 }

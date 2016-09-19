@@ -1,5 +1,6 @@
 package com.gto.bang.vo;
 
+import com.gto.bang.common.string.StringUtil;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.io.Serializable;
@@ -55,7 +56,9 @@ public class FeedbackVO implements RowMapper<FeedbackVO>, Serializable {
         vo.setUserId(rs.getInt("userid"));
         vo.setId(rs.getInt("id"));
         vo.setContent(rs.getString("content"));
-        vo.setCreatetime(rs.getTimestamp("createtime").toString());
+        String createtime=rs.getTimestamp("createtime").toString();
+        createtime= StringUtil.formatToDateTime(createtime);
+        vo.setCreatetime(createtime);
         return vo;
     }
 }

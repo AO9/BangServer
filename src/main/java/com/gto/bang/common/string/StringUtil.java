@@ -34,6 +34,13 @@ public class StringUtil {
         return sdf.format(date);
     }
 
+    public static String formatToDateTime(String datetime)
+    {
+        int index=datetime.indexOf(".");
+        datetime=datetime.substring(0,index);
+        return datetime;
+    }
+
     public static String getCurrentTime()
     {
         SimpleDateFormat format = new SimpleDateFormat(FMT_DATETIME);

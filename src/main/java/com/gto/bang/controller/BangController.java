@@ -46,6 +46,7 @@ public class BangController extends BaseController  {
             vo.setAcademy(super.trancferChinnese(request,"academy"));
             vo.setCity(super.trancferChinnese(request,"city"));
 
+            vo.setQq(request.getParameter("qq")==null?null:request.getParameter("qq").toString());
             result = service.createNewOrder(vo);
         }
         if (!result) {

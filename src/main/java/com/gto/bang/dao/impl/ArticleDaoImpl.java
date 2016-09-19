@@ -1,6 +1,7 @@
 package com.gto.bang.dao.impl;
 
 import com.gto.bang.common.constant.Constant;
+import com.gto.bang.common.string.StringUtil;
 import com.gto.bang.dao.ArticleDao;
 import com.gto.bang.vo.ArticleVO;
 import org.slf4j.Logger;
@@ -152,7 +153,9 @@ public class ArticleDaoImpl implements ArticleDao{
             vo.setKeyword(map.get("keyword")==null?null:map.get("keyword").toString());
             vo.setTitle(map.get("title").toString());
             vo.setContent(map.get("content").toString());
-            vo.setCreateTime(map.get("createtime").toString());
+            String createtime=map.get("createtime").toString();
+            createtime= StringUtil.formatToDateTime(createtime);
+            vo.setCreateTime(createtime);
             vo.setUpdateTime(map.get("updatetime").toString());
             vo.setUsername(map.get("username")==null?Constant.EMPYT:map.get("username").toString());
             list.add(vo);

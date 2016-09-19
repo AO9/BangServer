@@ -14,15 +14,10 @@ import java.io.PrintWriter;
  * Created by shenjialong on 16/6/19.
  */
 public abstract class BaseController {
-
-
     // 输出结果
     public void flushResponse4Error(HttpServletResponse response, Response res,String errorMessage) throws IOException {
-
-
         res.setStatus(Constant.ERROR_STATUS);
         res.setData(errorMessage);
-
         PrintWriter writer = response.getWriter();
         writer.println(JsonUtil.obj2Str(res));
         writer.flush();
@@ -62,9 +57,7 @@ public abstract class BaseController {
     public String trancferChinnese(HttpServletRequest request, String feildName) throws IOException {
         // client为 移动端时不要转码,移动端直接用utf-8请求
         if(null!=request.getParameter("client")&&request.getParameter("client").toString().equals(Constant.PC)){
-            System.out.println("before:"+request.getParameter(feildName).toString());
             String value=new String(request.getParameter(feildName).getBytes("iso-8859-1"),"UTF-8");
-            System.out.println("after:"+value);
             return  value;
         }
         return  request.getParameter(feildName).toString();

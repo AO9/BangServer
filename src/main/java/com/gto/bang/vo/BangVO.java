@@ -1,5 +1,6 @@
 package com.gto.bang.vo;
 
+import com.gto.bang.common.string.StringUtil;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ public class BangVO  implements RowMapper<BangVO>, Serializable {
     String username;
     String phone;
     String email;
+    String qq;
     String school;
     String academy;
     String city;
@@ -52,6 +54,13 @@ public class BangVO  implements RowMapper<BangVO>, Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
     }
 
     public String getSchool() {
@@ -102,7 +111,9 @@ public class BangVO  implements RowMapper<BangVO>, Serializable {
         vo.setEmail(rs.getString("email"));
         vo.setSchool(rs.getString("school"));
         vo.setAcademy(rs.getString("academy"));
-        vo.setCreatetime(rs.getTimestamp("createtime").toString());
+        String createtime=rs.getTimestamp("createtime").toString();
+        createtime= StringUtil.formatToDateTime(createtime);
+        vo.setCreatetime(createtime);
         vo.setCity(rs.getString("city"));
         vo.setUserid(rs.getInt("userid"));
         return vo;

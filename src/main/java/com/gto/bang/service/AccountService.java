@@ -8,7 +8,9 @@ import com.gto.bang.vo.UserVo;
 public interface AccountService {
     UserVo validate(String username, String password);
 
-    int register(String username,String password,String phone);
+    UserVo userInfo(String authorId);
+
+    int register(String username,String password,String phone,String school,String education);
 }
 
 

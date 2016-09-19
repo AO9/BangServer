@@ -1,6 +1,7 @@
 package com.gto.bang.dao.impl;
 
 import com.gto.bang.common.constant.Constant;
+import com.gto.bang.common.string.StringUtil;
 import com.gto.bang.dao.CommentDao;
 import com.gto.bang.vo.CommentVO;
 import org.slf4j.Logger;
@@ -165,7 +166,9 @@ public class CommentDAOImpl implements CommentDao {
             Map<String,Object> map=maps.get(i);
             CommentVO vo  = new CommentVO();
             vo.setActId(Integer.valueOf(map.get("artid").toString()));
-            vo.setCreatetime(map.get("createtime").toString());
+            String createtime=map.get("createtime").toString();
+            createtime= StringUtil.formatToDateTime(createtime);
+            vo.setCreatetime(createtime);
             vo.setUsername(map.get("username").toString());
             vo.setUserId(Integer.valueOf(map.get("userid").toString()));
             vo.setContent(map.get("content").toString());

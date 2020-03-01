@@ -1,24 +1,24 @@
 package com.gto.bang.service.impl;
 
-import com.gto.bang.dao.FeedbackDao;
+import com.gto.bang.dao.FeedbackMapper;
+import com.gto.bang.model.Feedback;
 import com.gto.bang.service.FeedbackService;
-import com.gto.bang.vo.FeedbackVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by shenjialong on 16/8/10.
+ * 2020年0101, mybatis重构
  * 反馈功能的实现类
  */
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
-
     @Autowired
-    FeedbackDao dao;
+    FeedbackMapper feedbackMapper;
 
     @Override
-    public Boolean createNewFeedback(FeedbackVO vo) {
-        return dao.createNewFeedback(vo);
+    public void createNewFeedback(Feedback vo) {
+        feedbackMapper.insertSelective(vo);
     }
 
 }

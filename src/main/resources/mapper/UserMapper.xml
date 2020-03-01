@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gto.bang.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.gto.bang.model.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="userName" />
+    <result column="imei" jdbcType="VARCHAR" property="imei" />
+    <result column="wechat" jdbcType="VARCHAR" property="wechat" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="city" jdbcType="CHAR" property="city" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="school" jdbcType="VARCHAR" property="school" />
+    <result column="signature" jdbcType="VARCHAR" property="signature" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="academy" jdbcType="VARCHAR" property="academy" />
+    <result column="vip" jdbcType="TINYINT" property="vip" />
+    <result column="grade" jdbcType="INTEGER" property="grade" />
+    <result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastLoginTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, phone, email, city, createtime, education, school, signature, 
+    gender, level, academy, vip, grade, lastLoginTime,imei,user.wechat
+  </sql>
+
+  <select id="getUsers" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    <where>
+      DATE_FORMAT(createtime,'%Y-%m-%d') = CURDATE() OR DATE_FORMAT(lastLoginTime,'%Y-%m-%d') = CURDATE()
+      <if test="num != null">
+        LIMIT #{num,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByCondition" parameterType="com.gto.bang.model.User" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    <where>
+      <if test="userName != null and userName!='' ">
+        and username = #{userName,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null and password!='' ">
+        and password = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="id != null">
+        and id = #{id,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <!--分割线           -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gto.bang.model.User"  useGeneratedKeys="true"  keyProperty="id">
+    insert into user (id, username, password, 
+      phone, email, city, createtime, 
+      education, school, signature, 
+      gender, level, academy, 
+      vip, grade, lastLoginTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{city,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{education,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=TINYINT}, #{level,jdbcType=VARCHAR}, #{academy,jdbcType=VARCHAR}, 
+      #{vip,jdbcType=TINYINT}, #{grade,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gto.bang.model.User" useGeneratedKeys="true"  keyProperty="id">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userName != null">
+        username,
+      </if>
+      <if test="imei != null">
+        imei,
+      </if>
+      <if test="wechat != null">
+        wechat,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="createTime != null">
+        createtime,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="school != null">
+        school,
+      </if>
+      <if test="signature != null">
+        signature,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="academy != null">
+        academy,
+      </if>
+      <if test="vip != null">
+        vip,
+      </if>
+      <if test="grade != null">
+        grade,
+      </if>
+      <if test="lastLoginTime != null">
+        lastLoginTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="imei != null">
+        #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null">
+        #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null">
+        #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="academy != null">
+        #{academy,jdbcType=VARCHAR},
+      </if>
+      <if test="vip != null">
+        #{vip,jdbcType=TINYINT},
+      </if>
+      <if test="grade != null">
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gto.bang.model.User">
+    update user
+    <set>
+      <if test="userName != null">
+        username = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="imei != null">
+        imei = #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null">
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        createtime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null">
+        signature = #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="academy != null">
+        academy = #{academy,jdbcType=VARCHAR},
+      </if>
+      <if test="vip != null">
+        vip = #{vip,jdbcType=TINYINT},
+      </if>
+      <if test="grade != null">
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="lastLoginTime != null">
+        lastLoginTime = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gto.bang.model.User">
+    update user
+    set username = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      city = #{city,jdbcType=CHAR},
+      createtime = #{createTime,jdbcType=TIMESTAMP},
+      education = #{education,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      signature = #{signature,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      level = #{level,jdbcType=VARCHAR},
+      academy = #{academy,jdbcType=VARCHAR},
+      vip = #{vip,jdbcType=TINYINT},
+      grade = #{grade,jdbcType=INTEGER},
+      lastLoginTime = #{lastLoginTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

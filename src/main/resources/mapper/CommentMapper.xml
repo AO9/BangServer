@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gto.bang.dao.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.gto.bang.model.Comment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="userid" jdbcType="INTEGER" property="userId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="artid" jdbcType="INTEGER" property="artId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="arttitle" jdbcType="VARCHAR" property="arttitle" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, userid, content, createtime, artid, type, status, arttitle
+  </sql>
+
+  <select id="commentNumOfArticle" resultType="java.lang.Integer">
+    select COUNT(1)
+    from comment
+    where artid in (#{artId,jdbcType=INTEGER}) and status!=999
+  </select>
+
+  <select id="numOfUnreadComments" resultType="java.lang.Integer">
+    select COUNT(1)
+    from comment
+    where userid in (#{authorId,jdbcType=INTEGER}) and status=0
+  </select>
+
+  <select id="selectByCondition" parameterType="com.gto.bang.model.Comment" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from comment
+    where type = #{type,jdbcType=INTEGER} and  artid= #{artId,jdbcType=INTEGER} and status=0 order by createtime desc
+  </select>
+
+  <select id="selectByArtIds" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from comment
+    where artid in (#{artIds,jdbcType=INTEGER}) and  status= #{status,jdbcType=INTEGER} order by createtime desc
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gto.bang.model.Comment">
+    insert into comment (id, username, userid, 
+      content, createtime, artid, 
+      type, status, arttitle
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
+      #{content,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{artId,jdbcType=INTEGER},
+      #{type,jdbcType=TINYINT}, #{status,jdbcType=INTEGER}, #{arttitle,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gto.bang.model.Comment">
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="userId != null">
+        userid,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="artId != null">
+        artid,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="arttitle != null">
+        arttitle,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="artId != null">
+        #{artId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="arttitle != null">
+        #{arttitle,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gto.bang.model.Comment">
+    update comment
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        userid = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="artId != null">
+        artid = #{artId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="arttitle != null">
+        arttitle = #{arttitle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gto.bang.model.Comment">
+    update comment
+    set username = #{username,jdbcType=VARCHAR},
+      userid = #{userId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      artid = #{artId,jdbcType=INTEGER},
+      type = #{type,jdbcType=TINYINT},
+      status = #{status,jdbcType=INTEGER},
+      arttitle = #{arttitle,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

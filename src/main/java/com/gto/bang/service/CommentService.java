@@ -1,17 +1,22 @@
 package com.gto.bang.service;
 
-import com.gto.bang.vo.CommentVO;
+import com.gto.bang.model.Comment;
 
 import java.util.List;
 
 /**
  * Created by shenjialong on 16/7/1.
+ * 19年12月29日 更新
  */
 public interface CommentService {
-    boolean createNewComment(CommentVO vo);
-    List<CommentVO> getCommentList(Integer type, Integer artId, Integer startId);
+    void createNewComment(Comment vo);
 
-    List<CommentVO> getCommentsByAuthorId(Integer authorId, Integer startId,String status);
+    List<Comment> getCommentList(Integer type, Integer artId, Integer startId);
 
-    Boolean udpateStatus(String ids);
+    List<Comment> getCommentsByAuthorId(Integer authorId, Integer startId, Integer status, String type);
+
+    void udpateStatus(String ids);
+
+    int numOfUnreadComments(Integer authorId);
+
 }

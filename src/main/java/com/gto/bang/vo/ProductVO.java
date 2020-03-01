@@ -8,61 +8,56 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * 文章VO类,整合经验和问答到一个表中
- * Created by shenjialong on 16/7/03.
+ * 20170226
  */
+public class ProductVO implements RowMapper<ProductVO>, Serializable {
 
-public class ArticleVO implements RowMapper<ArticleVO>, Serializable {
     int id;
-    int type;
     String title;
     int authorId;
+    String username;
+    int price;
     String content;
     String createTime;
     String updateTime;
-    String keyword;
-    String username;
+    String phone;
+    String wechat;
     int viewtimes;
-    int commentNum;
+    int praise;
 
-    public int getCommentNum() {
-        return commentNum;
+    public String getLevel() {
+        return level;
     }
 
-    public void setCommentNum(int commentNum) {
-        this.commentNum = commentNum;
+    public void setLevel(String level) {
+        this.level = level;
     }
 
-    int price;
-    public int getPrice() {
-        return price;
+    String level;
+
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public int getViewtimes() {
-        return viewtimes;
+    public String getWechat() {
+        return wechat;
     }
 
-    public void setViewtimes(int viewtimes) {
-        this.viewtimes = viewtimes;
+    public void setWechat(String wechat) {
+        this.wechat = wechat;
     }
 
-    public String getAnswer() {
-        return answer;
+    public int getPraise() {
+        return praise;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setPraise(int praise) {
+        this.praise = praise;
     }
-
-    String answer;
-
-    public ArticleVO() {
-    }
-
     public String getUsername() {
         return username;
     }
@@ -70,6 +65,13 @@ public class ArticleVO implements RowMapper<ArticleVO>, Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
+    public int getViewtimes() {
+        return viewtimes;
+    }
+    public void setViewtimes(int viewtimes) {
+        this.viewtimes = viewtimes;
+    }
+    public ProductVO(){}
 
     public int getId() {
         return id;
@@ -77,14 +79,6 @@ public class ArticleVO implements RowMapper<ArticleVO>, Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public String getTitle() {
@@ -127,25 +121,24 @@ public class ArticleVO implements RowMapper<ArticleVO>, Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public int getPrice() {
+        return price;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     @Override
-    public ArticleVO mapRow(ResultSet rs, int i) throws SQLException {
-        ArticleVO vo = new ArticleVO();
+    public ProductVO mapRow(ResultSet rs, int i) throws SQLException {
+        ProductVO vo = new ProductVO();
         vo.setId(rs.getInt("id"));
         vo.setAuthorId(rs.getInt("authorid"));
+        vo.setPrice(rs.getInt("price"));
         vo.setTitle(rs.getString("title"));
-        vo.setType(rs.getInt("type"));
-        vo.setKeyword(rs.getString("keyword"));
         vo.setContent(rs.getString("content"));
-        String createtime = rs.getTimestamp("createtime").toString();
-        createtime = StringUtil.formatToDateTime(createtime);
+        String createtime=rs.getTimestamp("createtime").toString();
+        createtime= StringUtil.formatToDateTime(createtime);
         vo.setCreateTime(createtime);
         vo.setUpdateTime(rs.getTimestamp("updatetime").toString());
         return vo;

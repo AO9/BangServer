@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gto.bang.dao.ArticleMapper">
+    <resultMap id="BaseResultMap" type="com.gto.bang.model.Article">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="authorid" jdbcType="INTEGER" property="authorId"/>
+        <result column="createtime" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime"/>
+        <result column="keyword" jdbcType="VARCHAR" property="keyword"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="viewtimes" jdbcType="INTEGER" property="viewtimes"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="wechat" jdbcType="VARCHAR" property="wechat"/>
+        <result column="praise" jdbcType="INTEGER" property="praise"/>
+        <result column="price" jdbcType="INTEGER" property="price"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.gto.bang.model.ArticleWithBLOBs">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="answer" jdbcType="LONGVARCHAR" property="answer"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    article.id, type, title, authorid, article.createtime, updatetime, keyword, viewtimes, article.phone, article.wechat,
+    praise, price, status
+    </sql>
+
+    <sql id="Blob_Column_List">
+    content, answer
+    </sql>
+
+    <sql id="Base_Column_List_v2">
+        username
+    </sql>
+
+    <select id="selectByCondition" parameterType="com.gto.bang.model.ArticleWithBLOBs" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Base_Column_List_v2"/>,
+        <include refid="Blob_Column_List"/>
+        from article JOIN user on(article.authorid=user.id) and article.status = 1
+        <if test="type != null">
+            and type = #{type,jdbcType=INTEGER}
+        </if>
+        <if test="authorid != null">
+            and authorid = #{authorid,jdbcType=INTEGER}
+        </if>
+        <if test="typeList != null and typeList.size() > 0">
+            and type in
+            <foreach collection="typeList" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+        order by article.createtime desc
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from article
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.gto.bang.model.ArticleWithBLOBs">
+    insert into article (id, type, title, 
+      authorid, createtime, updatetime, 
+      keyword, viewtimes, phone, 
+      wechat, praise, price, 
+      status, content, answer
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, #{title,jdbcType=VARCHAR}, 
+      #{authorid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP},
+      #{keyword,jdbcType=VARCHAR}, #{viewtimes,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, 
+      #{wechat,jdbcType=VARCHAR}, #{praise,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{content,jdbcType=LONGVARCHAR}, #{answer,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.gto.bang.model.ArticleWithBLOBs">
+        insert into article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="authorid != null">
+                authorid,
+            </if>
+            <if test="createTime != null">
+                createtime,
+            </if>
+            <if test="updatetime != null">
+                updatetime,
+            </if>
+            <if test="keyword != null">
+                keyword,
+            </if>
+            <if test="viewtimes != null">
+                viewtimes,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="wechat != null">
+                wechat,
+            </if>
+            <if test="praise != null">
+                praise,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="answer != null">
+                answer,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="authorid != null">
+                #{authorid,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="keyword != null">
+                #{keyword,jdbcType=VARCHAR},
+            </if>
+            <if test="viewtimes != null">
+                #{viewtimes,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="wechat != null">
+                #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="praise != null">
+                #{praise,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="answer != null">
+                #{answer,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.gto.bang.model.ArticleWithBLOBs">
+        update article
+        <set>
+            <if test="type != null">
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="authorid != null">
+                authorid = #{authorid,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                createtime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="keyword != null">
+                keyword = #{keyword,jdbcType=VARCHAR},
+            </if>
+            <if test="viewtimes != null">
+                viewtimes = #{viewtimes,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="wechat != null">
+                wechat = #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="praise != null">
+                praise = #{praise,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="answer != null">
+                answer = #{answer,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.gto.bang.model.ArticleWithBLOBs">
+    update article
+    set type = #{type,jdbcType=TINYINT},
+      title = #{title,jdbcType=VARCHAR},
+      authorid = #{authorid,jdbcType=INTEGER},
+      createtime = #{createTime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      viewtimes = #{viewtimes,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      praise = #{praise,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT},
+      content = #{content,jdbcType=LONGVARCHAR},
+      answer = #{answer,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.gto.bang.model.Article">
+    update article
+    set type = #{type,jdbcType=TINYINT},
+      title = #{title,jdbcType=VARCHAR},
+      authorid = #{authorid,jdbcType=INTEGER},
+      createtime = #{createTime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      viewtimes = #{viewtimes,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      praise = #{praise,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <update id="updateViewTimes" parameterType="java.lang.Integer">
+        update article
+        set viewtimes = viewtimes+1
+        where id = #{artId,jdbcType=INTEGER}
+    </update>
+
+</mapper>

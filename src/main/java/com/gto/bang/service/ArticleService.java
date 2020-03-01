@@ -1,6 +1,8 @@
 package com.gto.bang.service;
 
-import com.gto.bang.vo.ArticleVO;
+import com.github.pagehelper.PageInfo;
+import com.gto.bang.model.Article;
+import com.gto.bang.model.ArticleWithBLOBs;
 
 import java.util.List;
 
@@ -8,11 +10,20 @@ import java.util.List;
  * Created by shenjialong on 16/7/03.
  */
 public interface ArticleService {
-    Boolean createNewArticle(ArticleVO articleVO);
-	ArticleVO getArticleDetail(Integer id);
-	List<ArticleVO> getArticleList(Integer startId,Integer type);
-	List<ArticleVO> getArticleListByUserid(Integer authorId, Integer startId,Integer type);
-	List<Integer> getArticleIdList(Integer authorId);
+
+
+    void updateViewTimes(Article articleVO);
+
+    void createNewArticle(ArticleWithBLOBs articleVO);
+
+    ArticleWithBLOBs getArticle(Integer id);
+
+    PageInfo<Article> getArticleList(Integer type, PageInfo<Article> page);
+
+    List<Article> getArticleListByUserid(Integer authorId, Integer startId, Integer type);
+
+    List<Integer> getArticleIdList(Integer authorId, String type);
+
 }
 
 

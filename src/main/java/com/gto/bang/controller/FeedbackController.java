@@ -1,17 +1,19 @@
 package com.gto.bang.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.gto.bang.common.constant.Constant;
-import com.gto.bang.common.net.Response;
+import com.gto.bang.model.Feedback;
 import com.gto.bang.service.FeedbackService;
-import com.gto.bang.vo.FeedbackVO;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by shenjialong on 16/8/10
@@ -20,41 +22,26 @@ import java.io.IOException;
 @Controller
 public class FeedbackController extends BaseController {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
     @Autowired
     FeedbackService service;
 
     /**
-     * 反馈功能的后台接口
-     * @param request
-     * @param response
+     * @param param
+     * @return
      * @throws IOException
      */
     @RequestMapping(value = "/fCreate.ajax")
     @ResponseBody
-    public void create( HttpServletRequest request, HttpServletResponse response) throws IOException {
-        request.setCharacterEncoding("utf8");
-        FeedbackVO vo=new FeedbackVO();
+    public Map<String, Object> create(Feedback param) throws IOException {
+        LOGGER.info("pv|feedback|fCreate, param={}", JSON.toJSONString(param));
+        String[] params = new String[]{"userid", "content"};
 
-        response.setContentType("text/html;charset=utf-8");
-        Response<String> res=new Response<String>();
-        boolean result = false;
-
-        String [] params=new String[]{"userid","content"};
-
-        if(super.nonNullValidate(request,params)){
-
-            int userid=Integer.valueOf(request.getParameter("userid").toString());
-            vo.setUserId(userid);
-            vo.setContent(super.trancferChinnese(request,"content"));
-
-            result = service.createNewFeedback(vo);
-        }
-        if (!result) {
-            super.flushResponse4Error(response,res,Constant.SERVER_FAIL);
-            return;
-        }else{
-            res.setData(Constant.SUCCESS);
-            super.flushResponse(response,res);
+        if (param.getUserid() != null && StringUtils.isNotBlank(param.getContent())) {
+            service.createNewFeedback(param);
+            return supports(SUCCESS);
+        } else {
+            return fail(Constant.PARAM_ERROR);
         }
 
     }

@@ -1,25 +1,97 @@
 package com.gto.bang.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.gto.bang.common.constant.Constant;
-import com.gto.bang.common.json.JsonUtil;
 import com.gto.bang.common.net.Response;
 import com.gto.bang.common.string.StringUtil;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by shenjialong on 16/6/19.
  */
-public abstract class BaseController {
+public class BaseController {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
+
+    @Value("${blackList.userIds}")
+    String blackList;
+
+    @Value("${invalidAndroidIds}")
+    String invalidAndroidIds;
+
+    public static final String SUCCESS="success";
+
+
+    public boolean isInvalidUser(String androidId) {
+
+        LOGGER.info("黑名单用户 invalidAndroidIds={},校验value={}", invalidAndroidIds, androidId);
+        if (StringUtils.isEmpty(invalidAndroidIds)) {
+            return false;
+        }
+
+        String[] values = invalidAndroidIds.split(",");
+        List<String> list = Arrays.asList(values);
+
+        if (list.contains(androidId)) {
+            LOGGER.info("黑名单用户 androidId={}", androidId);
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public boolean checkBlackList(String value) {
+
+        LOGGER.info("黑名单列表 blackList={},校验value={}", blackList, value);
+        if (StringUtils.isEmpty(blackList)) {
+            return false;
+        }
+
+        String[] values = blackList.split(",");
+        List<String> list = Arrays.asList(values);
+
+        if (list.contains(value)) {
+            LOGGER.info("被黑名单过滤 value={}", value);
+            return true;
+        }
+
+        return false;
+    }
+
+    public Map<String, Object> supports(Object data) {
+        HashMap map = new HashMap();
+        map.put("status", Integer.valueOf(Constant.SUCCESS_STATUS));
+        map.put("data", data);
+        return map;
+    }
+
+    public Map<String, Object> fail(Object data) {
+        HashMap map = new HashMap();
+        map.put("status", Integer.valueOf(Constant.ERROR_STATUS));
+        map.put("data", data);
+        return map;
+    }
+
+
     // 输出结果
     public void flushResponse4Error(HttpServletResponse response, Response res,String errorMessage) throws IOException {
         res.setStatus(Constant.ERROR_STATUS);
         res.setData(errorMessage);
         PrintWriter writer = response.getWriter();
-        writer.println(JsonUtil.obj2Str(res));
+        writer.println(JSON.toJSONString(res));
         writer.flush();
         writer.close();
     }
@@ -27,7 +99,7 @@ public abstract class BaseController {
     // 输出结果
     public void flushResponse(HttpServletResponse response, Object res) throws IOException {
         PrintWriter writer = response.getWriter();
-        writer.println(JsonUtil.obj2Str(res));
+        writer.println(JSON.toJSONString(res));
         writer.flush();
         writer.close();
     }

@@ -1,14 +1,22 @@
 package com.gto.bang.service.impl;
 
-import com.gto.bang.dao.CommentDao;
+
+import com.gto.bang.common.constant.Constant;
+import com.gto.bang.dao.ArticleMapper;
+import com.gto.bang.dao.CommentMapper;
+import com.gto.bang.model.Comment;
 import com.gto.bang.service.ArticleService;
 import com.gto.bang.service.CommentService;
-import com.gto.bang.vo.CommentVO;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,56 +25,71 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    public  static Logger LOGGER = LoggerFactory.getLogger(CommentServiceImpl.class);
+    public static Logger LOGGER = LoggerFactory.getLogger(CommentServiceImpl.class);
 
     @Autowired
-    private CommentDao commentDao;
+    CommentMapper commentMapper;
+    @Autowired
+    ArticleMapper articleMapper;
 
     @Autowired
     ArticleService articleService;
 
     @Override
-    public boolean createNewComment(CommentVO vo) {
-        return commentDao.createNewComment(vo);
+    public void createNewComment(Comment vo) {
+        commentMapper.insertSelective(vo);
     }
 
     @Override
-    public List<CommentVO> getCommentList(Integer type, Integer artId, Integer startId) {
-        return commentDao.getCommentList(type,artId,startId);
+    public List<Comment> getCommentList(Integer type, Integer artId, Integer startId) {
+        Comment condition = new Comment();
+        condition.setType(type.byteValue());
+        condition.setArtId(artId);
+        return commentMapper.selectByCondition(condition);
     }
 
 
     /**
      * 根据文章IDS来获取评论列表,一次最多获取最新的20条
+     *
      * @param authorId
      * @param startId
      * @return
      */
     @Override
-    public List<CommentVO> getCommentsByAuthorId(Integer authorId, Integer startId,String status) {
-        List<Integer> list=articleService.getArticleIdList(authorId);
+    public List<Comment> getCommentsByAuthorId(Integer authorId, Integer startId, Integer status, String type) {
 
-        StringBuffer sb=new StringBuffer();
-
-        if(list.size()>0){
-            for(int i=0;i<list.size();i++){
-                if(i==0){
-                    sb.append(""+list.get(i));
-                }else{
-                    sb.append(","+list.get(i));
-                }
-            }
-        }else{
-            return null;
+        List<Integer> list = articleService.getArticleIdList(authorId, type);
+        String articleIds = null;
+        List<Comment> res = new ArrayList<Comment>();
+        if (!CollectionUtils.isEmpty(list)) {
+            articleIds = StringUtils.join(list, Constant.SEPRATOR);
+        } else {
+            return res;
         }
-        LOGGER.info("[getCommentsByAuthorId] authorId:{},list<integer>:{}",
-                authorId,sb.toString());
-        return commentDao.getCommentListByArtIds(sb.toString(),startId,status);
+        res = commentMapper.selectByArtIds(articleIds, status);
+
+        return res;
     }
 
     @Override
-    public Boolean udpateStatus(String ids) {
-        return commentDao.updateStatus(ids);
+    public void udpateStatus(String ids) {
+
+        String[] temp = StringUtils.split(ids);
+        List<String> idList = Arrays.asList(temp);
+        Integer[] intArr = (Integer[]) ConvertUtils.convert(idList, Integer[].class);
+        for (int i = 0; i < intArr.length; i++) {
+            Integer id = intArr[i];
+            Comment values = new Comment();
+            values.setId(id);
+            values.setStatus(Constant.READEN_STATUS);
+            commentMapper.updateByPrimaryKey(values);
+        }
+    }
+
+    @Override
+    public int numOfUnreadComments(Integer authorId) {
+        return commentMapper.numOfUnreadComments(authorId);
     }
 
 

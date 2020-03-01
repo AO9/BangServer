@@ -1,0 +1,87 @@
+server:
+  port: 8080
+  context-path: /bangbang
+
+spring:
+  application:
+    name: bangbang
+  jmx:
+    default-domain: bangbang
+  profiles:
+    active: dev
+  http:
+    encoding:
+      enabled: true
+      charset: UTF-8
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 10MB
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    tomcat:
+      max-active: 200
+      initial-size: 10
+      jmx-enabled: true
+      test-on-borrow: true
+      test-on-return: true
+      time-between-eviction-runs-millis: 30000
+      max-wait: 10000
+      min-evictable-idle-time-millis: 30000
+      min-idle: 3
+      log-abandoned: false
+      remove-abandoned: true
+      remove-abandoned-timeout: 6000
+
+mybatis:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  config-location: classpath:mybatis-setting.xml
+
+blackList:
+  userIds: 404,11969,15670,15667,9765,10114,6410,6261,11020,10654,2798
+  imeis:
+
+invalidAndroidIds: 4040404
+
+http:
+  connectTimeout: 10000
+  readTimeout: 20000
+  retry: 3
+
+
+notice:
+  title: '新版本发布通知 2020年02月24'
+  content: '版本更新
+
+         论文帮3.0.3版本2月21日已上线
+
+         1.新增论文咨询功能
+
+         2.修复长文显示不全问题
+
+         3.列表支持下拉刷新功能
+
+
+         疫情期间,祝大家身体健康,家庭健康.'
+
+
+statement: '[用户协议和隐私政策]本软件尊重并保护所有使用服务用户的个人隐私权。为了给您提供更准确、更有个性化的服务，本软件会按照本隐私权政策的规定使用和披露您的个人信息。但本软件将以高度的勤勉、审慎义务对待这些信息。除本隐私权政策另有规定外，在未征得您事先许可的情况下，本软件不会将这些信息对外披露或向第三方提供。本软件会不时更新本隐私权政策。您在同意本软件服务使用协议之时，即视为您已经同意本隐私权政策全部内容。本隐私权政策属于本软件服务使用协议不可分割的一部分。
+
+           1.信息的使用
+
+           a)在获得您的数据之后，本软件会将其保存至服务器，数据仅供网站内部使用。
+
+           2.信息披露
+
+           a)本软件不会将您的信息披露给不受信任的第三方。
+
+           b)根据法律的有关规定，或者行政或司法机构的要求，向第三方或者行政、司法机构披露；
+
+           c)如您出现违反中国有关法律、法规或者相关规则的情况，需要向第三方披露；
+
+           3.信息存储和交换
+
+           本软件收集的有关您的信息和资料将保存在本软件及（或）其关联的服务器上，这些信息和资料可能传送至您所在国家、地区或本软件收集信息和资料所在地的境外并在境外被访问、存储和展示。
+
+           4.信息安全
+
+           a)在使用本软件的过程中，您不可不免的要进行账户登录注册，注册过程为验证合法真实用户，不可避免填写一些个人基本信息。请您妥善保护自己的个人信息，仅在必要的情形下向他人提供。如您发现自己的个人信息泄密，请您立即联络本软件客服，以便本软件采取相应措施。'

@@ -18,6 +18,21 @@ public class StringUtil {
     public static final String SIM_DATE = "yyyy-MM-dd";
     private static final Logger logger = Logger.getLogger(StringUtil.class);
 
+
+    /**
+     * 是否非负整数
+     * @param str
+     * @return
+     */
+    public static boolean isInteger(String str){
+
+        if(null==str){
+            return false;
+        }
+        return str.matches("[0-9]+");
+
+    }
+
     public static Date formatDate(String dateStr, String format)
     {
         try {
@@ -37,7 +52,9 @@ public class StringUtil {
     public static String formatToDateTime(String datetime)
     {
         int index=datetime.indexOf(".");
-        datetime=datetime.substring(0,index);
+        if(index>0){
+            datetime=datetime.substring(0,index);
+        }
         return datetime;
     }
 

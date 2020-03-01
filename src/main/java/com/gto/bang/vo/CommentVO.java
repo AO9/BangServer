@@ -20,7 +20,7 @@ public class CommentVO  implements RowMapper<CommentVO>, Serializable {
     int actId;
     String content;
     String createtime;
-    int statuts;
+    int status;
     String artTitle;
 
     public int getId() {
@@ -92,12 +92,12 @@ public class CommentVO  implements RowMapper<CommentVO>, Serializable {
         this.createtime = createtime;
     }
 
-    public int getStatuts() {
-        return statuts;
+    public int getStatus() {
+        return status;
     }
 
-    public void setStatuts(int statuts) {
-        this.statuts = statuts;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getArtTitle() {

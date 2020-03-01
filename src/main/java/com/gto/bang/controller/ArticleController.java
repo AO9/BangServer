@@ -1,9 +1,16 @@
 package com.gto.bang.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
 import com.gto.bang.common.constant.Constant;
 import com.gto.bang.common.net.Response;
+import com.gto.bang.model.Article;
+import com.gto.bang.model.ArticleWithBLOBs;
 import com.gto.bang.service.ArticleService;
-import com.gto.bang.vo.ArticleVO;
+import com.gto.bang.util.PageInfoUtil;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,126 +21,241 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 文章(经验|问答控制器)
  * Created by shenjialong on 16/6/21.
+ * 2020年 2月1日重构
  */
 @Controller
 public class ArticleController extends BaseController {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
     @Autowired
-	ArticleService articleService;
+    ArticleService articleService;
+//    @Value("${blackList.userIds}")
+//    String blackList;
 
-	/**
-	 * 获取文章列表数据 type来区分经验列表或问答列表
-	 * @param request
-	 * @param response
-	 * @throws IOException
-     */
-    @RequestMapping(value = "/getArticleList.ajax", method = RequestMethod.GET)
+//    public boolean checkBlackList(String value) {
+//
+//        LOGGER.info("黑名单列表 blackList={},校验value={}", blackList, value);
+//        if (StringUtils.isEmpty(blackList)) {
+//            return false;
+//        }
+//
+//        String[] values = blackList.split(",");
+//        List<String> list = Arrays.asList(values);
+//
+//        if (list.contains(value)) {
+//            LOGGER.info("被黑名单过滤 value={}", value);
+//            return true;
+//        }
+//
+//        return false;
+//    }
+
+
+    @RequestMapping(value = "/v1/article/list", method = RequestMethod.GET)
     @ResponseBody
-    public void getArticleList(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Response<List<ArticleVO>> res = new Response<List<ArticleVO>>();
-        response.setContentType("text/html;charset=utf-8");
-		Object startIdObj = request.getParameter("startid");
-		Object typeObj = request.getParameter("type");
-		if (null ==startIdObj || null==typeObj) {
-			super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
-			return;
-		} else {
-			Integer startId = Integer.valueOf(startIdObj.toString());
-			Integer type = Integer.valueOf(typeObj.toString());
-			List<ArticleVO> vos = articleService.getArticleList(startId,type);
-			res.setData(vos);
-		}
-		super.flushResponse(response, res);
+    public Map<String, Object> getArticleListV1(Integer type, PageInfo<Article> page) throws IOException {
+
+        LOGGER.info("pv|getArticleList .... type={},pageNum={}", type, page.getPageNum());
+        PageInfoUtil.setDefaultValue(page);
+        if (type == null) {
+            return fail(Constant.PARAM_ERROR);
+        } else {
+            PageInfo<Article> list = articleService.getArticleList(type, page);
+            //端上未兼容,暂时以这种形式返回
+            return supports(list);
+        }
+
     }
 
+    /**
+     * 获取文章列表数据 type来区分经验列表或问答列表
+     *
+     * @param type
+     * @param page
+     * @return
+     * @throws IOException
+     */
+
+    @RequestMapping(value = "/getArticleList.ajax", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getArticleList(Integer type, PageInfo<Article> page) throws IOException {
+
+        LOGGER.info("pv|getArticleList .... type={},pageNum={}", type, page.getPageNum());
+        PageInfoUtil.setDefaultValue(page);
+        if (type == null) {
+            return fail(Constant.PARAM_ERROR);
+        } else {
+            PageInfo<Article> list = articleService.getArticleList(type, page);
+            //端上未兼容,暂时以这种形式返回
+            return supports(list.getList());
+        }
+    }
 
     @RequestMapping(value = "/getArticleDetail.ajax", method = RequestMethod.GET)
     @ResponseBody
     public void getArticleDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Response<ArticleVO> res = new Response<ArticleVO>();
+        LOGGER.info("pv|getArticleDetail ....");
+        Response<Article> res = new Response<Article>();
         response.setContentType("text/html;charset=utf-8");
-        Object id=request.getParameter("id");
-		if (null == id) {
-			super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
-			return;
-		} else {
-			Integer i = Integer.valueOf(id.toString());
-			ArticleVO articleVO = articleService.getArticleDetail(i);
-			res.setData(articleVO);
+        Object id = request.getParameter("id");
+        if (null == id) {
+            super.flushResponse4Error(response, res, Constant.PARAM_ERROR);
+            return;
+        } else {
+            Integer i = Integer.valueOf(id.toString());
+            Article article = articleService.getArticle(i);
+            //阅读数+1
+            articleService.updateViewTimes(article);
+            res.setData(article);
         }
-		super.flushResponse(response, res);
+        super.flushResponse(response, res);
     }
-
 
     @RequestMapping(value = "/create.ajax")
     @ResponseBody
-    public void create( HttpServletRequest request, HttpServletResponse response) throws IOException {
-		request.setCharacterEncoding("utf8");
-		ArticleVO articleVO=new ArticleVO();
+    public void create(ArticleWithBLOBs param, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LOGGER.info("pv|createArticle ....param={}", JSON.toJSONString(param));
+        request.setCharacterEncoding("utf8");
+        response.setContentType("text/html;charset=utf-8");
+        Response<String> res = new Response<String>();
+        boolean result = false;
+        Byte type = param.getType();
 
-		response.setContentType("text/html;charset=utf-8");
-        Response<String> res=new Response<String>();
-		boolean result = false;
+        // 黑名单校验
+        if (checkBlackList(String.valueOf(param.getAuthorid()))) {
+            LOGGER.info("article|create|forbidden ....userId={}", param.getAuthorid());
+            super.flushResponse4Error(response, res, Constant.FORBIDDEN);
+            return;
+        }
 
-        String [] params=new String[]{"title","authorid","content","type"};
+        //兼容端上的老版本
+        param.setAuthorId(param.getAuthorid());
 
-        if(super.nonNullValidate(request,params)){
+        if (null != type) {
+            if (Constant.ART_COMPLAINT == type) {
+                if (param.getAuthorid() != null && StringUtils.isNotBlank(param.getContent())) {
+                    param.setTitle("");
+                    articleService.createNewArticle(param);
+                    result = true;
+                }
+            } else if (Constant.ART_EXPERIENCE == type) {
+                if (param.getAuthorid() != null && StringUtils.isNotBlank(param.getContent()) && StringUtils.isNotBlank(param.getTitle())) {
+                    articleService.createNewArticle(param);
+                    result = true;
+                }
+            } else if (Constant.ART_QUESTION == type) {
+                if (param.getPrice() != null && param.getAuthorid() != null && StringUtils.isNotBlank(param.getContent())) {
+                    param.setTitle("空");
+                    // 为兼容 v2/article/create接口, 如果发现问答中的price大于0,自动转换成 红包问答类型
+                    int priceForInt = param.getPrice();
+                    if (priceForInt > 0) {
+                        param.setType((byte) Constant.ART_SUPPORT);
+                    }
+                    articleService.createNewArticle(param);
+                    result = true;
+                }
+            }
+        }
 
-			int type=Integer.valueOf(request.getParameter("type").toString());
-			articleVO.setType(type);
-			articleVO.setTitle(super.trancferChinnese(request,"title"));
-			articleVO.setAuthorId(Integer.valueOf(request.getParameter("authorid").toString()));
-			articleVO.setContent(super.trancferChinnese(request,"content"));
-			System.out.println("article create.ajax type:"+type);
-			// 问答有关键字字段
-			if(Constant.ART_EXPERIENCE==type){
-				Object keywordObj=request.getParameter("keyword");
-				if(null==keywordObj){
-					super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
-					return;
-				}
-				articleVO.setKeyword(super.trancferChinnese(request,"keyword"));
-			}
-
-			result = articleService.createNewArticle(articleVO);
-		}
-		if (!result) {
-			super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
-			return;
-        }else{
-			res.setData(Constant.SUCCESS);
-			super.flushResponse(response,res);
-		}
+        if (!result) {
+            super.flushResponse4Error(response, res, Constant.PARAM_ERROR);
+            return;
+        } else {
+            res.setData(Constant.SUCCESS);
+            super.flushResponse(response, res);
+        }
 
     }
 
-	/**
-	 * 我的(经验\问答)列表
-	 * @param request
-	 * @param response
-	 * @throws IOException
+    /**
+     * 2019年06月02日, APP客户端2.9.6版本以后,用这个接口创建 经验\问答\吐槽
+     *
+     * @param request
+     * @param response
+     * @throws IOException
      */
-	@RequestMapping(value = "/getMyArticleList.ajax")
-	@ResponseBody
-	public void getMyArticleList( HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Response<List<ArticleVO>> res = new Response<List<ArticleVO>>();
-		response.setContentType("text/html;charset=utf-8");
-		if (null == request.getParameter("startid")||null==request.getParameter("authorid")||null == request.getParameter("type")) {
-			super.flushResponse4Error(response,res,Constant.PARAM_ERROR);
-			return;
-		} else {
-			Integer startid = Integer.valueOf(request.getParameter("startid").toString());
-			Integer authorid = Integer.valueOf(request.getParameter("authorid").toString());
-			Integer type = Integer.valueOf(request.getParameter("type").toString());
-			List<ArticleVO> list = articleService.getArticleListByUserid(authorid,startid,type);
-			res.setData(list);
-		}
-		super.flushResponse(response, res);
-	}
+    @RequestMapping(value = "v2/article/create")
+    @ResponseBody
+    public void createArticle(ArticleWithBLOBs articleVO, String authorid, String content, Integer type, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        LOGGER.info("pv|v2|article|create ....authorid={},content={},type={}, params={}", authorid, content, type, JSON.toJSONString(articleVO));
+        request.setCharacterEncoding("utf8");
+        response.setContentType("text/html;charset=utf-8");
+        Response<String> res = new Response<String>();
+        boolean result = false;
+        // 黑名单校验
+        if (checkBlackList(authorid)) {
+            LOGGER.info("v2|article|create|forbidden ....userId={}", authorid);
+            super.flushResponse4Error(response, res, Constant.FORBIDDEN);
+            return;
+        }
+
+        if (articleVO.getAuthorid() == null || StringUtils.isBlank(articleVO.getContent())) {
+            super.flushResponse4Error(response, res, Constant.PARAM_ERROR);
+            return;
+        }
+        switch (articleVO.getType()) {
+            case Constant.ART_COMPLAINT:
+                articleVO.setTitle("");
+                articleService.createNewArticle(articleVO);
+                result = true;
+                break;
+            case Constant.ART_EXPERIENCE:
+                if (StringUtils.isNotBlank(articleVO.getTitle())) {
+                    articleService.createNewArticle(articleVO);
+                    result = true;
+                }
+                break;
+
+            case Constant.ART_QUESTION:
+                articleVO.setTitle("空");
+                articleService.createNewArticle(articleVO);
+                result = true;
+                break;
+            case Constant.ART_SUPPORT:
+                if (articleVO.getPrice() != null) {
+                    articleVO.setTitle("空");
+                    articleService.createNewArticle(articleVO);
+                    result = true;
+                }
+                break;
+            default:
+                break;
+        }
+        if (!result) {
+            super.flushResponse4Error(response, res, Constant.PARAM_ERROR);
+            return;
+        } else {
+            res.setData(Constant.SUCCESS);
+            super.flushResponse(response, res);
+        }
+
+    }
+
+
+    /**
+     * 我的(经验\问答)列表
+     *
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping(value = "/getMyArticleList.ajax")
+    @ResponseBody
+    public void getMyArticleList(Integer startid, Integer authorid, Integer type, HttpServletResponse response) throws IOException {
+        Response<List<Article>> res = new Response<List<Article>>();
+        if (null == startid || null == authorid || null == type) {
+            super.flushResponse4Error(response, res, Constant.PARAM_ERROR);
+            return;
+        } else {
+            List<Article> list = articleService.getArticleListByUserid(authorid, startid, type);
+            res.setData(list);
+        }
+        super.flushResponse(response, res);
+    }
 
 }

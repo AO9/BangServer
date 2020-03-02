@@ -9,6 +9,16 @@ public class Message {
 
     private String msginfo;
 
+    private String msgInfo;
+
+    public String getMsgInfo() {
+        return msgInfo;
+    }
+
+    public void setMsgInfo(String msgInfo) {
+        this.msgInfo = msgInfo;
+    }
+
     private Date createtime;
 
     private Byte status;

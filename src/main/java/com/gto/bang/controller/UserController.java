@@ -130,6 +130,9 @@ public class UserController extends BaseController {
         user.setInfo(statement);
         res.setData(user);
         LOGGER.info("login param,userIno={}", JSON.toJSONString(user));
+
+        user.setAndroidId(userInfo.getAndroidId());
+        userService.update(user);
         userService.updateLoginTime(user.getId());
         super.flushResponse(response, res);
     }
@@ -309,6 +312,8 @@ public class UserController extends BaseController {
         if (user != null) {
             userService.updateLoginTime(user.getId());
             user.setInfo(statement);
+            user.setAndroidId(userInfo.getAndroidId());
+            userService.update(user);
             return supports(user);
         }
         return super.fail(Constant.LOGIN_INFO_ERROR);

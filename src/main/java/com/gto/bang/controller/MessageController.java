@@ -66,8 +66,14 @@ public class MessageController extends BaseController {
         } else {
             try {
                 Integer userId = Integer.valueOf(request.getParameter("userId").toString());
-                List<Message> vo = messageService.getSystemMessage(userId, 0);
-                res.setData(vo);
+                List<Message> list = messageService.getSystemMessage(userId, 0);
+                for (int i = 0; i < list.size(); i++) {
+                    Message tem=list.get(i);
+                    //兼容3.1.2版本APP的端上使用问题
+                    tem.setMsgInfo(tem.getMsginfo());
+                }
+
+                res.setData(list);
                 super.flushResponse(response, res);
             } catch (NumberFormatException e) {
                 super.flushResponse4Error(response, res, Constant.PARAM_FORMAT_ERROR);

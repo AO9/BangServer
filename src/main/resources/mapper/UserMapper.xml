@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.gto.bang.model.User">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="username" jdbcType="VARCHAR" property="userName" />
+    <result column="androidId" jdbcType="VARCHAR" property="androidId" />
     <result column="imei" jdbcType="VARCHAR" property="imei" />
     <result column="wechat" jdbcType="VARCHAR" property="wechat" />
     <result column="password" jdbcType="VARCHAR" property="password" />
@@ -71,13 +72,13 @@
       phone, email, city, createtime, 
       education, school, signature, 
       gender, level, academy, 
-      vip, grade, lastLoginTime
+      vip, grade, lastLoginTime,androidId
       )
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{city,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP},
       #{education,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, 
       #{gender,jdbcType=TINYINT}, #{level,jdbcType=VARCHAR}, #{academy,jdbcType=VARCHAR}, 
-      #{vip,jdbcType=TINYINT}, #{grade,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP}
+      #{vip,jdbcType=TINYINT}, #{grade,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{androidId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.gto.bang.model.User" useGeneratedKeys="true"  keyProperty="id">
@@ -97,6 +98,9 @@
       </if>
       <if test="password != null">
         password,
+      </if>
+      <if test="androidId != null">
+        androidId,
       </if>
       <if test="phone != null">
         phone,
@@ -184,6 +188,9 @@
       <if test="academy != null">
         #{academy,jdbcType=VARCHAR},
       </if>
+      <if test="androidId != null">
+        #{androidId,jdbcType=VARCHAR},
+      </if>
       <if test="vip != null">
         #{vip,jdbcType=TINYINT},
       </if>
@@ -240,6 +247,9 @@
       <if test="academy != null">
         academy = #{academy,jdbcType=VARCHAR},
       </if>
+      <if test="androidId != null">
+        androidId = #{androidId,jdbcType=VARCHAR},
+      </if>
       <if test="vip != null">
         vip = #{vip,jdbcType=TINYINT},
       </if>
@@ -255,6 +265,7 @@
   <update id="updateByPrimaryKey" parameterType="com.gto.bang.model.User">
     update user
     set username = #{userName,jdbcType=VARCHAR},
+       androidId = #{androidId,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},

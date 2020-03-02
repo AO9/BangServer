@@ -56,17 +56,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) {
-        LOGGER.info("register|service begin .... userVo={}", JSON.toJSONString(user));
+        LOGGER.info("user|service|register, begin .... userVo={}", JSON.toJSONString(user));
         user.setCreateTime(new Date());
         user.setLastLoginTime(new Date());
         int result = userMapper.insertSelective(user);
-        LOGGER.info("register|service end result={},userVo={}", result, JSON.toJSONString(user));
+        LOGGER.info("user|service|register,  end result={},userVo={}", result, JSON.toJSONString(user));
     }
 
+    @Override
     public void update(User user) {
-        LOGGER.info("register|service|updateUser begin .... userInfo={}", JSON.toJSONString(user));
+        LOGGER.info("user|service|update begin .... userInfo={}", JSON.toJSONString(user));
         int result = userMapper.updateByPrimaryKeySelective(user);
-        LOGGER.info("register|service|updateUser end result={}", result);
+        LOGGER.info("user|service|update end result={}", result);
     }
 
     @Override

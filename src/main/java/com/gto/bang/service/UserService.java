@@ -13,6 +13,7 @@ public interface UserService {
     void updateLoginTime(int userId);
     User queryByUserNameAndPassword(String userName, String password);
     User updateUserInfo(int updateType, String content, int userId);
+    void update(User user);
     List<User> getUsers(int num);
 
 }

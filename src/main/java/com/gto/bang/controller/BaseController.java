@@ -34,6 +34,11 @@ public class BaseController {
     public static final String SUCCESS="success";
 
 
+    /**
+     * 是否是非法用户
+     * @param androidId
+     * @return
+     */
     public boolean isInvalidUser(String androidId) {
 
         LOGGER.info("黑名单用户 invalidAndroidIds={},校验value={}", invalidAndroidIds, androidId);

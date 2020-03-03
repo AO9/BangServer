@@ -43,7 +43,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getCommentList(Integer type, Integer artId, Integer startId) {
         Comment condition = new Comment();
-//        condition.setType(type.byteValue());
         condition.setArtId(artId);
         return commentMapper.selectByCondition(condition);
     }
@@ -98,5 +97,11 @@ public class CommentServiceImpl implements CommentService {
         commentMapper.updatePraise(id);
     }
 
+    @Override
+    public List<Comment> getCommentList(Integer artId) {
+        Comment condition = new Comment();
+        condition.setArtId(artId);
+        return commentMapper.selectByCondition(condition);
+    }
 
 }

@@ -208,6 +208,21 @@ public class CommentController extends BaseController {
         }
     }
 
+
+    @RequestMapping(value = "/v1/comment/list")
+    @ResponseBody
+    public Map<String, Object> getCommentList(Integer artId) throws IOException {
+
+        LOGGER.info("pv|comment|list artId={}", artId);
+        if (null == artId) {
+            return super.fail(Constant.PARAM_ERROR);
+        } else {
+            List<Comment> list = commentService.getCommentList(artId);
+            return super.supports(list);
+        }
+    }
+
+
 }
 
 

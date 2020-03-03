@@ -11,6 +11,13 @@ import java.util.List;
 public interface CommentService {
     void createNewComment(Comment vo);
 
+    /**
+     * 3.1.2以前
+     * @param type
+     * @param artId
+     * @param startId
+     * @return
+     */
     List<Comment> getCommentList(Integer type, Integer artId, Integer startId);
 
     List<Comment> getCommentsByAuthorId(Integer authorId, Integer startId, Integer status, String type);
@@ -20,5 +27,12 @@ public interface CommentService {
     int numOfUnreadComments(Integer authorId);
 
     void updatePraise(Integer id);
+
+    /**
+     * 3.1.3以后
+     * @param artId
+     * @return
+     */
+    List<Comment> getCommentList(Integer artId);
 
 }

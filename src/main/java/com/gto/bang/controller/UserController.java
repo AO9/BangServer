@@ -310,10 +310,10 @@ public class UserController extends BaseController {
 
         User user = userService.queryByUserNameAndPassword(userName, password);
         if (user != null) {
-            userService.updateLoginTime(user.getId());
             user.setInfo(statement);
             user.setAndroidId(userInfo.getAndroidId());
             userService.update(user);
+            userService.updateLoginTime(user.getId());
             return supports(user);
         }
         return super.fail(Constant.LOGIN_INFO_ERROR);

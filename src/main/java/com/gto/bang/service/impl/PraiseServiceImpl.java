@@ -7,10 +7,12 @@ import com.gto.bang.service.PraiseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by shenjialong on 20/3/3.
  */
+@Service
 public class PraiseServiceImpl implements PraiseService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(PraiseServiceImpl.class);

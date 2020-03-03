@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getCommentList(Integer type, Integer artId, Integer startId) {
         Comment condition = new Comment();
-        condition.setType(type.byteValue());
+//        condition.setType(type.byteValue());
         condition.setArtId(artId);
         return commentMapper.selectByCondition(condition);
     }
@@ -90,6 +90,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public int numOfUnreadComments(Integer authorId) {
         return commentMapper.numOfUnreadComments(authorId);
+    }
+
+    @Override
+    public void updatePraise(Integer id) {
+        LOGGER.info("comment|service|updatePraise,commentId is {}",id);
+        commentMapper.updatePraise(id);
     }
 
 

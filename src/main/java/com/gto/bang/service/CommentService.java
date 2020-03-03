@@ -19,4 +19,6 @@ public interface CommentService {
 
     int numOfUnreadComments(Integer authorId);
 
+    void updatePraise(Integer id);
+
 }

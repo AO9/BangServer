@@ -1,5 +1,7 @@
 package com.gto.bang.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 public class Feedback {
@@ -7,6 +9,7 @@ public class Feedback {
 
     private Integer userid;
 
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     private String content;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.com.bang.dao.PraiseMapper">
-  <resultMap id="BaseResultMap" type="cn.com.bang.model.Praise">
+<mapper namespace="com.gto.bang.dao.PraiseMapper">
+  <resultMap id="BaseResultMap" type="com.gto.bang.model.Praise">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="userName" jdbcType="VARCHAR" property="userName" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
@@ -22,7 +22,7 @@
     delete from praise
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.com.bang.model.Praise">
+  <insert id="insert" parameterType="com.gto.bang.model.Praise">
     insert into praise (id, userName, createTime, 
       userId, commentId, androidId
       )
@@ -30,7 +30,7 @@
       #{userId,jdbcType=INTEGER}, #{commentId,jdbcType=INTEGER}, #{androidId,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.com.bang.model.Praise">
+  <insert id="insertSelective" parameterType="com.gto.bang.model.Praise">
     insert into praise
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -71,9 +71,9 @@
       <if test="androidId != null">
         #{androidId,jdbcType=VARCHAR},
       </if>
-    </trim>
+    </trim> ON DUPLICATE KEY UPDATE createTime=now()
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.com.bang.model.Praise">
+  <update id="updateByPrimaryKeySelective" parameterType="com.gto.bang.model.Praise">
     update praise
     <set>
       <if test="userName != null">
@@ -94,7 +94,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.com.bang.model.Praise">
+  <update id="updateByPrimaryKey" parameterType="com.gto.bang.model.Praise">
     update praise
     set userName = #{userName,jdbcType=VARCHAR},
       createTime = #{createTime,jdbcType=TIMESTAMP},

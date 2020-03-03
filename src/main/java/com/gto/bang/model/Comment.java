@@ -1,5 +1,7 @@
 package com.gto.bang.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 public class Comment {
@@ -11,6 +13,7 @@ public class Comment {
 
     private String content;
 
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     private Integer artId;
@@ -18,6 +21,16 @@ public class Comment {
     private Byte type;
 
     private Integer status;
+
+    private Integer praise;
+
+    public Integer getPraise() {
+        return praise;
+    }
+
+    public void setPraise(Integer praise) {
+        this.praise = praise;
+    }
 
     private String arttitle;
 

@@ -1,5 +1,7 @@
 package com.gto.bang.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 public class Message {
@@ -19,6 +21,7 @@ public class Message {
         this.msgInfo = msgInfo;
     }
 
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     private Byte status;

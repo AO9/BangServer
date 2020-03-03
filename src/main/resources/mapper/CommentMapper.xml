@@ -10,10 +10,11 @@
     <result column="artid" jdbcType="INTEGER" property="artId" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="praise" jdbcType="INTEGER" property="praise" />
     <result column="arttitle" jdbcType="VARCHAR" property="arttitle" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, username, userid, content, createtime, artid, type, status, arttitle
+    id, username, userid, content, createtime, artid, type, status, arttitle,praise
   </sql>
 
   <select id="commentNumOfArticle" resultType="java.lang.Integer">
@@ -32,7 +33,14 @@
     select
     <include refid="Base_Column_List" />
     from comment
-    where type = #{type,jdbcType=INTEGER} and  artid= #{artId,jdbcType=INTEGER} and status=0 order by createtime desc
+    where status=0
+    <if test="type != null">
+      and type = #{type,jdbcType=INTEGER}
+    </if>
+    <if test="artId != null">
+      and artid = #{artId,jdbcType=INTEGER}
+    </if>
+    order by createtime desc
   </select>
 
   <select id="selectByArtIds" resultMap="BaseResultMap">
@@ -55,11 +63,11 @@
   <insert id="insert" parameterType="com.gto.bang.model.Comment">
     insert into comment (id, username, userid, 
       content, createtime, artid, 
-      type, status, arttitle
+      type, status, arttitle,praise
       )
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
       #{content,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{artId,jdbcType=INTEGER},
-      #{type,jdbcType=TINYINT}, #{status,jdbcType=INTEGER}, #{arttitle,jdbcType=VARCHAR}
+      #{type,jdbcType=TINYINT}, #{status,jdbcType=INTEGER}, #{arttitle,jdbcType=VARCHAR}, #{praise,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.gto.bang.model.Comment">
@@ -74,6 +82,10 @@
       <if test="userId != null">
         userid,
       </if>
+      <if test="praise != null">
+        praise,
+      </if>
+
       <if test="content != null">
         content,
       </if>
@@ -109,6 +121,11 @@
       <if test="createtime != null">
         #{createtime,jdbcType=TIMESTAMP},
       </if>
+
+      <if test="praise != null">
+        #{praise,jdbcType=INTEGER},
+      </if>
+
       <if test="artId != null">
         #{artId,jdbcType=INTEGER},
       </if>
@@ -150,6 +167,9 @@
       <if test="arttitle != null">
         arttitle = #{arttitle,jdbcType=VARCHAR},
       </if>
+      <if test="praise != null">
+        status = #{praise,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -160,9 +180,17 @@
       content = #{content,jdbcType=VARCHAR},
       createtime = #{createtime,jdbcType=TIMESTAMP},
       artid = #{artId,jdbcType=INTEGER},
+      praise = #{praise,jdbcType=INTEGER},
       type = #{type,jdbcType=TINYINT},
       status = #{status,jdbcType=INTEGER},
       arttitle = #{arttitle,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="updatePraise" parameterType="java.lang.Integer">
+    update comment
+    set praise = praise+1
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
 </mapper>

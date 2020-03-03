@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.gto.bang.common.constant.Constant;
 import com.gto.bang.model.Praise;
 import com.gto.bang.model.User;
+import com.gto.bang.service.CommentService;
 import com.gto.bang.service.PraiseService;
 import com.gto.bang.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -18,7 +19,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Created by shenjialong on 16/7/1.
+ * 问答评论区点赞功能
  */
 @Controller
 public class PraiseController extends BaseController {
@@ -29,6 +30,8 @@ public class PraiseController extends BaseController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    CommentService commentService;
 
     /**
      * @param praise
@@ -40,7 +43,7 @@ public class PraiseController extends BaseController {
     public Map<String, Object> create(Praise praise) throws IOException {
 
         LOGGER.info("v1|pv|praise|create, commentIds={}", JSON.toJSONString(praise));
-        if (StringUtils.isNotBlank(praise.getAndroidId()) || praise.getUserId() == null || praise.getCommentId() == null) {
+        if (StringUtils.isBlank(praise.getAndroidId()) || praise.getUserId() == null || praise.getCommentId() == null) {
             return fail(Constant.PARAM_ERROR);
         }
 
@@ -60,6 +63,7 @@ public class PraiseController extends BaseController {
         }
 
         praiseService.create(praise);
+        commentService.updatePraise(praise.getCommentId());
         return supports(SUCCESS);
     }
 

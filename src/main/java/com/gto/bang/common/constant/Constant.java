@@ -20,6 +20,7 @@ public abstract class Constant {
     public static final String SAVE_ERROR ="保存失败";
     public static final String LOGIN_INFO_ERROR ="账户名或者密码错误";
     public static final String USER_INFO_ERROR ="获取用户信息失败";
+    public static final String VALUE_EXCEPTION ="非法信息";
 
     public static final String SEPRATOR=",";
     public static final int ERROR_STATUS =0;

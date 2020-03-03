@@ -77,6 +77,15 @@ public class CommentController extends BaseController {
     }
 
 
+    /**
+     * 3.1.2之前的版本都用这个接口
+     *
+     * @param param
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/cCreate.ajax")
     @ResponseBody
     public Map<String, Object> createNewComment(Comment param, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -101,6 +110,38 @@ public class CommentController extends BaseController {
 
     }
 
+    /**
+     * 3.1.3之后的都用这个新接口
+     *
+     * @param param
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/v1/comment/create")
+    @ResponseBody
+    public Map<String, Object> crreate(Comment param, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        LOGGER.info("pv|createNewComment, param={}", JSON.toJSONString(param));
+
+        // 黑名单校验
+        if (checkBlackList(String.valueOf(param.getUserId()))) {
+            LOGGER.info("v1|comment|create|forbidden ....userId={}", param.getUserId());
+            return fail(Constant.FORBIDDEN);
+        }
+
+        // check param values
+        if (StringUtils.isBlank(param.getContent()) || StringUtils.isBlank(param.getUsername())
+                || param.getUserId() == null || param.getType() == null || param.getArtId() == null) {
+            return super.fail(Constant.PARAM_ERROR);
+        }
+
+        param.setArttitle("");
+        commentService.createNewComment(param);
+        return supports(SUCCESS);
+
+    }
 
     /**
      * 获取我的消息列表
@@ -139,6 +180,28 @@ public class CommentController extends BaseController {
         LOGGER.info("pv|updateStatus.ajax, commentIds={}", commentIds);
         if (StringUtils.isNotBlank(commentIds)) {
             commentService.udpateStatus(commentIds);
+            return supports(SUCCESS);
+        } else {
+            return fail(Constant.PARAM_ERROR);
+        }
+    }
+
+
+    /**
+     * 目的支持点赞的功能 3.1.3之后的APP新增该功能
+     *
+     * @param commentId
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/v1/comment/price")
+    @ResponseBody
+    public Map<String, Object> update(String commentId, String userId, String androidId) throws IOException {
+
+        LOGGER.info("pv|updateStatus.ajax, commentIds={}", commentId);
+        if (StringUtils.isNotBlank(commentId)) {
+
+
             return supports(SUCCESS);
         } else {
             return fail(Constant.PARAM_ERROR);

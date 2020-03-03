@@ -314,6 +314,8 @@ public class UserController extends BaseController {
             user.setAndroidId(userInfo.getAndroidId());
             userService.update(user);
             userService.updateLoginTime(user.getId());
+            //向下兼容
+            user.setUsername(user.getUserName());
             return supports(user);
         }
         return super.fail(Constant.LOGIN_INFO_ERROR);

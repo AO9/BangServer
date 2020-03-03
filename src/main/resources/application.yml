@@ -37,7 +37,7 @@ mybatis:
   config-location: classpath:mybatis-setting.xml
 
 blackList:
-  userIds: 404,11969,15670,15667,9765,10114,6410,6261,11020,10654,2798
+  userIds: 15781,404,11969,15670,15667,9765,10114,6410,6261,11020,10654,2798
   imeis:
 
 invalidAndroidIds: 4040404

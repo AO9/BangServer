@@ -20,23 +20,15 @@ import org.springframework.web.client.RestTemplate;
 public class PjBangbangApplication extends SpringBootServletInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PjBangbangApplication.class);
-
-    public static void main(String[] args) {
-
 //        handlerList();
 //        handlerDetail();
-
-
 //        handlerList("http://www.biyehome.net/list-18-2.html");
 //        handlerDetail();
-
-//// 临时注释
+    public static void main(String[] args) {
         LOGGER.info("项目启动 start  ........");
         SpringApplication.run(PjBangbangApplication.class, args);
         LOGGER.info("项目启动 end  ........");
-
     }
-
 
     public static int handlerList(String url) {
         RestTemplate restTemplate = new RestTemplate();

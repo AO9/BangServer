@@ -40,6 +40,8 @@ blackList:
   userIds: 15781,404,11969,15670,15667,9765,10114,6410,6261,11020,10654,2798
   imeis:
 
+tokens: sjl20200601,sjl
+
 invalidAndroidIds: cc24cbc49ce10a37
 
 http:

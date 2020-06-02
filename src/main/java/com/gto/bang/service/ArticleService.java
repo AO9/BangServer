@@ -16,6 +16,8 @@ public interface ArticleService {
 
     void createNewArticle(ArticleWithBLOBs articleVO);
 
+    void updateArticle(ArticleWithBLOBs articleVO);
+
     ArticleWithBLOBs getArticle(Integer id);
 
     PageInfo<Article> getArticleList(Integer type, PageInfo<Article> page);

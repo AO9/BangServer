@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -34,26 +36,70 @@ public class ArticleController extends BaseController {
     public static final Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
     @Autowired
     ArticleService articleService;
-//    @Value("${blackList.userIds}")
-//    String blackList;
+    @Value("${tokens}")
+    String tokens;
 
-//    public boolean checkBlackList(String value) {
-//
-//        LOGGER.info("黑名单列表 blackList={},校验value={}", blackList, value);
-//        if (StringUtils.isEmpty(blackList)) {
-//            return false;
-//        }
-//
-//        String[] values = blackList.split(",");
-//        List<String> list = Arrays.asList(values);
-//
-//        if (list.contains(value)) {
-//            LOGGER.info("被黑名单过滤 value={}", value);
-//            return true;
-//        }
-//
-//        return false;
-//    }
+    /**
+     * 20200529日 内容审核接口增加token校验功能
+     *
+     * @param token
+     * @return
+     */
+    public boolean checkToken(String token) {
+
+        LOGGER.info("tokens={},to be checked token={}", tokens, token);
+        if (StringUtils.isEmpty(tokens)) {
+            return false;
+        }
+
+        String[] values = tokens.split(",");
+        List<String> list = Arrays.asList(values);
+
+        if (list.contains(token)) {
+            LOGGER.info("包含 token={}", token);
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * 文章内容审核接口
+     * 新建的文章内容都默认是审核通过的
+     * 管理员不定期后台抽查，有不符合要求的，将审核状态置为不通过
+     *
+     * @param param
+     * @param token
+     * @return
+     * @throws IOException
+     * @date 20200529
+     */
+    @RequestMapping(value = "/v2/article/audit")
+    @ResponseBody
+    public Map<String, Object> update(ArticleWithBLOBs param, String token) throws IOException {
+        LOGGER.info("pv|article|audit ....param={},token={}", JSON.toJSONString(param), token);
+        boolean result = checkToken(token);
+        if (result) {
+            articleService.updateArticle(param);
+            return supports(Constant.SUCCESS);
+        }
+        return fail(Constant.FORBIDDEN_PERMISSION);
+    }
+
+    /**
+     * @param param
+     * @return
+     * @throws IOException
+     * @date 20200529 暂时没有功能使用
+     */
+    @RequestMapping(value = "/v2/article/update")
+    @ResponseBody
+    public Map<String, Object> update(ArticleWithBLOBs param) throws IOException {
+        LOGGER.info("pv|article|update ....param={}", JSON.toJSONString(param));
+        articleService.updateArticle(param);
+        return supports(Constant.SUCCESS);
+    }
 
 
     @RequestMapping(value = "/v1/article/list", method = RequestMethod.GET)

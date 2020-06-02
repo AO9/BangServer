@@ -49,10 +49,15 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public void updateArticle(ArticleWithBLOBs articleVO) {
+        articleMapper.updateByPrimaryKeySelective(articleVO);
+    }
+
+    @Override
     public ArticleWithBLOBs getArticle(Integer id) {
 
         ArticleWithBLOBs articleWithBLOBs = articleMapper.selectByPrimaryKey(id);
-        if (articleWithBLOBs!=null){
+        if (articleWithBLOBs != null) {
             User condition = new User();
             condition.setId(articleWithBLOBs.getAuthorId());
             User userInfo = userService.queryUser(condition);

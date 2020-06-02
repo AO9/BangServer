@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property resource="conf/application-${spring.profiles.active}.yml"/>
+<!--    <property resource="conf/application-${spring.profiles.active}.yml"/>-->
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -10,12 +10,12 @@
     </appender>
 
     <appender name="errorRollingAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logging.path}/bangbang.log</file>
+        <file>/data/bangbang-logs/bangbang.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logging.path}/bangbang.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>/data/bangbang-logs/bangbang.log.%d{yyyy-MM-dd}</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -26,9 +26,9 @@
     </appender>
 
     <appender name="debugRollingAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logging.path}/bangbang_debug.log</file>
+        <file>/data/bangbang-logs/bangbang_debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${logging.path}/bangbang_debug.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>/data/bangbang-logs/bangbang_debug.log.%d{yyyy-MM-dd}</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>

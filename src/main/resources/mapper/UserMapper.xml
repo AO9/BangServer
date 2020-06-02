@@ -158,6 +158,9 @@
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="androidId != null">
+        #{androidId,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
       </if>
@@ -187,9 +190,6 @@
       </if>
       <if test="academy != null">
         #{academy,jdbcType=VARCHAR},
-      </if>
-      <if test="androidId != null">
-        #{androidId,jdbcType=VARCHAR},
       </if>
       <if test="vip != null">
         #{vip,jdbcType=TINYINT},

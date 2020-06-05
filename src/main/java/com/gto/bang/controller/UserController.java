@@ -36,6 +36,40 @@ public class UserController extends BaseController {
     @Value("${statement}")
     String statement;
 
+    @Value("${tokens}")
+    String tokens;
+
+    /**
+     * @param userId
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/v1/user")
+    @ResponseBody
+    public Map<String, Object> login(Integer userId, String token) throws IOException {
+
+        LOGGER.info("pv|v1|user|view, userId={},token={},tokens={}", userId, token, tokens);
+        if (userId == null){
+            return fail(Constant.PARAM_ERROR);
+        }
+
+        User condition = new User();
+        condition.setId(userId);
+        User user = userService.queryUser(condition);
+        if (user != null) {
+            String wechat = user.getWechat();
+            String phone = user.getPhone();
+            encrypt(user);
+            // 后台运营人员使用，需要可见微信信息
+            if (tokens.contains(token)) {
+                user.setWechat(wechat);
+                user.setPhone(phone);
+            }
+        }
+        return supports(user);
+
+    }
+
     /**
      * 获取今天登录过的账号列表
      * 2020年2月1日,暂未启用,端上需要使用userName createTime 驼峰命名格式
@@ -59,8 +93,7 @@ public class UserController extends BaseController {
 
             for (int i = 0; i < vos.size(); i++) {
                 User user = vos.get(i);
-                user.setPhone("****");
-                user.setWechat("****");
+                encrypt(user);
             }
             res.setData(vos);
         }
@@ -199,8 +232,7 @@ public class UserController extends BaseController {
             condition.setId(Integer.valueOf(userId));
             User user = userService.queryUser(condition);
             if (user != null) {
-                user.setPassword(null);
-                user.setPhone("****");
+                encrypt(user);
                 res.setData(user);
                 super.flushResponse(response, res);
                 return;
@@ -319,6 +351,15 @@ public class UserController extends BaseController {
             return supports(user);
         }
         return super.fail(Constant.LOGIN_INFO_ERROR);
+    }
+
+
+    public void encrypt(User user) {
+        String secret = "****";
+        user.setPhone(secret);
+        user.setPassword(secret);
+        user.setAndroidId(secret);
+        user.setWechat(secret);
     }
 
 }

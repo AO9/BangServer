@@ -104,14 +104,14 @@ public class ArticleController extends BaseController {
 
     @RequestMapping(value = "/v1/article/list", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getArticleListV1(Integer type, PageInfo<Article> page) throws IOException {
+    public Map<String, Object> getArticleListV1(Integer type, PageInfo<Article> page, Integer articleType) throws IOException {
 
-        LOGGER.info("pv|getArticleList .... type={},pageNum={}", type, page.getPageNum());
+        LOGGER.info("pv|getArticleList .... type={}, pageNum={}, articleType={}", type, page.getPageNum(),articleType);
         PageInfoUtil.setDefaultValue(page);
         if (type == null) {
             return fail(Constant.PARAM_ERROR);
         } else {
-            PageInfo<Article> list = articleService.getArticleList(type, page);
+            PageInfo<Article> list = articleService.getArticleList(type, page,articleType);
             //端上未兼容,暂时以这种形式返回
             return supports(list);
         }
@@ -120,23 +120,22 @@ public class ArticleController extends BaseController {
 
     /**
      * 获取文章列表数据 type来区分经验列表或问答列表
-     *
+     * isHot
      * @param type
      * @param page
      * @return
      * @throws IOException
      */
-
     @RequestMapping(value = "/getArticleList.ajax", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getArticleList(Integer type, PageInfo<Article> page) throws IOException {
+    public Map<String, Object> getArticleList(Integer type, PageInfo<Article> page,Integer isHot) throws IOException {
 
         LOGGER.info("pv|getArticleList .... type={},pageNum={}", type, page.getPageNum());
         PageInfoUtil.setDefaultValue(page);
         if (type == null) {
             return fail(Constant.PARAM_ERROR);
         } else {
-            PageInfo<Article> list = articleService.getArticleList(type, page);
+            PageInfo<Article> list = articleService.getArticleList(type, page,isHot);
             //端上未兼容,暂时以这种形式返回
             return supports(list.getList());
         }

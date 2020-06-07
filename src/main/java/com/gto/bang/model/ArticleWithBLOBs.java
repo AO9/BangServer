@@ -5,6 +5,16 @@ public class ArticleWithBLOBs extends Article {
 
     private String answer;
 
+    private Integer  articleType;
+
+    public Integer getArticleType() {
+        return articleType;
+    }
+
+    public void setArticleType(Integer articleType) {
+        this.articleType = articleType;
+    }
+
     public String getContent() {
         return content;
     }

@@ -76,10 +76,19 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
 
+    /**
+     * 20200606 增加 articleType 字段，用于区分是否是热门文章
+     * @param type
+     * @param page
+     * @param articleType
+     * @return
+     */
     @Override
-    public PageInfo<Article> getArticleList(Integer type, PageInfo<Article> page) {
+    public PageInfo<Article> getArticleList(Integer type, PageInfo<Article> page, Integer articleType) {
         ArticleWithBLOBs condition = new ArticleWithBLOBs();
         condition.setType(type.byteValue());
+        // 是否筛选热门文章
+        condition.setArticleType(articleType);
         PageHelper.startPage(page.getPageNum(), page.getPageSize());
         List<Article> list = articleMapper.selectByCondition(condition);
         setUpCommentNum(list);

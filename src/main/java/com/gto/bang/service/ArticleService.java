@@ -20,7 +20,7 @@ public interface ArticleService {
 
     ArticleWithBLOBs getArticle(Integer id);
 
-    PageInfo<Article> getArticleList(Integer type, PageInfo<Article> page);
+    PageInfo<Article> getArticleList(Integer type, PageInfo<Article> page, Integer articleType);
 
     List<Article> getArticleListByUserid(Integer authorId, Integer startId, Integer type);
 

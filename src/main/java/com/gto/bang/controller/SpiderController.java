@@ -25,10 +25,12 @@ public class SpiderController extends BaseController {
     @Autowired
     ArticleService articleService;
 
-    @RequestMapping(value = "/spider.ajax")
+    @RequestMapping(value = "/spider/start")
     @ResponseBody
     public Map<String, Object> spider(String url) throws IOException {
+        LOGGER.info("pv|v1|spider|start ....url={}", url);
         int result = handlerList(url);
+        LOGGER.info("pv|v1|spider|end ....url={}", url);
         return super.supports(result);
 
     }

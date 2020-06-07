@@ -52,8 +52,11 @@
                 #{item}
             </foreach>
         </if>
-
-        order by article.createtime desc
+        order by
+        <if test="articleType == 1" >
+            article.viewtimes desc,
+        </if>
+        article.createtime desc
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">

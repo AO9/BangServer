@@ -44,7 +44,7 @@ public class UserController extends BaseController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/v1/user")
+    @RequestMapping(value = "/v1/user/view")
     @ResponseBody
     public Map<String, Object> login(Integer userId, String token) throws IOException {
 

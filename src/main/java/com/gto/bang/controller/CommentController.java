@@ -1,12 +1,14 @@
 package com.gto.bang.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
 import com.gto.bang.common.constant.Constant;
 import com.gto.bang.common.net.Response;
 import com.gto.bang.model.Comment;
 import com.gto.bang.model.Message;
 import com.gto.bang.service.CommentService;
 import com.gto.bang.service.MessageService;
+import com.gto.bang.util.PageInfoUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,48 @@ public class CommentController extends BaseController {
     CommentService commentService;
     @Autowired
     MessageService messageService;
+
+    /**
+     * 用于后台功能, 评论也支持后台审核
+     *
+     * @param token
+     * @return
+     * @throws IOException
+     * @date 20200614
+     */
+    @RequestMapping(value = "/v1/comment/update")
+    @ResponseBody
+    public Map<String, Object> update(String token, String commentIds) throws IOException {
+        LOGGER.info("pv|comment|audit ....commentIds={},token={}", commentIds, token);
+        if (checkToken(token)) {
+            commentService.udpateStatus(commentIds, Constant.DELETE_STATUS);
+            return supports(Constant.SUCCESS);
+        }
+        return fail(Constant.FORBIDDEN_PERMISSION);
+    }
+
+    /**
+     * @param condition
+     * @return
+     * @throws IOException
+     * @date 20200614改造, 同时支持后台与客户端的需求
+     */
+    @RequestMapping(value = "/v1/comment/list")
+    @ResponseBody
+    public Map<String, Object> getCommentList(PageInfo<Comment> page, Comment condition) throws IOException {
+
+        PageInfoUtil.setDefaultValue(page);
+        LOGGER.info("pv|comment|list condtion={}", JSON.toJSONString(condition));
+//        if (null == condition) {
+//            return super.fail(Constant.PARAM_ERROR);
+//        } else {
+        List<Comment> list = commentService.getCommentList(condition, page);
+        // 由于客户端没有升级,commentService是新老方法共用的,因此暂时先在controller中封装为分页的数据结构
+        PageInfo<Comment> retureList = new PageInfo<Comment>(list);
+        return super.supports(retureList);
+//        }
+    }
+
 
     @RequestMapping(value = "/user/numOfUnReadInfo")
     @ResponseBody
@@ -179,7 +223,7 @@ public class CommentController extends BaseController {
     public Map<String, Object> updateStatus(String commentIds, HttpServletResponse response) throws IOException {
         LOGGER.info("pv|updateStatus.ajax, commentIds={}", commentIds);
         if (StringUtils.isNotBlank(commentIds)) {
-            commentService.udpateStatus(commentIds);
+            commentService.udpateStatus(commentIds, Constant.READEN_STATUS);
             return supports(SUCCESS);
         } else {
             return fail(Constant.PARAM_ERROR);
@@ -209,18 +253,19 @@ public class CommentController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/v1/comment/list")
-    @ResponseBody
-    public Map<String, Object> getCommentList(Integer artId) throws IOException {
-
-        LOGGER.info("pv|comment|list artId={}", artId);
-        if (null == artId) {
-            return super.fail(Constant.PARAM_ERROR);
-        } else {
-            List<Comment> list = commentService.getCommentList(artId);
-            return super.supports(list);
-        }
-    }
+//    @RequestMapping(value = "/v1/comment/list")
+//    @ResponseBody
+//    public Map<String, Object> getCommentList(Integer artId) throws IOException {
+//
+//        LOGGER.info("pv|comment|list artId={}", artId);
+//        if (null == artId) {
+//            return super.fail(Constant.PARAM_ERROR);
+//        } else {
+//
+//            List<Comment> list = commentService.getCommentList(artId);
+//            return super.supports(list);
+//        }
+//    }
 
 
 }

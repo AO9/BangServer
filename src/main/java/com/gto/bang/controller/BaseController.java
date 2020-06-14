@@ -31,8 +31,35 @@ public class BaseController {
     @Value("${invalidAndroidIds}")
     String invalidAndroidIds;
 
+    @Value("${tokens}")
+    String tokens;
+
     public static final String SUCCESS="success";
 
+
+    /**
+     * 20200529日 内容审核接口增加token校验功能
+     *
+     * @param token
+     * @return
+     */
+    public boolean checkToken(String token) {
+
+        LOGGER.info("tokens={},to be checked token={}", tokens, token);
+        if (StringUtils.isEmpty(tokens)) {
+            return false;
+        }
+
+        String[] values = tokens.split(",");
+        List<String> list = Arrays.asList(values);
+
+        if (list.contains(token)) {
+            LOGGER.info("包含 token={}", token);
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * 是否是非法用户

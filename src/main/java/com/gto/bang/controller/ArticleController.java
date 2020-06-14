@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -36,33 +34,6 @@ public class ArticleController extends BaseController {
     public static final Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
     @Autowired
     ArticleService articleService;
-    @Value("${tokens}")
-    String tokens;
-
-    /**
-     * 20200529日 内容审核接口增加token校验功能
-     *
-     * @param token
-     * @return
-     */
-    public boolean checkToken(String token) {
-
-        LOGGER.info("tokens={},to be checked token={}", tokens, token);
-        if (StringUtils.isEmpty(tokens)) {
-            return false;
-        }
-
-        String[] values = tokens.split(",");
-        List<String> list = Arrays.asList(values);
-
-        if (list.contains(token)) {
-            LOGGER.info("包含 token={}", token);
-            return true;
-        }
-
-        return false;
-    }
-
 
     /**
      * 文章内容审核接口

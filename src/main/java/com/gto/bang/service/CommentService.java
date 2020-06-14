@@ -1,5 +1,6 @@
 package com.gto.bang.service;
 
+import com.github.pagehelper.PageInfo;
 import com.gto.bang.model.Comment;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public interface CommentService {
 
     /**
      * 3.1.2以前
+     *
      * @param type
      * @param artId
      * @param startId
@@ -22,17 +24,19 @@ public interface CommentService {
 
     List<Comment> getCommentsByAuthorId(Integer authorId, Integer startId, Integer status, String type);
 
-    void udpateStatus(String ids);
+    void udpateStatus(String ids, int status);
 
     int numOfUnreadComments(Integer authorId);
 
     void updatePraise(Integer id);
 
     /**
-     * 3.1.3以后
-     * @param artId
+     * 通用查询评论的方法
+     *
+     * @param condition
      * @return
+     * @date 20200614 同时支持后台审核评论
      */
-    List<Comment> getCommentList(Integer artId);
+    List<Comment> getCommentList(Comment condition, PageInfo<Comment> page);
 
 }

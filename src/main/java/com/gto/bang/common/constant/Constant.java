@@ -27,6 +27,7 @@ public abstract class Constant {
     public static final int ERROR_STATUS =0;
     public static final int SUCCESS_STATUS =1;
     public static final int READEN_STATUS =1;
+    public static final int DELETE_STATUS =999;
 
 
     // 评论状态

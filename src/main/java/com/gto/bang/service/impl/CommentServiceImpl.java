@@ -1,6 +1,8 @@
 package com.gto.bang.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.gto.bang.common.constant.Constant;
 import com.gto.bang.dao.ArticleMapper;
 import com.gto.bang.dao.CommentMapper;
@@ -72,7 +74,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void udpateStatus(String ids) {
+    public void udpateStatus(String ids, int status) {
 
         String[] temp = StringUtils.split(ids);
         List<String> idList = Arrays.asList(temp);
@@ -81,8 +83,8 @@ public class CommentServiceImpl implements CommentService {
             Integer id = intArr[i];
             Comment values = new Comment();
             values.setId(id);
-            values.setStatus(Constant.READEN_STATUS);
-            commentMapper.updateByPrimaryKey(values);
+            values.setStatus(status);
+            commentMapper.updateByPrimaryKeySelective(values);
         }
     }
 
@@ -93,15 +95,23 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void updatePraise(Integer id) {
-        LOGGER.info("comment|service|updatePraise,commentId is {}",id);
+        LOGGER.info("comment|service|updatePraise,commentId is {}", id);
         commentMapper.updatePraise(id);
     }
 
+//    @Override
+//    public List<Comment> getCommentList(Integer artId) {
+//        Comment condition = new Comment();
+//        condition.setArtId(artId);
+//        return commentMapper.selectByCondition(condition);
+//    }
+
     @Override
-    public List<Comment> getCommentList(Integer artId) {
-        Comment condition = new Comment();
-        condition.setArtId(artId);
-        return commentMapper.selectByCondition(condition);
+    public List<Comment> getCommentList(Comment condition, PageInfo<Comment> page) {
+
+        PageHelper.startPage(page.getPageNum(), page.getPageSize());
+        List<Comment> list = commentMapper.selectByCondition(condition);
+        return list;
     }
 
 }

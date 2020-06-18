@@ -37,7 +37,7 @@ public class CommentController extends BaseController {
     MessageService messageService;
 
     /**
-     * 用于后台功能, 评论也支持后台审核
+     * 用于后台功能, 评论也支持 后台审核
      *
      * @param token
      * @return
@@ -60,21 +60,33 @@ public class CommentController extends BaseController {
      * @return
      * @throws IOException
      * @date 20200614改造, 同时支持后台与客户端的需求
+     * @comment  发现客户端使用的是该接口,6月15日复原为不分页的实现形式
      */
     @RequestMapping(value = "/v1/comment/list")
     @ResponseBody
     public Map<String, Object> getCommentList(PageInfo<Comment> page, Comment condition) throws IOException {
+        PageInfoUtil.setDefaultValue(page);
+        LOGGER.info("pv|v1|comment|list condtion={}", JSON.toJSONString(condition));
+        List<Comment> list = commentService.getCommentList(condition, page);
+        return super.supports(list);
+    }
+
+
+    /**
+     * @param condition
+     * @return
+     * @throws IOException
+     * @date 20200615 后续客户端再升级,需要使用该版本的接口
+     */
+    @RequestMapping(value = "/v2/comment/list")
+    @ResponseBody
+    public Map<String, Object> commentList(PageInfo<Comment> page, Comment condition) throws IOException {
 
         PageInfoUtil.setDefaultValue(page);
         LOGGER.info("pv|comment|list condtion={}", JSON.toJSONString(condition));
-//        if (null == condition) {
-//            return super.fail(Constant.PARAM_ERROR);
-//        } else {
         List<Comment> list = commentService.getCommentList(condition, page);
-        // 由于客户端没有升级,commentService是新老方法共用的,因此暂时先在controller中封装为分页的数据结构
         PageInfo<Comment> retureList = new PageInfo<Comment>(list);
         return super.supports(retureList);
-//        }
     }
 
 

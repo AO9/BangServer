@@ -1,0 +1,153 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>论文帮科技-日活</title>
+    <script type="text/javascript">
+    var xmlhttp;
+
+    window.onload=function(){
+        // 初始化方法 
+        list();
+    }
+
+
+    // 获取数据列表
+    function list()
+    {
+        var baseurl='http://www.ababy.world/bangbang/v1/user/list?num=100';
+        var token=document.getElementById('token').value;
+        var url=baseurl+'&token='+token;
+
+        xmlhttp=null;
+        if (window.XMLHttpRequest)
+        {// code for IE7, Firefox, Opera, etc.
+            xmlhttp=new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject)
+        {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        if (xmlhttp!=null)
+        {
+            var final_url=url;
+            final_url = encodeURI(final_url);
+            xmlhttp.onreadystatechange=state_Change;
+            xmlhttp.open("GET",final_url,true);
+            xmlhttp.send(null);
+        }
+        else
+        {
+            alert("Your browser does not support XMLHTTP.");
+        }
+    }
+
+    var smallWidth="100dp";
+    var bigWidth="200dp";
+
+    // 初始化table表格
+	function initTable(){
+		var table = document.getElementById("table1");//获得表格
+		table.innerHTML="";
+		
+        var row = table.insertRow(0);
+        row.style.backgroundColor = "#FBFF0B";        
+        row.height = "10";
+
+        var userName = row.insertCell(0);
+        var school= row.insertCell(1);
+        var academy = row.insertCell(2);
+        var city = row.insertCell(3);
+        var createTime = row.insertCell(4);
+        var lastLoginTime = row.insertCell(5);
+        var id = row.insertCell(6);
+
+        userName.width = smallWidth;
+        school.width = smallWidth;
+        createTime.width = bigWidth;
+        lastLoginTime.width = smallWidth;  
+        id.width = smallWidth;  
+
+        userName.innnerHTML = "用户名";
+        school.innerHTML = "学校";
+        academy.innerHTML =  "专业";
+        city.innerHTML = "城市";
+        createTime.innerHTML= "创建时间";
+        lastLoginTime.innerHTML= "最后登录时间";	
+        id.innerHTML= "用户ID";
+
+	}
+
+    function state_Change()
+    {
+        if (xmlhttp.readyState==4){
+            var value = JSON.parse(xmlhttp.responseText);
+            var table = document.getElementById("table1");//获得表格
+
+            // alert("响应结果：" + xmlhttp.responseText);
+            var status=value.status;
+            if(!status){
+                alert("操作失败，原因："+value.data);
+                return;
+            }
+
+            initTable();
+            var list=value.data;
+            
+            var info=document.getElementById('info');
+            info.innerHTML=list.length;
+
+            for (i = 0; i < list.length; i++) {
+                var row = table.insertRow(i+1);
+
+
+                var userName = row.insertCell(0);
+                var school= row.insertCell(1);
+                var academy = row.insertCell(2);
+                var city = row.insertCell(3);
+                var createTime = row.insertCell(4);
+                var lastLoginTime = row.insertCell(5);
+                var id = row.insertCell(6);
+
+                userName.width = smallWidth;
+                school.width = smallWidth;
+                academy.width = smallWidth;
+                city.width = smallWidth;
+                createTime.width = smallWidth;
+                lastLoginTime.width = smallWidth;                
+
+                userName.innerHTML = list[i].userName;
+                school.innerHTML = list[i].school;
+                academy.innerHTML = list[i].academy;
+                city.innerHTML = list[i].city;
+                createTime.innerHTML = list[i].createTime;
+                lastLoginTime.innerHTML = list[i].lastLoginTime;
+                id.innerHTML = list[i].id;
+
+            }
+        }
+    }
+
+    </script>
+</head>
+
+<body>
+
+<!-- 本地访问这个地址，跨域，返回status=0  -->
+<div style="margin-top:10px">
+    <br/>
+    请输入查询token: <input type="text" name="token" id="token" />
+    <br/>
+</div>
+
+<p>
+    <span id="info"></span>
+</p>
+
+<br/>
+
+<table style="margin-top:10px" id="table1"  border="1" cellspacing="0" cellpadding="0" >
+</table>
+
+</body>
+</html>
+

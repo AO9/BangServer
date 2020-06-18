@@ -2,6 +2,7 @@ package com.gto.bang.controller;
 
 import com.gto.bang.common.net.Response;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,8 +45,8 @@ public class BaseInfoController extends BaseController {
     public Map<String, Object> notice(String userId) throws IOException {
         LOGGER.info("pv|notice|view,userId={}", userId);
         Map<String, String> map = new HashedMap();
-        map.put("title", noticeTitle);
-        map.put("content", noticeContent);
+        map.put("title", StringEscapeUtils.unescapeJava(noticeTitle));
+        map.put("content", StringEscapeUtils.unescapeJava(noticeContent));
         return super.supports(map);
     }
 

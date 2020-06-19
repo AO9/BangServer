@@ -34,6 +34,22 @@
         username
     </sql>
 
+    <!--20200619-->
+    <select id="selectByUserId" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from article
+        where type=5 and NOT FIND_IN_SET(id, (select recordIds from browse_record where userId=#{userId,jdbcType=INTEGER}))
+        order by
+        <if test="articleType == 1">
+            article.viewtimes desc,
+        </if>
+        article.createtime desc
+    </select>
+
+
     <select id="selectByCondition" parameterType="com.gto.bang.model.ArticleWithBLOBs" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>,
@@ -53,7 +69,7 @@
             </foreach>
         </if>
         order by
-        <if test="articleType == 1" >
+        <if test="articleType == 1">
             article.viewtimes desc,
         </if>
         article.createtime desc

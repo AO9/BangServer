@@ -3,10 +3,14 @@ package com.gto.bang.dao;
 
 import com.gto.bang.model.Article;
 import com.gto.bang.model.ArticleWithBLOBs;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface ArticleMapper {
+
+    // 用于好文文章列表 文章推荐 20200619
+    List<Article> selectByUserId(@Param("userId")Integer userId, @Param("articleType")Integer articleType);
 
     void updateViewTimes(Integer artId);
 

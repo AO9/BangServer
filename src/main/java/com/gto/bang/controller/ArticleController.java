@@ -75,14 +75,15 @@ public class ArticleController extends BaseController {
 
     @RequestMapping(value = "/v1/article/list", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getArticleListV1(Integer type, PageInfo<Article> page, Integer articleType) throws IOException {
+    public Map<String, Object> getArticleListV1(Integer type, PageInfo<Article> page, Integer articleType, Integer userId) throws IOException {
 
-        LOGGER.info("pv|getArticleList .... type={}, pageNum={}, articleType={}", type, page.getPageNum(),articleType);
+        LOGGER.info("pv|getArticleList .... type={}, pageNum={}, articleType={}, userId={}",
+                type, page.getPageNum(),articleType,userId);
         PageInfoUtil.setDefaultValue(page);
         if (type == null) {
             return fail(Constant.PARAM_ERROR);
         } else {
-            PageInfo<Article> list = articleService.getArticleList(type, page,articleType);
+            PageInfo<Article> list = articleService.getArticleList(type, page,articleType,userId);
             //端上未兼容,暂时以这种形式返回
             return supports(list);
         }
@@ -99,14 +100,14 @@ public class ArticleController extends BaseController {
      */
     @RequestMapping(value = "/getArticleList.ajax", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getArticleList(Integer type, PageInfo<Article> page,Integer isHot) throws IOException {
+    public Map<String, Object> getArticleList(Integer type, PageInfo<Article> page,Integer isHot,Integer userId) throws IOException {
 
         LOGGER.info("pv|getArticleList .... type={},pageNum={}", type, page.getPageNum());
         PageInfoUtil.setDefaultValue(page);
         if (type == null) {
             return fail(Constant.PARAM_ERROR);
         } else {
-            PageInfo<Article> list = articleService.getArticleList(type, page,isHot);
+            PageInfo<Article> list = articleService.getArticleList(type, page,isHot,userId);
             //端上未兼容,暂时以这种形式返回
             return supports(list.getList());
         }

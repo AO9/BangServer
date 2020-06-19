@@ -41,6 +41,7 @@ public abstract class Constant {
     public static final int ART_PRODUCT=999;
     // 红包问答
     public static final int ART_SUPPORT=4;
+    public static final int ART_ARTICLE=5;
 
     // 终端类型
     public static final String ANDROID="1";

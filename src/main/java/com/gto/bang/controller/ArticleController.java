@@ -35,6 +35,40 @@ public class ArticleController extends BaseController {
     @Autowired
     ArticleService articleService;
 
+
+    /**
+     * 20200620 文章点赞功能
+     *
+     * @param userId
+     * @param articleId
+     * @return
+     * @throws IOException
+     * @// TODO: 20/6/20 代码逻辑未实现
+     */
+    @RequestMapping(value = "/v2/article/praise")
+    @ResponseBody
+    public Map<String, Object> praise(Integer userId, Integer articleId) throws IOException {
+        LOGGER.info("pv|article|praise ....userId={},articleId={}", userId, articleId);
+        return supports(Constant.SUCCESS);
+    }
+
+    /**
+     * 20200620 文章收藏功能
+     *
+     * @param userId
+     * @param articleId
+     * @return
+     * @throws IOException
+     * @// TODO: 20/6/20 代码逻辑未实现
+     */
+    @RequestMapping(value = "/v2/article/collection")
+    @ResponseBody
+    public Map<String, Object> collection(Integer userId, Integer articleId) throws IOException {
+        LOGGER.info("pv|article|collection ....userId={},articleId={}", userId, articleId);
+        return supports(Constant.SUCCESS);
+    }
+
+
     /**
      * 文章内容审核接口
      * 新建的文章内容都默认是审核通过的
@@ -78,12 +112,12 @@ public class ArticleController extends BaseController {
     public Map<String, Object> getArticleListV1(Integer type, PageInfo<Article> page, Integer articleType, Integer userId) throws IOException {
 
         LOGGER.info("pv|getArticleList .... type={}, pageNum={}, articleType={}, userId={}",
-                type, page.getPageNum(),articleType,userId);
+                type, page.getPageNum(), articleType, userId);
         PageInfoUtil.setDefaultValue(page);
         if (type == null) {
             return fail(Constant.PARAM_ERROR);
         } else {
-            PageInfo<Article> list = articleService.getArticleList(type, page,articleType,userId);
+            PageInfo<Article> list = articleService.getArticleList(type, page, articleType, userId);
             //端上未兼容,暂时以这种形式返回
             return supports(list);
         }
@@ -93,6 +127,7 @@ public class ArticleController extends BaseController {
     /**
      * 获取文章列表数据 type来区分经验列表或问答列表
      * isHot
+     *
      * @param type
      * @param page
      * @return
@@ -100,14 +135,14 @@ public class ArticleController extends BaseController {
      */
     @RequestMapping(value = "/getArticleList.ajax", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getArticleList(Integer type, PageInfo<Article> page,Integer isHot,Integer userId) throws IOException {
+    public Map<String, Object> getArticleList(Integer type, PageInfo<Article> page, Integer isHot, Integer userId) throws IOException {
 
         LOGGER.info("pv|getArticleList .... type={},pageNum={}", type, page.getPageNum());
         PageInfoUtil.setDefaultValue(page);
         if (type == null) {
             return fail(Constant.PARAM_ERROR);
         } else {
-            PageInfo<Article> list = articleService.getArticleList(type, page,isHot,userId);
+            PageInfo<Article> list = articleService.getArticleList(type, page, isHot, userId);
             //端上未兼容,暂时以这种形式返回
             return supports(list.getList());
         }

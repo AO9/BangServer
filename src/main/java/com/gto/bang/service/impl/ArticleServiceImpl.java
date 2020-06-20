@@ -103,15 +103,21 @@ public class ArticleServiceImpl implements ArticleService {
         condition.setType(type.byteValue());
         // 是否筛选热门文章
         condition.setArticleType(articleType);
-        PageHelper.startPage(page.getPageNum(), page.getPageSize());
 
         List<Article> list;
         if (type != null && type == Constant.ART_ARTICLE && userId != null) {
-            //过滤查询
-            list = articleMapper.selectByUserId(userId, articleType);
+            String recordIds = null;
+            BrowseRecord browseRecord = getBrowseRecord(userId);
+            if (browseRecord != null) {
+                recordIds = browseRecord.getRecordIds();
+            }
+            // 过滤查询
+            PageHelper.startPage(page.getPageNum(), page.getPageSize());
+            list = articleMapper.selectByUserId(userId, articleType, recordIds);
             // 记录看过哪些文章 add by 20200618
             setRecord(list, userId);
         } else {
+            PageHelper.startPage(page.getPageNum(), page.getPageSize());
             list = articleMapper.selectByCondition(condition);
         }
         setUpCommentNum(list);

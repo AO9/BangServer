@@ -41,7 +41,10 @@
         ,
         <include refid="Blob_Column_List"/>
         from article
-        where type=5 and NOT FIND_IN_SET(id, (select recordIds from browse_record where userId=#{userId,jdbcType=INTEGER}))
+        where type=5
+        <if test=" recordIds != null and recordIds!='' ">
+            and NOT FIND_IN_SET(id,#{recordIds,jdbcType=LONGVARCHAR})
+        </if>
         order by
         <if test="articleType == 1">
             article.viewtimes desc,

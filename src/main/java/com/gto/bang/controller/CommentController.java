@@ -36,6 +36,40 @@ public class CommentController extends BaseController {
     @Autowired
     MessageService messageService;
 
+
+    /**
+     * 20200620 回答点赞功能
+     *
+     * @param userId
+     * @param articleId
+     * @return
+     * @throws IOException
+     * @// TODO: 20/6/20 代码逻辑未实现
+     */
+    @RequestMapping(value = "/v2/comment/praise")
+    @ResponseBody
+    public Map<String, Object> praise(Integer userId, Integer articleId) throws IOException {
+        LOGGER.info("pv|article|praise ....userId={},articleId={}", userId, articleId);
+        return supports(Constant.SUCCESS);
+    }
+
+    /**
+     * 20200620 回答收藏功能
+     *
+     * @param userId
+     * @param articleId
+     * @return
+     * @throws IOException
+     * @// TODO: 20/6/20 代码逻辑未实现
+     */
+    @RequestMapping(value = "/v2/comment/collection")
+    @ResponseBody
+    public Map<String, Object> collection(Integer userId, Integer articleId) throws IOException {
+        LOGGER.info("pv|article|collection ....userId={},articleId={}", userId, articleId);
+        return supports(Constant.SUCCESS);
+    }
+
+
     /**
      * 用于后台功能, 评论也支持 后台审核
      *
@@ -60,7 +94,7 @@ public class CommentController extends BaseController {
      * @return
      * @throws IOException
      * @date 20200614改造, 同时支持后台与客户端的需求
-     * @comment  发现客户端使用的是该接口,6月15日复原为不分页的实现形式
+     * @comment 发现客户端使用的是该接口, 6月15日复原为不分页的实现形式
      */
     @RequestMapping(value = "/v1/comment/list")
     @ResponseBody

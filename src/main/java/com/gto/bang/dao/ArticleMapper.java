@@ -10,7 +10,8 @@ import java.util.List;
 public interface ArticleMapper {
 
     // 用于好文文章列表 文章推荐 20200619
-    List<Article> selectByUserId(@Param("userId")Integer userId, @Param("articleType")Integer articleType);
+    List<Article> selectByUserId(@Param("userId")Integer userId, @Param("articleType")Integer articleType,
+                                 @Param("recordIds")String recordIds);
 
     void updateViewTimes(Integer artId);
 

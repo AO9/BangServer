@@ -45,6 +45,24 @@ public class ArticleController extends BaseController {
      * @throws IOException
      * @// TODO: 20/6/20 代码逻辑未实现
      */
+    @RequestMapping(value = "/v2/article/search")
+    @ResponseBody
+    public Map<String, Object> search(Integer userId, Integer articleId) throws IOException {
+        LOGGER.info("pv|article|praise ....userId={},articleId={}", userId, articleId);
+        return supports(Constant.SUCCESS);
+    }
+
+
+
+    /**
+     * 20200620 文章点赞功能
+     *
+     * @param userId
+     * @param articleId
+     * @return
+     * @throws IOException
+     * @// TODO: 20/6/20 代码逻辑未实现
+     */
     @RequestMapping(value = "/v2/article/praise")
     @ResponseBody
     public Map<String, Object> praise(Integer userId, Integer articleId) throws IOException {

@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface ArticleService {
 
+    PageInfo<Article> getArticlesByKeyword(PageInfo<Article> page,String keyword);
 
     void updateViewTimes(Article articleVO);
 

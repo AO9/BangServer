@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.gto.bang.common.constant.Constant;
-import com.gto.bang.controller.ArticleController;
 import com.gto.bang.dao.ArticleMapper;
 import com.gto.bang.dao.CommentMapper;
 import com.gto.bang.model.Article;
@@ -20,10 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by shenjialong on 16/6/23.
@@ -32,7 +28,7 @@ import java.util.List;
  */
 @Service
 public class ArticleServiceImpl implements ArticleService {
-    public static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
+    public static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ArticleServiceImpl.class);
 
     @Autowired
     private ArticleMapper articleMapper;
@@ -47,8 +43,30 @@ public class ArticleServiceImpl implements ArticleService {
 
     public static final String TAG = "articleService|";
 
+    public static final int CONTENT_TYPE = 1;
+
+    @Override
+    public PageInfo<Article> getArticlesByKeyword(PageInfo<Article> page, String keyword) {
+
+        LOGGER.info(TAG + "getArticleListByKeyword params type={}, keyword={}", keyword);
+        List<Article> list;
+        if (StringUtils.isBlank(keyword)) {
+            list = null;
+        } else {
+            PageHelper.startPage(page.getPageNum(), page.getPageSize());
+            list = articleMapper.selectArticlesByKeyword(CONTENT_TYPE, keyword);
+        }
+
+        if (CollectionUtils.isEmpty(list)) {
+            list = Collections.emptyList();
+            LOGGER.info(TAG + "getArticleListByKeyword list is empty ");
+        }
+        return new PageInfo<>(list);
+    }
+
     @Override
     public void updateViewTimes(Article articleVO) {
+
         articleMapper.updateViewTimes(articleVO.getId());
     }
 
@@ -114,6 +132,15 @@ public class ArticleServiceImpl implements ArticleService {
             // 过滤查询
             PageHelper.startPage(page.getPageNum(), page.getPageSize());
             list = articleMapper.selectByUserId(userId, articleType, recordIds);
+            // 如果刷新了所有的浏览记录,那么重新开始吧 20200622
+            if (CollectionUtils.isEmpty(list)) {
+                LOGGER.info(TAG + "getArticleList get list is empty! userId={}, articleType={},type={}",
+                        userId, articleType, type);
+                browseRecordService.deleteBrowseRecord(userId);
+                LOGGER.info(TAG + "getArticleList delete browseRecord begin, userId={}",userId);
+                PageHelper.startPage(page.getPageNum(), page.getPageSize());
+                list = articleMapper.selectByUserId(userId, articleType, recordIds);
+            }
             // 记录看过哪些文章 add by 20200618
             setRecord(list, userId);
         } else {

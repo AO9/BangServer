@@ -9,9 +9,12 @@ import java.util.List;
 
 public interface ArticleMapper {
 
+    // 搜索框功能 20200622
+    List<Article> selectArticlesByKeyword(@Param("type") Integer type, @Param("keyword") String keyword);
+
     // 用于好文文章列表 文章推荐 20200619
-    List<Article> selectByUserId(@Param("userId")Integer userId, @Param("articleType")Integer articleType,
-                                 @Param("recordIds")String recordIds);
+    List<Article> selectByUserId(@Param("userId") Integer userId, @Param("articleType") Integer articleType,
+                                 @Param("recordIds") String recordIds);
 
     void updateViewTimes(Integer artId);
 

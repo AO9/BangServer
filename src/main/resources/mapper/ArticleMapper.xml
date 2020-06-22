@@ -34,6 +34,29 @@
         username
     </sql>
 
+
+    <!--20200622 搜索框功能, type=1时按照content去模糊匹配,type=2时按照title去模糊匹配-->
+    <select id="selectArticlesByKeyword" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from article
+        where type=5
+        <if test=" type != null and type==1">
+            <if test=" keyword != null ">
+                and content like concat ('%',#{keyword},'%')
+            </if>
+        </if>
+
+        <if test=" type != null and type==2">
+            <if test=" keyword != null ">
+                and title like concat ('%',#{keyword},'%')
+            </if>
+        </if>
+        order by viewtimes desc, createtime desc
+    </select>
+
     <!--20200619-->
     <select id="selectByUserId" resultMap="ResultMapWithBLOBs">
         select

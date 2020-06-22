@@ -17,6 +17,13 @@
     recordIds
   </sql>
 
+  <!--20200622-->
+  <select id="deleteByUserId" parameterType="java.lang.Integer">
+    DELETE
+    from browse_record
+    where userId = #{userId,jdbcType=INTEGER}
+  </select>
+
   <!--20200618-->
   <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select

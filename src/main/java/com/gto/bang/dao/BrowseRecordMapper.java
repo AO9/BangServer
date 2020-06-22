@@ -6,6 +6,8 @@ public interface BrowseRecordMapper {
 
     BrowseRecord selectByUserId(Integer userId);
 
+    void deleteByUserId(Integer userId);
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(BrowseRecord record);

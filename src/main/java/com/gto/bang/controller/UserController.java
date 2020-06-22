@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.gto.bang.common.constant.Constant;
 import com.gto.bang.common.net.Response;
 import com.gto.bang.model.User;
+import com.gto.bang.service.LogService;
 import com.gto.bang.service.UserService;
 import com.gto.bang.util.CommonUtil;
 import org.apache.commons.collections.map.HashedMap;
@@ -32,6 +33,9 @@ public class UserController extends BaseController {
     public static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     @Autowired
     UserService userService;
+
+    @Autowired
+    LogService logService;
 
     @Value("${statement}")
     String statement;
@@ -82,6 +86,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public void getArticleList(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.info("pv|user|list|v1 ");
+        logService.createLog(null,"user|list",null);
         Response<List<User>> res = new Response<List<User>>();
         response.setContentType("text/html;charset=utf-8");
         Object num = request.getParameter("num");
@@ -111,6 +116,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public void getArticleListV1(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.info("pv|user|getUsers| ");
+        logService.createLog(null,"getUsers",null);
         Response<List<User>> res = new Response<List<User>>();
         response.setContentType("text/html;charset=utf-8");
         Object num = request.getParameter("num");
@@ -136,6 +142,7 @@ public class UserController extends BaseController {
     public void login(User userInfo, HttpServletResponse response) throws IOException {
 
         LOGGER.info("pv|user|login, userInfo={} ", JSON.toJSONString(userInfo));
+        logService.createLog(userInfo.getId(),"login",userInfo.getAndroidId());
         response.setContentType("text/html;charset=utf-8");
         Response<User> res = new Response<User>();
         if (StringUtils.isBlank(userInfo.getUsername()) || StringUtils.isBlank(userInfo.getPassword())) {
@@ -177,10 +184,13 @@ public class UserController extends BaseController {
         response.setContentType("text/html;charset=utf-8");
         Response<String> res = new Response<String>();
         String[] params = new String[]{"content", "userId", "updateType"};
+
         if (super.nonNullValidate(request, params)) {
             int userId = Integer.valueOf(request.getParameter("userId").toString());
             String content = request.getParameter("content").toString();
             int updateType = Integer.valueOf(request.getParameter("updateType").toString());
+
+            logService.createLog(userId,"user|update",null);
             if (!checkParam(updateType, content)) {
                 super.flushResponse4Error(response, res, Constant.PARAM_ERROR);
                 return;
@@ -228,6 +238,7 @@ public class UserController extends BaseController {
         if (super.nonNullValidate(request, params)) {
             String userId = request.getParameter("authorid");
             LOGGER.info("pv|user|view, userId={}", userId);
+            logService.createLog(null,"user.ajax","userId");
             User condition = new User();
             condition.setId(Integer.valueOf(userId));
             User user = userService.queryUser(condition);
@@ -256,6 +267,7 @@ public class UserController extends BaseController {
     public Map<String, Object> register(User param, String username) throws IOException {
 
         LOGGER.info("pv|v1|register ....userInfo={}", JSON.toJSONString(param));
+        logService.createLog(null,"register.ajax",username);
         // 兼容历史APP版本命名不规范问题,后续统一调整为驼峰命名规范 2020年1月31日
         if (StringUtils.isNotBlank(username)) {
             param.setUserName(username);
@@ -296,6 +308,7 @@ public class UserController extends BaseController {
     public Map<String, Object> registerV1(User userInfo) throws IOException {
 
         LOGGER.info("pv|v1|register ....userInfo={}", JSON.toJSONString(userInfo));
+        logService.createLog(null,"register.ajax",userInfo.getUserName());
         if (StringUtils.isBlank(userInfo.getUserName()) || StringUtils.isBlank(userInfo.getPassword())
                 || StringUtils.isBlank(userInfo.getPhone())) {
             return super.fail(Constant.PARAM_ERROR);
@@ -329,6 +342,7 @@ public class UserController extends BaseController {
     public Map<String, Object> login(User userInfo) throws IOException {
 
         LOGGER.info("pv|v1|login ....userInfo={}" + JSON.toJSONString(userInfo));
+        logService.createLog(null,"user|login",userInfo.getUserName());
         String userName = userInfo.getUserName();
         String password = userInfo.getPassword();
         if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {

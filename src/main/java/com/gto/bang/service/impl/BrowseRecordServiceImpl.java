@@ -2,7 +2,6 @@ package com.gto.bang.service.impl;
 
 
 import com.alibaba.fastjson.JSON;
-import com.gto.bang.controller.ArticleController;
 import com.gto.bang.dao.BrowseRecordMapper;
 import com.gto.bang.model.BrowseRecord;
 import com.gto.bang.service.BrowseRecordService;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 class BrowseRecrdServiceImpl implements BrowseRecordService {
 
-    public static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
+    public static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(BrowseRecrdServiceImpl.class);
 
     @Autowired
     private BrowseRecordMapper browseRecordMapper;
@@ -39,5 +38,10 @@ class BrowseRecrdServiceImpl implements BrowseRecordService {
             return null;
         }
         return browseRecordMapper.selectByUserId(userId);
+    }
+
+    @Override
+    public void deleteBrowseRecord(Integer userId) {
+        browseRecordMapper.deleteByUserId(userId);
     }
 }

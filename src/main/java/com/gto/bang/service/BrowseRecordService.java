@@ -13,6 +13,8 @@ public interface BrowseRecordService {
 
     BrowseRecord queryByUserId(Integer userId);
 
+    void deleteBrowseRecord(Integer userId);
+
 }
 
 

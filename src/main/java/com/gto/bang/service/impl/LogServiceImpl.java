@@ -13,7 +13,9 @@ public class LogServiceImpl implements LogService {
     public static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(LogServiceImpl.class);
 
     @Override
-    public void createLog(Integer userId, String operate, String androidId) {
-        LOGGER.info("logService|log|create, params: userId={},operate={},androidId={}", userId, operate, androidId);
+    public void createLog(Integer userId, String operate, String ext) {
+
+        LOGGER.info("logService|log|create, params: userId={},operate={},ext={}",
+                userId, operate, ext);
     }
 }

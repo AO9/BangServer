@@ -98,7 +98,9 @@
         <if test="articleType == 1">
             article.viewtimes desc,
         </if>
-        article.createtime desc
+        <if test="articleType == 2">
+            article.createtime desc,
+        </if>
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">

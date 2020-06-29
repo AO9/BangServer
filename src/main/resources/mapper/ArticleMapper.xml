@@ -94,12 +94,12 @@
                 #{item}
             </foreach>
         </if>
-        order by
+
         <if test="articleType == 1">
-            article.viewtimes desc,
+            order by article.viewtimes desc
         </if>
-        <if test="articleType == 2">
-            article.createtime desc,
+        <if test="articleType != 1">
+            order by article.createtime desc
         </if>
     </select>
 

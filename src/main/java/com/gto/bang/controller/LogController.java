@@ -26,9 +26,9 @@ public class LogController extends BaseController {
 
     @RequestMapping(value = "/v2/log/create")
     @ResponseBody
-    public Map<String, Object> create(Integer userId, String operateType, String androidId) throws IOException {
-        LOGGER.info("pv|log|create ....userId={},type={},androidId={}", userId, operateType, androidId);
-        logService.createLog(userId,operateType,androidId);
+    public Map<String, Object> create(Integer userId, String operateType, String androidId, String deviceToken) throws IOException {
+        LOGGER.info("pv|log|create ....userId={},type={},androidId={}", userId, operateType, androidId, deviceToken);
+        logService.createLog(userId, operateType, androidId);
         return supports(Constant.SUCCESS);
     }
 

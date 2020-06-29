@@ -266,7 +266,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public Map<String, Object> register(User param, String username) throws IOException {
 
-        LOGGER.info("pv|v1|register ....userInfo={}", JSON.toJSONString(param));
+        LOGGER.info("pv|v0|register ....userInfo={}", JSON.toJSONString(param));
         logService.createLog(null,"register.ajax",username);
         // 兼容历史APP版本命名不规范问题,后续统一调整为驼峰命名规范 2020年1月31日
         if (StringUtils.isNotBlank(username)) {
@@ -277,7 +277,7 @@ public class UserController extends BaseController {
         }
 
         if (CommonUtil.checkContent(param.getUserName())) {
-            LOGGER.info("v1|register|fail ....userInfo={}" + JSON.toJSONString(param));
+            LOGGER.info("v0|register|fail ....userInfo={}" + JSON.toJSONString(param));
             return super.fail(Constant.USERNAME_ERROR);
         }
 
@@ -285,7 +285,7 @@ public class UserController extends BaseController {
         condition.setUserName(username);
         User user = userService.queryUser(condition);
         if (user != null) {
-            LOGGER.warn("register|userName is dul.... userVo={}", JSON.toJSONString(param));
+            LOGGER.warn("v0|register|userName is dul.... userVo={}", JSON.toJSONString(param));
             return super.fail(Constant.REGISTER_DUL);
         }
         userService.register(param);

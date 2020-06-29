@@ -54,7 +54,7 @@ public class ArticleController extends BaseController {
     public Map<String, Object> search(Integer userId, String keyword, PageInfo<Article> page) throws IOException {
 
         LOGGER.info("pv|article|search ....userId={},keyword={}", userId, keyword);
-        logService.createLog(userId,"search",keyword);
+        logService.createLog(userId, "search", keyword);
 
         if (StringUtils.isBlank(keyword)) {
             return super.fail(Constant.PARAM_ERROR);
@@ -77,9 +77,9 @@ public class ArticleController extends BaseController {
      */
     @RequestMapping(value = "/v2/article/praise")
     @ResponseBody
-    public Map<String, Object> praise(Integer userId, Integer articleId) throws IOException {
-        LOGGER.info("pv|article|praise ....userId={},articleId={}", userId, articleId);
-        logService.createLog(userId,"praise",null);
+    public Map<String, Object> praise(Integer userId, Integer articleId, String androidId) throws IOException {
+        LOGGER.info("pv|article|praise ....userId={},articleId={},androidId={}", userId, articleId, androidId);
+        logService.createLog(userId, "praise", null);
         return supports(Constant.SUCCESS);
     }
 
@@ -94,9 +94,9 @@ public class ArticleController extends BaseController {
      */
     @RequestMapping(value = "/v2/article/collection")
     @ResponseBody
-    public Map<String, Object> collection(Integer userId, Integer articleId) throws IOException {
-        LOGGER.info("pv|article|collection ....userId={},articleId={}", userId, articleId);
-        logService.createLog(userId,"collection",null);
+    public Map<String, Object> collection(Integer userId, Integer articleId, String androidId) throws IOException {
+        LOGGER.info("pv|article|collection ....userId={},articleId={},androidId={}", userId, articleId, androidId);
+        logService.createLog(userId, "collection", null);
         return supports(Constant.SUCCESS);
     }
 
@@ -145,7 +145,7 @@ public class ArticleController extends BaseController {
 
         LOGGER.info("pv|article|list .... type={}, pageNum={}, articleType={}, userId={}",
                 type, page.getPageNum(), articleType, userId);
-        logService.createLog(userId,"list",null);
+        logService.createLog(userId, "list", null);
         PageInfoUtil.setDefaultValue(page);
         if (type == null) {
             return fail(Constant.PARAM_ERROR);
@@ -170,7 +170,7 @@ public class ArticleController extends BaseController {
     public Map<String, Object> getArticleList(Integer type, PageInfo<Article> page, Integer isHot, Integer userId) throws IOException {
 
         LOGGER.info("pv|getArticleList .... type={},pageNum={}", type, page.getPageNum());
-        logService.createLog(userId,"getArticleList",null);
+        logService.createLog(userId, "getArticleList", null);
         PageInfoUtil.setDefaultValue(page);
         if (type == null) {
             return fail(Constant.PARAM_ERROR);
@@ -183,9 +183,9 @@ public class ArticleController extends BaseController {
 
     @RequestMapping(value = "/getArticleDetail.ajax", method = RequestMethod.GET)
     @ResponseBody
-    public void getArticleDetail(HttpServletRequest request, HttpServletResponse response,Integer userId) throws IOException {
+    public void getArticleDetail(HttpServletRequest request, HttpServletResponse response, Integer userId) throws IOException {
         LOGGER.info("pv|getArticleDetail ....");
-        logService.createLog(userId,"getArticleDetail",null);
+        logService.createLog(userId, "getArticleDetail", null);
         Response<Article> res = new Response<Article>();
         response.setContentType("text/html;charset=utf-8");
         Object id = request.getParameter("id");
@@ -204,9 +204,9 @@ public class ArticleController extends BaseController {
 
     @RequestMapping(value = "/create.ajax")
     @ResponseBody
-    public void create(ArticleWithBLOBs param, HttpServletRequest request, HttpServletResponse response,Integer userId) throws IOException {
+    public void create(ArticleWithBLOBs param, HttpServletRequest request, HttpServletResponse response, Integer userId) throws IOException {
         LOGGER.info("pv|createArticle ....param={}", JSON.toJSONString(param));
-        logService.createLog(userId,"create.ajax",null);
+        logService.createLog(userId, "create.ajax", null);
         request.setCharacterEncoding("utf8");
         response.setContentType("text/html;charset=utf-8");
         Response<String> res = new Response<String>();
@@ -268,10 +268,10 @@ public class ArticleController extends BaseController {
      */
     @RequestMapping(value = "v2/article/create")
     @ResponseBody
-    public void createArticle(ArticleWithBLOBs articleVO, Integer userId,String authorid, String content, Integer type, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void createArticle(ArticleWithBLOBs articleVO, Integer userId, String authorid, String content, Integer type, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         LOGGER.info("pv|v2|article|create ....authorid={},content={},type={}, params={}", authorid, content, type, JSON.toJSONString(articleVO));
-        logService.createLog(userId,"v2/article/create",null);
+        logService.createLog(userId, "v2/article/create", null);
         request.setCharacterEncoding("utf8");
         response.setContentType("text/html;charset=utf-8");
         Response<String> res = new Response<String>();
@@ -336,7 +336,7 @@ public class ArticleController extends BaseController {
     @ResponseBody
     public void getMyArticleList(Integer startid, Integer authorid, Integer type, HttpServletResponse response) throws IOException {
 
-        logService.createLog(authorid,"getMyArticleList",null);
+        logService.createLog(authorid, "getMyArticleList", null);
         Response<List<Article>> res = new Response<List<Article>>();
         if (null == startid || null == authorid || null == type) {
             super.flushResponse4Error(response, res, Constant.PARAM_ERROR);

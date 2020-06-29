@@ -41,7 +41,10 @@ public class NoticeController extends BaseController {
     public Map<String, Object> notice(String userId) throws IOException {
 
         LOGGER.info("pv|notice|view,userId={}", userId);
-        logService.createLog(Integer.valueOf(userId),"notice|view",null);
+        if (userId == null) {
+            userId = "0";
+        }
+        logService.createLog(Integer.valueOf(userId), "notice|view", null);
 
         Map<String, String> map = new HashedMap();
         map.put("title", StringEscapeUtils.unescapeJava(noticeTitle));

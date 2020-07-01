@@ -11,7 +11,7 @@
     <properties>
         <java.version>1.7</java.version>
         <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
-        <mysql.version>5.1.27</mysql.version>
+        <mysql.version>8.0.16</mysql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <pagehelper.version>4.1.6</pagehelper.version>
         <fastjson.version>1.2.61</fastjson.version>

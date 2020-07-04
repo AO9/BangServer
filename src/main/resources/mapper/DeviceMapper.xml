@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.gto.dao.DeviceMapper">
+  <resultMap id="BaseResultMap" type="com.gto.bang.model.Device">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="deviceType" jdbcType="TINYINT" property="deviceType" />
+    <result column="deviceToken" jdbcType="VARCHAR" property="deviceToken" />
+    <result column="deviceId" jdbcType="VARCHAR" property="deviceId" />
+    <result column="modifyTime" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, deviceType, deviceToken, deviceId, modifyTime, createTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from device
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from device
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gto.bang.model.Device">
+    insert into device (id, deviceType, deviceToken, 
+      deviceId, modifyTime, createTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{deviceType,jdbcType=TINYINT}, #{deviceToken,jdbcType=VARCHAR}, 
+      #{deviceId,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gto.bang.model.Device">
+    insert into device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="deviceType != null">
+        deviceType,
+      </if>
+      <if test="deviceToken != null">
+        deviceToken,
+      </if>
+      <if test="deviceId != null">
+        deviceId,
+      </if>
+      <if test="modifyTime != null">
+        modifyTime,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null">
+        #{deviceType,jdbcType=TINYINT},
+      </if>
+      <if test="deviceToken != null">
+        #{deviceToken,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gto.bang.model.Device">
+    update device
+    <set>
+      <if test="deviceType != null">
+        deviceType = #{deviceType,jdbcType=TINYINT},
+      </if>
+      <if test="deviceToken != null">
+        deviceToken = #{deviceToken,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        deviceId = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null">
+        modifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gto.bang.model.Device">
+    update device
+    set deviceType = #{deviceType,jdbcType=TINYINT},
+      deviceToken = #{deviceToken,jdbcType=VARCHAR},
+      deviceId = #{deviceId,jdbcType=VARCHAR},
+      modifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      createTime = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

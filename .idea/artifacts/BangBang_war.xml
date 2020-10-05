@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="BangBang:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="BangBang.war">
-      <element id="artifact" artifact-name="BangBang:war exploded" />
-    </root>
-  </artifact>
-</component>

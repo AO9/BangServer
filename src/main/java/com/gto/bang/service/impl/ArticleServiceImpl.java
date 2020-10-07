@@ -109,18 +109,18 @@ public class ArticleServiceImpl implements ArticleService {
      *
      * @param type
      * @param page
-     * @param articleType
+     * @param isHot
      * @return
      */
     @Override
-    public PageInfo<Article> getArticleList(Integer type, PageInfo<Article> page, Integer articleType, Integer userId) {
+    public PageInfo<Article> getArticleList(Integer type, PageInfo<Article> page, Integer isHot, Integer userId) {
 
-        LOGGER.info(TAG + "getArticleList params userId={}, articleType={},type={}",
-                userId, articleType, type);
+        LOGGER.info(TAG + "getArticleList params userId={}, isHot={},type={}",
+                userId, isHot, type);
         ArticleWithBLOBs condition = new ArticleWithBLOBs();
         condition.setType(type.byteValue());
         // 是否筛选热门文章
-        condition.setArticleType(articleType);
+        condition.setArticleType(isHot);
 
         List<Article> list;
         if (type != null && type == Constant.ART_ARTICLE && userId != null) {
@@ -131,15 +131,15 @@ public class ArticleServiceImpl implements ArticleService {
             }
             // 过滤查询
             PageHelper.startPage(page.getPageNum(), page.getPageSize());
-            list = articleMapper.selectByUserId(userId, articleType, recordIds);
+            list = articleMapper.selectByUserId(userId, isHot, recordIds);
             // 如果刷新了所有的浏览记录,那么重新开始吧 20200622
             if (CollectionUtils.isEmpty(list)) {
                 LOGGER.info(TAG + "getArticleList get list is empty! userId={}, articleType={},type={}",
-                        userId, articleType, type);
+                        userId, isHot, type);
                 browseRecordService.deleteBrowseRecord(userId);
                 LOGGER.info(TAG + "getArticleList delete browseRecord begin, userId={}",userId);
                 PageHelper.startPage(page.getPageNum(), page.getPageSize());
-                list = articleMapper.selectByUserId(userId, articleType, recordIds);
+                list = articleMapper.selectByUserId(userId, isHot, recordIds);
             }
             // 记录看过哪些文章 add by 20200618
             setRecord(list, userId);

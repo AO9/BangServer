@@ -12,6 +12,7 @@ public abstract class Constant {
     public static final String REGISTER_FAILE ="服务异常,请稍后重试";
     public static final String REGISTER_DUL ="注册失败,该昵称已存在!";
     public static final String PARAM_ERROR ="参数异常";
+    public static final String TYPE_ERROR ="type参数非法";
     public static final String FORBIDDEN ="帐号异常,已被系统限制发布文章内容,请联系管理员";
     public static final String FORBIDDEN_PERMISSION ="无操作权限，请联系系统管理员";
     public static final String FORBIDDEN_USER ="帐号异常,已被系统限制登录,如有疑问请联系管理员vx sjl132400";
@@ -35,6 +36,9 @@ public abstract class Constant {
     public static final int READ=1;
 
     // 文章类别
+    // 原创
+    public static final int ART_ORIGINAL=10;
+
     public static final int ART_COMPLAINT=3;
     public static final int ART_QUESTION=2;
     public static final int ART_EXPERIENCE=1;

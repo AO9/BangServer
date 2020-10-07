@@ -1,0 +1,7 @@
+## FAQ
+
+## 修改gitignore后如何生效
+git rm -r --cached .
+git add .
+git commit -m 'update .gitignore'
+

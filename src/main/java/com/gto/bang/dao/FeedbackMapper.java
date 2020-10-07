@@ -4,6 +4,7 @@ package com.gto.bang.dao;
 import com.gto.bang.model.Feedback;
 
 public interface FeedbackMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(Feedback record);

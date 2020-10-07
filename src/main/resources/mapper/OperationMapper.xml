@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.com.gto.dao.OperationMapper">
+<mapper namespace="com.gto.bang.dao.OperationMapper">
   <resultMap id="BaseResultMap" type="com.gto.bang.model.Operation">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="operationType" jdbcType="VARCHAR" property="operationType" />

@@ -28,6 +28,9 @@ public class BaseController {
     @Value("${blackList.userIds}")
     String blackList;
 
+    @Value("${typeList}")
+    String typeList;
+
     @Value("${invalidAndroidIds}")
     String invalidAndroidIds;
 
@@ -35,6 +38,26 @@ public class BaseController {
     String tokens;
 
     public static final String SUCCESS="success";
+
+
+    public boolean checkTypeForBG(String type) {
+
+        LOGGER.info("黑名单列表 typelist={},校验 type={}", typeList, type);
+        if (StringUtils.isEmpty(typeList)) {
+            return false;
+        }
+
+        String[] values = typeList.split(",");
+        List<String> list = Arrays.asList(values);
+
+        if (list.contains(type)) {
+            return true;
+        }else{
+            LOGGER.info("非法合法 type={}", type);
+        }
+
+        return false;
+    }
 
 
     /**

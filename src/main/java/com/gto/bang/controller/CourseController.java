@@ -17,7 +17,7 @@ import java.util.Map;
  * 数据库表未打通
  */
 @Controller
-//@RequestMapping("/v2/course")
+@RequestMapping("/v2/course")
 public class CourseController extends BaseController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(CourseController.class);
@@ -28,7 +28,7 @@ public class CourseController extends BaseController {
     @Autowired
     LogService logService;
 
-    @RequestMapping(value = "/v2/course/list")
+    @RequestMapping(value = "/list")
     @ResponseBody
     public Map<String, Object> list(Integer userId) throws IOException {
         logService.createLog(userId, LOG_PREFIX + "list", null);

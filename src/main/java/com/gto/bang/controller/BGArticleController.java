@@ -33,7 +33,7 @@ public class BGArticleController extends BaseController {
     @ResponseBody
     public Map<String, Object> createArticle(ArticleWithBLOBs articleVO, String password, String userName,
                                              Integer type) throws IOException {
-        LOGGER.info("pv|bg|v1|article|create ....userName={},content={},title={}, password={}", userName, password);
+        LOGGER.info("pv|bg|v1|article|create +sjlsjl+ ....userName={},content={},title={}, password={}", userName, password);
         User currentUser = userService.queryByUserNameAndPassword(userName, password);
         if (currentUser == null) {
             return super.fail(Constant.LOGIN_INFO_ERROR);

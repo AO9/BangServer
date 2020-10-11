@@ -53,9 +53,9 @@ public class ArticleController extends BaseController {
     @ResponseBody
     public Map<String, Object> search(Integer userId, String keyword, PageInfo<Article> page) throws IOException {
 
-        LOGGER.info("pv|article|search ....userId={},keyword={}", userId, keyword);
+        LOGGER.info("pv|article|search, userId={},keyword={}", userId, keyword);
         logService.createLog(userId, "search", keyword);
-
+        LOGGER.info("pv|article|search|sjl, userId={},keyword={}", userId, keyword);
         if (StringUtils.isBlank(keyword)) {
             return super.fail(Constant.PARAM_ERROR);
         }

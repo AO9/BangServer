@@ -16,22 +16,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 20201007 课程功能化
- * 数据库表未打通
+ * test
  */
 @Controller
-@RequestMapping("/v2/course")
-public class CourseController extends BaseController {
+@RequestMapping("/v2/course1")
+public class TestCourseController extends BaseController {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(CourseController.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(TestCourseController.class);
 
-    public static final String LOG_PREFIX = "log|v2|course|";
+    public static final String LOG_PREFIX = "log|v2|course1|";
     @Autowired
     UserService userService;
     @Autowired
     LogService logService;
 
-    @RequestMapping(value = "/list")
+    @RequestMapping(value = "/list1")
     @ResponseBody
     public Map<String, Object> list(Integer userId) throws IOException {
         logService.createLog(userId, LOG_PREFIX + "course|list", null);
@@ -40,40 +39,21 @@ public class CourseController extends BaseController {
         String[] d1 = new String[]{"流感疫苗热门话题", "人工智能发展趋势", "资本市场长期改革方向"};
         String[] d2 = new String[]{"报名 18/30人", "报名 10/20人", "报名 11/50人"};
         LOGGER.info("sjlsjlsjl 1");
+        LOGGER.info("sjlsjlsjl 2");
+        Map<String, String> course = new HashMap<String, String>();
         for (int i = 0; i < titles.length; i++) {
-            Map<String, String> course = new HashMap<String, String>();
+            course = new HashMap<String, String>();
             course.put("courseTitle", titles[i]);
             course.put("courseDescribe1", d1[i]);
             course.put("courseDescribe2", d2[i]);
             courses.add(course);
             LOGGER.info("sjlsjlsjl for");
         }
-        LOGGER.info("sjlsjlsjl 2");
+        LOGGER.info("sjlsjlsjl 3");
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("list", courses);
-        LOGGER.info("sjlsjlsjl 3");
+        LOGGER.info("sjlsjlsjl 4");
         return supports(data);
-    }
-
-    @RequestMapping(value = "/view")
-    @ResponseBody
-    public Map<String, Object> view(Integer userId, Integer courseId) throws IOException {
-        logService.createLog(userId, LOG_PREFIX + "view", null);
-        return supports("view +" + courseId);
-    }
-
-    @RequestMapping(value = "/create")
-    @ResponseBody
-    public Map<String, Object> create(Integer content) throws IOException {
-        logService.createLog(null, LOG_PREFIX + "create", null);
-        return supports("create + content=" + content);
-    }
-
-    @RequestMapping(value = "/delete")
-    @ResponseBody
-    public Map<String, Object> delete(Integer courseId) throws IOException {
-        logService.createLog(null, LOG_PREFIX + "delete", null);
-        return supports("delete courseId=" + courseId);
     }
 
 

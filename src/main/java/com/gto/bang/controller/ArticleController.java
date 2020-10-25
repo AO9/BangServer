@@ -347,4 +347,53 @@ public class ArticleController extends BaseController {
         super.flushResponse(response, res);
     }
 
+
+    @RequestMapping(value = "v3/article/create")
+    @ResponseBody
+    public Map<String, Object> createArticle(ArticleWithBLOBs articleVO, Integer userId, String content, Integer type) throws IOException {
+
+        LOGGER.info("pv|v3|article|create ....userId={},content={},type={}, params={}", userId, content, type, JSON.toJSONString(articleVO));
+        logService.createLog(userId, "v3/article/create", null);
+        // 黑名单校验
+        if (checkBlackList(String.valueOf(userId))) {
+            LOGGER.info("v3|article|create|forbidden ....userId={}", userId);
+            return super.fail(Constant.FORBIDDEN);
+        }
+
+        if (articleVO.getType() == null || userId == null || StringUtils.isBlank(articleVO.getContent())) {
+            return super.fail(Constant.PARAM_ERROR);
+        }
+        articleVO.setAuthorid(userId);
+        articleVO.setAuthorId(userId);
+
+        switch (articleVO.getType()) {
+            case Constant.ART_COMPLAINT:
+                articleVO.setTitle("");
+                articleService.createNewArticle(articleVO);
+                break;
+            case Constant.ART_EXPERIENCE:
+                if (StringUtils.isNotBlank(articleVO.getTitle())) {
+                    articleService.createNewArticle(articleVO);
+                }
+                break;
+            case Constant.ART_QUESTION:
+                articleVO.setTitle("空");
+                articleService.createNewArticle(articleVO);
+                break;
+            case Constant.ART_SUPPORT:
+                if (articleVO.getPrice() != null) {
+                    articleVO.setTitle("空");
+                    articleService.createNewArticle(articleVO);
+                }
+                break;
+            default:
+                if (articleVO.getType() > 200 && articleVO.getType() < 205) {
+                    articleVO.setTitle("");
+                    articleService.createNewArticle(articleVO);
+                }
+                break;
+        }
+        return supports(Constant.SUCCESS);
+    }
+
 }

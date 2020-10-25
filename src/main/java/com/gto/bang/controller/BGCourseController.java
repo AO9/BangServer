@@ -21,7 +21,7 @@ import java.util.Map;
  */
 
 @Controller
-//@RequestMapping("/bg/v2/course")
+@RequestMapping("/bg/v2/course")
 public class BGCourseController extends BaseController {
     public static final Logger LOGGER = LoggerFactory.getLogger(BGCourseController.class);
     public static final String LOG_PREFIX = "log|bg|v2|course|";
@@ -32,7 +32,7 @@ public class BGCourseController extends BaseController {
     @Autowired
     OperationService operationService;
 
-    @RequestMapping(value = "/bg/v2/course/student/list")
+    @RequestMapping(value = "/student/list")
     @ResponseBody
     public Map<String, Object> list(Integer courseId) throws IOException {
         logService.createLog(courseId, LOG_PREFIX + "stuedent|list", null);

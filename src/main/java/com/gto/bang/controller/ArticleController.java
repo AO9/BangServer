@@ -350,6 +350,7 @@ public class ArticleController extends BaseController {
 
     /**
      * 支持 我的校园-学姐学长帮帮功能
+     *
      * @param articleVO
      * @param userId
      * @param content
@@ -397,7 +398,7 @@ public class ArticleController extends BaseController {
                 break;
             default:
                 // 校内帮
-                if (articleVO.getType() > 200 && articleVO.getType() < 300) {
+                if (articleVO.getType() > 100) {
                     articleVO.setTitle("");
                     articleService.createNewArticle(articleVO);
                 }

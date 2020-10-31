@@ -348,6 +348,15 @@ public class ArticleController extends BaseController {
     }
 
 
+    /**
+     * 支持 我的校园-学姐学长帮帮功能
+     * @param articleVO
+     * @param userId
+     * @param content
+     * @param type
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "v3/article/create")
     @ResponseBody
     public Map<String, Object> createArticle(ArticleWithBLOBs articleVO, Integer userId, String content, Integer type) throws IOException {
@@ -387,7 +396,8 @@ public class ArticleController extends BaseController {
                 }
                 break;
             default:
-                if (articleVO.getType() > 200 && articleVO.getType() < 205) {
+                // 校内帮
+                if (articleVO.getType() > 200 && articleVO.getType() < 300) {
                     articleVO.setTitle("");
                     articleService.createNewArticle(articleVO);
                 }

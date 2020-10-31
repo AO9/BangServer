@@ -30,11 +30,12 @@ public class LogController extends BaseController {
 
         LOGGER.info("pv|log|create ....userId={},type={},androidId={}", userId, operateType, androidId, deviceToken);
 
-        if (deviceToken != null) {
-            logService.createDevice(androidId,deviceToken);
-        }else {
-            logService.createLog(userId,operateType,androidId);
-        }
+//        if (deviceToken != null) {
+//            // 这块应该是引入U盟插件后做的一个数据留存逻辑，用于后续push功能
+//            logService.createDevice(androidId,deviceToken);
+//        }else {
+        logService.createLog(userId, operateType, androidId);
+//        }
         return supports(Constant.SUCCESS);
 
     }

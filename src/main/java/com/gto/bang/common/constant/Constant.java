@@ -42,6 +42,13 @@ public abstract class Constant {
     public static final int ART_COMPLAINT=3;
     public static final int ART_QUESTION=2;
     public static final int ART_EXPERIENCE=1;
+
+    // 校内帮帮 生活、情感、学习、工作 20201031
+    public static final int ART_CAMPUS_LIFE=101;
+    public static final int ART_CAMPUS_EMOTION=102;
+    public static final int ART_CAMPUS_STUDY=103;
+    public static final int ART_CAMPUS_WORK=104;
+
     public static final int ART_PRODUCT=999;
     // 红包问答
     public static final int ART_SUPPORT=4;

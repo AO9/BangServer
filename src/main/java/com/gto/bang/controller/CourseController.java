@@ -36,9 +36,14 @@ public class CourseController extends BaseController {
     public Map<String, Object> list(Integer userId) throws IOException {
         logService.createLog(userId, LOG_PREFIX + "course|list", null);
         List<Map<String, String>> courses = new ArrayList<Map<String, String>>();
-        String[] titles = new String[]{"医疗专业", "软件工程", "金融专业","经济学"};
-        String[] d1 = new String[]{"流感疫苗热门话题", "人工智能发展趋势", "资本市场长期改革方向","社会主义市场经济"};
-        String[] d2 = new String[]{"报名 18/30人", "报名 10/20人", "报名 11/50人", "报名 3/30人"};
+        String[] titles = new String[]{"医疗专业", "软件工程", "金融财经","经济学",
+                "开题报告咨询","选题免费咨询", "工商管理", "学前教育",
+                "行政管理","语言文学","食品安全","法律"};
+        String[] d1 = new String[]{"疫情相关等基础医学方向", "人工智能发展趋势", "理财产品分析股票市场国家经济等方向","新时代市场经济第三方支付等","提纲建议开题框架指导等","本硕各专业选题免费咨询",
+                "工商企业管理营销策划分析等","幼儿教育幼儿园管理幼教成长培养等","围绕疫情等民生行政","汉语言文学相关","食品质量与安全","监察法公务员法相关等方向"};
+        String[] d2 = new String[]{"报名 18/30人", "报名 14/20人", "报名 13/50人", "报名 23/30人",
+                "报名 16/20人", "报名 11/20人", "报名 17/20人", "报名 23/40人",
+                "报名 09/20人", "报名 19/30人", "报名 43/50人", "报名 23/35人"};
         for (int i = 0; i < titles.length; i++) {
             Map<String, String> course = new HashMap<String, String>();
             course.put("courseTitle", titles[i]);

@@ -107,6 +107,7 @@ public class Article {
     }
 
     public void setAuthorId(Integer authorId) {
+        setAuthorid(authorId);
         this.authorId = authorId;
     }
 

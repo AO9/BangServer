@@ -373,7 +373,6 @@ public class ArticleController extends BaseController {
         if (articleVO.getType() == null || userId == null || StringUtils.isBlank(articleVO.getContent())) {
             return super.fail(Constant.PARAM_ERROR);
         }
-        articleVO.setAuthorid(userId);
         articleVO.setAuthorId(userId);
 
         switch (articleVO.getType()) {

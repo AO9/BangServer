@@ -9,6 +9,10 @@ import java.util.List;
 
 public interface ArticleMapper {
 
+
+    // 数据大盘 20210404
+    List<Article> getNewActicles(@Param("type") Integer type);
+
     // 搜索框功能 20200622
     List<Article> selectArticlesByKeyword(@Param("type") Integer type, @Param("keyword") String keyword);
 

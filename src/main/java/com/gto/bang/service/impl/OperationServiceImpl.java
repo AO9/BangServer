@@ -12,6 +12,14 @@ import java.util.List;
 public class OperationServiceImpl implements OperationService {
     @Autowired
     OperationMapper operationMapper;
+
+    @Override
+    public List<Operation> getPV(String operationType) {
+
+        return operationMapper.getPV(operationType);
+
+    }
+
     @Override
     public List<Operation> getStudents() {
         return operationMapper.selectStutdents();

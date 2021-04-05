@@ -15,6 +15,7 @@ public interface UserService {
     User updateUserInfo(int updateType, String content, int userId);
     void update(User user);
     List<User> getUsers(int num);
+    List<User> getNewUsers(int num);
 
 }
 

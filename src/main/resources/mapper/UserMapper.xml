@@ -27,6 +27,19 @@
     gender, level, academy, vip, grade, lastLoginTime,imei, wechat
   </sql>
 
+  <select id="getNewUsers" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    <where>
+      DATE_FORMAT(createtime,'%Y-%m-%d') = CURDATE()
+      <if test="num != null">
+        LIMIT #{num,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+
   <select id="getUsers" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

@@ -3,8 +3,12 @@ package com.gto.bang.controller;
 import com.alibaba.fastjson.JSON;
 import com.gto.bang.common.constant.Constant;
 import com.gto.bang.common.net.Response;
+import com.gto.bang.model.Article;
+import com.gto.bang.model.Operation;
 import com.gto.bang.model.User;
+import com.gto.bang.service.ArticleService;
 import com.gto.bang.service.LogService;
+import com.gto.bang.service.OperationService;
 import com.gto.bang.service.UserService;
 import com.gto.bang.util.CommonUtil;
 import org.apache.commons.collections.map.HashedMap;
@@ -35,6 +39,10 @@ public class DataController extends BaseController {
     UserService userService;
     @Autowired
     LogService logService;
+    @Autowired
+    ArticleService articleService;
+    @Autowired
+    OperationService operationService;
 
     /**
      * @param request
@@ -47,27 +55,43 @@ public class DataController extends BaseController {
         LOGGER.info("pv|user|list|v1 ");
         logService.createLog(null, "user|list", null);
 
-        Response<Map<String,String>> res = new Response<Map<String,String>>();
+        Response<Map<String, String>> res = new Response<Map<String, String>>();
         response.setContentType("text/html;charset=utf-8");
 
-        Map<String,String> result=new HashedMap();
+        Map<String, String> result = new HashedMap();
         // 日活用户
-        List<User> users = userService.getUsers(200);
-        result.put("activeUserNum",String.valueOf(users.size()));
+        List<User> activeUsers = userService.getUsers(200);
+        result.put("activeUserNum", String.valueOf(activeUsers.size()));
         // 新增用户
-        result.put("newUserNum",String.valueOf(users.size()));
+        List<User> newUsers = userService.getNewUsers(200);
+        result.put("newUserNum", String.valueOf(newUsers.size()));
         // 新增文章
-        result.put("newArticleNum",String.valueOf(users.size()));
+        List<Article> articles = articleService.getNewActicles(null);
+        result.put("newArticleNum", String.valueOf(articles.size()));
         // 新客
-        result.put("newCustomerNum",String.valueOf(users.size()));
+        List<Article> supportArticles = articleService.getNewActicles(Constant.ART_SUPPORT);
+        result.put("newCustomerNum", String.valueOf(supportArticles.size()));
+        // APP启动
+        List<Operation> launch = operationService.getPV("APP启动");
+        result.put("launch", String.valueOf(launch.size()));
+        // 登录
+        List<Operation> login = operationService.getPV("user|login");
+        result.put("login", String.valueOf(login.size()));
         // 全站PV
-        result.put("pv",String.valueOf(users.size()));
+        List<Operation> pv = operationService.getPV(null);
+        result.put("pv", String.valueOf(pv.size()));
+        // search
+        List<Operation> search = operationService.getPV("search");
+        result.put("search", String.valueOf(search.size()));
         // 课程报名数
-        result.put("signupNum",String.valueOf(users.size()));
+        List<Operation> signupPV = operationService.getPV("");
+        result.put("signupPV", String.valueOf(signupPV.size()));
         // 阅读PV
-        result.put("readPV",String.valueOf(users.size()));
+        List<Operation> readPV = operationService.getPV("getArticleDetail");
+        result.put("readPV", String.valueOf(readPV.size()));
         // 原创阅读PV
-        result.put("originalReadPV",String.valueOf(users.size()));
+//        List<Operation> originalReadPV = operationService.getPV("");
+//        result.put("originalReadPV", String.valueOf(originalReadPV.size()));
 
         res.setData(result);
 

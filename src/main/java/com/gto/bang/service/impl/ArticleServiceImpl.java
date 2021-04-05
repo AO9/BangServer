@@ -46,6 +46,11 @@ public class ArticleServiceImpl implements ArticleService {
     public static final int CONTENT_TYPE = 1;
 
     @Override
+    public List<Article> getNewActicles(Integer type) {
+        return articleMapper.getNewActicles(type);
+    }
+
+    @Override
     public PageInfo<Article> getArticlesByKeyword(PageInfo<Article> page, String keyword) {
 
         LOGGER.info(TAG + "getArticleListByKeyword params type={}, keyword={}", keyword);
@@ -137,7 +142,7 @@ public class ArticleServiceImpl implements ArticleService {
                 LOGGER.info(TAG + "getArticleList get list is empty! userId={}, articleType={},type={}",
                         userId, isHot, type);
                 browseRecordService.deleteBrowseRecord(userId);
-                LOGGER.info(TAG + "getArticleList delete browseRecord begin, userId={}",userId);
+                LOGGER.info(TAG + "getArticleList delete browseRecord begin, userId={}", userId);
                 PageHelper.startPage(page.getPageNum(), page.getPageSize());
                 list = articleMapper.selectByUserId(userId, isHot, recordIds);
             }

@@ -51,7 +51,6 @@ http:
   readTimeout: 20000
   retry: 3
 
-
 notice:
   title: '优质内容征稿\n2021聚焦创作者'
   content: '牛年我们一起牛气冲天！\n\n\n「创作者计划」\n

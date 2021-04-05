@@ -11,6 +11,19 @@
     id, operationType, deviceId, createTime
   </sql>
 
+    <!--  获取全站PV相关数据 20210404-->
+    <select id="getPV"  parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from operation
+        <where>
+            DATE_FORMAT(createTime,'%Y-%m-%d') = CURDATE()
+            <if test="operationType != null">
+                operationType = #{type,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
     <!--  临时逻辑 20201008 获取报名的信息-->
     <select id="selectStutdents" resultMap="BaseResultMap">
         select

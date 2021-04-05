@@ -34,6 +34,19 @@
         username
     </sql>
 
+    <select id="getNewActicles" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from article
+        <where>
+            DATE_FORMAT(createtime,'%Y-%m-%d') = CURDATE()
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+
 
     <!--20200622 搜索框功能, type=1时按照content去模糊匹配,type=2时按照title去模糊匹配-->
     <select id="selectArticlesByKeyword" resultMap="ResultMapWithBLOBs">

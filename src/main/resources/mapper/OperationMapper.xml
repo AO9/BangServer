@@ -19,7 +19,7 @@
         <where>
             DATE_FORMAT(createTime,'%Y-%m-%d') = CURDATE()
             <if test="operationType != null">
-                operationType = #{type,jdbcType=VARCHAR}
+                and operationType = #{type,jdbcType=VARCHAR}
             </if>
         </where>
     </select>

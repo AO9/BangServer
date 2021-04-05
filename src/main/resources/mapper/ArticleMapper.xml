@@ -41,7 +41,7 @@
         <where>
             DATE_FORMAT(createtime,'%Y-%m-%d') = CURDATE()
             <if test="type != null">
-                type = #{type,jdbcType=INTEGER}
+                and type = #{type,jdbcType=INTEGER}
             </if>
         </where>
     </select>

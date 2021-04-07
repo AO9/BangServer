@@ -5,13 +5,14 @@ import com.gto.bang.model.Article;
 import com.gto.bang.model.ArticleWithBLOBs;
 import com.gto.bang.model.Operation;
 import com.gto.bang.model.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface OperationMapper {
 
     // 获取全站PV数据 20210404
-    List<Operation> getPV(String operationType);
+    List<Operation> getPV(@Param("operationType") String operationType);
 
     // 获取立即报名的信息
     List<Operation> selectStutdents();

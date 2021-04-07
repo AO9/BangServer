@@ -2,29 +2,180 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>[论文帮] 大盘</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>-->
 </head>
 <!--用 mac 测色计 工具，再转成十六进制 20210404-->
 <body style="background-color: #E5E8EE">
 
-<!--<button onclick="list(bangType)" >帮帮</button>-->
-<!--<br/>-->
-<!--token: <input type="text" name="token" id="token" />-->
-<!--pageNum: <input type="text" name="pageNum" id="pageNum" value="1" />-->
+<table>
+    <tr>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p>
+                    新增用户
+                </p>
+                <br/>
+                <strong id="newUserNum" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p>
+                    活跃用户
+                </p>
+                <br/>
+                <strong id="activeUserNum" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p>
+                    下单客户
+                </p>
+                <br/>
+                <strong id="newCustomerNum" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p>
+                    登录用户数
+                </p>
+                <br/>
+                <strong id="login" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p>
+                    报名用户数
+                </p>
+                <br/>
+                <strong id="signupPV" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+    </tr>
+    <tr>
 
-<!--<input type="text" id="wechat" value="微信号" readonly="true" >-->
-<!--<input type="text" id="phone" value="手机号" readonly="true" >-->
+
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p>
+                    启动次数
+                </p>
+                <br/>
+                <strong id="launch" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p>
+                    搜索次数
+                </p>
+                <br/>
+                <strong id="search" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p>
+                    全站PV
+                </p>
+                <br/>
+                <strong id="pv" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p>
+                    阅读PV
+                </p>
+                <br/>
+                <strong id="readPV" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p>
+                    新增文章数
+                </p>
+                <br/>
+                <strong id="newArticleNum" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<ul>
+
+</ul>
+
+<ul>
+
+</ul>
+
+<div id="num1">
+
+</div>
+<div id="num2">
+
+</div>
+
+<!--<div style="float: top">-->
+<!--    <div id="pv" style="float: left;height: 200px;width: 200px;background-color: #FFFFFF;" align="center"></div>-->
+<!--    <div id="readPV" style="float: left;height: 200px;width: 200px;background-color: #FFFFFF;margin-left: 10px"></div>-->
+<!--    <div id="signupPV" style="float: left;height: 200px;width: 200px;background-color: #FFFFFF;margin-left: 10px">-->
+<!--    </div>-->
 <!--</div>-->
 
-
-<div>
-    <div style="float: left;height: 200px;width: 200px;background-color: #FFFFFF;">a</div>
-    <div style="float: left;height: 200px;width: 200px;background-color: #FFFFFF;margin-left: 10px">b</div>
-</div>
+<!--<div style="float: top">-->
+<!--    <div id="newArticleNum" style="float: left;height: 200px;width: 200px;background-color: #FFFFFF;" align="center">a-->
+<!--    </div>-->
+<!--</div>-->
 
 <br/>
 
-<table style="margin-top:10px" id="table1"  border="1" cellspacing="0" cellpadding="0" >
+<table style="margin-top:10px" id="table1" border="1" cellspacing="0" cellpadding="0">
 </table>
 
 </body>
@@ -32,6 +183,76 @@
 </html>
 
 <script type="text/javascript">
+
+    var xmlhttp;
+    window.onload = function () {
+        // 初始化方法
+        init();
+    }
+
+    // 获取数据列表
+    function init() {
+        var baseurl = 'http://www.ababy.world/bangbang/v1/data';
+        xmlhttp = null;
+        if (window.XMLHttpRequest) {// code for IE7, Firefox, Opera, etc.
+            xmlhttp = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        if (xmlhttp != null) {
+            var final_url = baseurl;
+            final_url = encodeURI(final_url);
+            xmlhttp.onreadystatechange = state_Change;
+            xmlhttp.open("GET", final_url, true);
+            xmlhttp.send(null);
+        } else {
+            alert("Your browser does not support XMLHTTP.");
+        }
+    }
+
+    function state_Change() {
+        if (xmlhttp.readyState == 4) {// 4 = "loaded"
+            var value = JSON.parse(xmlhttp.responseText);
+            var table = document.getElementById("table1");//获得表格
+            var status = value.status;
+            if (!status) {
+                alert("操作失败，原因：" + value.data);
+                return;
+            }
+            var data = value.data;
+            var search = document.getElementById('search');
+            search.innerHTML = data.search;
+            var newUserNum = document.getElementById('newUserNum');
+            newUserNum.innerHTML = data.newUserNum;
+
+
+            var newArticleNum = document.getElementById('newArticleNum');
+            newArticleNum.innerHTML = data.newArticleNum;
+
+            var login = document.getElementById('login');
+            login.innerHTML = data.login;
+
+            var activeUserNum = document.getElementById('activeUserNum');
+            activeUserNum.innerHTML = data.activeUserNum;
+
+            var newCustomerNum = document.getElementById('newCustomerNum');
+            newCustomerNum.innerHTML = data.newCustomerNum;
+
+            var signupPV = document.getElementById('signupPV');
+            signupPV.innerHTML = data.signupPV;
+
+            var readPV = document.getElementById('readPV');
+            readPV.innerHTML = data.readPV;
+
+            var pv = document.getElementById('pv');
+            pv.innerHTML = data.pv;
+
+            var launch = document.getElementById('launch');
+            launch.innerHTML = data.launch;
+
+            // operate.innerHTML="<button onclick=\"audit('http://www.ababy.world/bangbang/v2/article/audit?token="+token+"&status=0&id="+list[i].id+"')\">置为无效</button> ";
+        }
+    }
 
 </script>
 

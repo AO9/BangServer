@@ -7,26 +7,26 @@
 </head>
 
 <body>
-<button onclick="list(bangType)" style="margin-left:20px;" >帮帮</button>
+<button onclick="list(bangType)" style="margin-left:20px;">帮帮</button>
 
-<button onclick="list(experienceType)" style="margin-left:20px;" >经验</button>
+<button onclick="list(experienceType)" style="margin-left:20px;">经验</button>
 <button onclick="list(questionType)" style="margin-left:20px;">问答</button>
 <button onclick="list(dissType)" style="margin-left:20px;">吐槽</button>
-<button onclick="list(articleType)" style="margin-left:20px;" >好文</button>
+<button onclick="list(articleType)" style="margin-left:20px;">好文</button>
 
 <br/>
-token: <input type="text" name="token" id="token" />
-pageNum: <input type="text" name="pageNum" id="pageNum" value="1" />
+token: <input type="text" name="token" id="token"/>
+pageNum: <input type="text" name="pageNum" id="pageNum" value="1"/>
 
-<input type="text" id="wechat" value="微信号" readonly="true" >
-<input type="text" id="phone" value="手机号" readonly="true" >
+<input type="text" id="wechat" value="微信号" readonly="true">
+<input type="text" id="phone" value="手机号" readonly="true">
 <!-- http://www.biyehome.net/list-18-0.html 6月7日执行过一次，网站最新时间是4月30日，可以继续爬虫到 list-18-11.html -->
 <!-- <button onclick="spider('http://www.biyehome.net/list-18-0.html')" style="margin-left:20px;" >抓取文章</button> -->
 </div>
 
 <br/>
 
-<table style="margin-top:10px" id="table1"  border="1" cellspacing="0" cellpadding="0" >
+<table style="margin-top:10px" id="table1" border="1" cellspacing="0" cellpadding="0">
 </table>
 
 </body>
@@ -34,6 +34,18 @@ pageNum: <input type="text" name="pageNum" id="pageNum" value="1" />
 </html>
 
 <script type="text/javascript">
+    var xmlhttp;
+    var experienceType = 1;
+    var questionType = 2;
+    var dissType = 3;
+    var bangType = 4;
+    var articleType = 5;
+    var temType;
+
+    window.onload = function () {
+        // 初始化方法
+        list(bangType);
+    }
 
     var clipboard = new ClipboardJS('#copyPhone')
     // 显示用户反馈/捕获复制/剪切操作后选择的内容
@@ -62,58 +74,37 @@ pageNum: <input type="text" name="pageNum" id="pageNum" value="1" />
     });
 
 
-    var xmlhttp;
-    var experienceType=1;
-    var questionType=2;
-    var dissType=3;
-    var bangType=4;
-    var articleType=5;
-    var temType;
+    function spider(url) {
 
-    window.onload=function(){
-        // 初始化方法
-        list(bangType);
-    }
-
-
-    function spider(url){
-
-        xmlhttp=null;
-        if (window.XMLHttpRequest)
-        {// code for IE7, Firefox, Opera, etc.
-            xmlhttp=new XMLHttpRequest();
+        xmlhttp = null;
+        if (window.XMLHttpRequest) {// code for IE7, Firefox, Opera, etc.
+            xmlhttp = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        else if (window.ActiveXObject)
-        {// code for IE6, IE5
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        if (xmlhttp!=null)
-        {
+        if (xmlhttp != null) {
             // var type=document.getElementById('type').value;
-            var final_url='http://www.ababy.world/bangbang/spider/start?url='+url;
+            var final_url = 'http://www.ababy.world/bangbang/spider/start?url=' + url;
             final_url = encodeURI(final_url);
-            xmlhttp.onreadystatechange=spiderHandler;
-            xmlhttp.open("GET",final_url,true);
+            xmlhttp.onreadystatechange = spiderHandler;
+            xmlhttp.open("GET", final_url, true);
             xmlhttp.send(null);
-        }
-        else
-        {
+        } else {
             alert("Your browser does not support XMLHTTP.");
         }
 
     }
 
-    function spiderHandler()
-    {
-        if (xmlhttp.readyState==4){
+    function spiderHandler() {
+        if (xmlhttp.readyState == 4) {
 
             var value = JSON.parse(xmlhttp.responseText);
-            var status=value.status;
-            if(!status){
-                alert("操作失败，原因："+value.data);
+            var status = value.status;
+            if (!status) {
+                alert("操作失败，原因：" + value.data);
                 return;
             }
-            document.getElementById('info').innerHTML="抓取文章成功入库";
+            document.getElementById('info').innerHTML = "抓取文章成功入库";
             // 刷新文章列表
             list(articleType);
         } else {
@@ -123,118 +114,98 @@ pageNum: <input type="text" name="pageNum" id="pageNum" value="1" />
 
 
     // 获取数据列表
-    function list(type)
-    {
-        temType=type;
-        var baseurl='http://www.ababy.world/bangbang/v1/article/list?';
-        var token=document.getElementById('token').value;
-        var pageNum=document.getElementById('pageNum').value;
-        if (pageNum=='') {
-            pageNum='10'
+    function list(type) {
+        temType = type;
+        var baseurl = 'http://www.ababy.world/bangbang/v1/article/list?';
+        var token = document.getElementById('token').value;
+        var pageNum = document.getElementById('pageNum').value;
+        if (pageNum == '') {
+            pageNum = '10'
         }
-        baseurl=baseurl+'pageSize=100&pageNum='+pageNum;
-        var url=baseurl+'&type='+type+'&token='+token;
+        baseurl = baseurl + 'pageSize=100&pageNum=' + pageNum;
+        var url = baseurl + '&type=' + type + '&token=' + token;
 
-        xmlhttp=null;
-        if (window.XMLHttpRequest)
-        {// code for IE7, Firefox, Opera, etc.
-            xmlhttp=new XMLHttpRequest();
+        xmlhttp = null;
+        if (window.XMLHttpRequest) {// code for IE7, Firefox, Opera, etc.
+            xmlhttp = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        else if (window.ActiveXObject)
-        {// code for IE6, IE5
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        if (xmlhttp!=null)
-        {
+        if (xmlhttp != null) {
             // var type=document.getElementById('type').value;
-            var final_url=url;
+            var final_url = url;
             final_url = encodeURI(final_url);
-            xmlhttp.onreadystatechange=state_Change;
-            xmlhttp.open("GET",final_url,true);
+            xmlhttp.onreadystatechange = state_Change;
+            xmlhttp.open("GET", final_url, true);
             xmlhttp.send(null);
-        }
-        else
-        {
+        } else {
             alert("Your browser does not support XMLHTTP.");
         }
     }
 
     // 用户信息
-    function showUser()
-    {
-        if (xmlhttp.readyState==4){
+    function showUser() {
+        if (xmlhttp.readyState == 4) {
 
             var value = JSON.parse(xmlhttp.responseText);
-            var status=value.status;
-            if(!status){
-                alert("操作失败，原因："+value.data);
+            var status = value.status;
+            if (!status) {
+                alert("操作失败，原因：" + value.data);
                 return;
             }
             // document.getElementById('info').innerHTML="wechat: " + value.data.wechat+"\n phone: "+ value.data.phone;
 
-            document.getElementById('wechat').value=value.data.wechat;
-            document.getElementById('phone').value=value.data.phone;
+            document.getElementById('wechat').value = value.data.wechat;
+            document.getElementById('phone').value = value.data.phone;
 
         }
     }
 
-    function getUserInfo(url){
+    function getUserInfo(url) {
 
-        xmlhttp=null;
-        if (window.XMLHttpRequest)
-        {
-            xmlhttp=new XMLHttpRequest();
+        xmlhttp = null;
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        else if (window.ActiveXObject)
-        {
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        if (xmlhttp!=null)
-        {
-            var final_url=url;
+        if (xmlhttp != null) {
+            var final_url = url;
             final_url = encodeURI(final_url);
-            xmlhttp.onreadystatechange=showUser;
-            xmlhttp.open("GET",final_url,true);
+            xmlhttp.onreadystatechange = showUser;
+            xmlhttp.open("GET", final_url, true);
             xmlhttp.send(null);
-        }
-        else
-        {
+        } else {
             alert("Your browser does not support XMLHTTP.");
         }
 
     }
 
-    function audit(url,type){
+    function audit(url, type) {
 
-        xmlhttp=null;
-        if (window.XMLHttpRequest)
-        {// code for IE7, Firefox, Opera, etc.
-            xmlhttp=new XMLHttpRequest();
+        xmlhttp = null;
+        if (window.XMLHttpRequest) {// code for IE7, Firefox, Opera, etc.
+            xmlhttp = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        else if (window.ActiveXObject)
-        {// code for IE6, IE5
-            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        if (xmlhttp!=null)
-        {
+        if (xmlhttp != null) {
             // var type=document.getElementById('type').value;
-            var final_url=url;
+            var final_url = url;
             final_url = encodeURI(final_url);
-            xmlhttp.onreadystatechange=audit_handler;
-            xmlhttp.open("GET",final_url,true);
+            xmlhttp.onreadystatechange = audit_handler;
+            xmlhttp.open("GET", final_url, true);
             xmlhttp.send(null);
-        }
-        else
-        {
+        } else {
             alert("Your browser does not support XMLHTTP.");
         }
 
     }
 
     // 初始化table表格
-    function initTable(){
+    function initTable() {
         var table = document.getElementById("table1");//获得表格
-        table.innerHTML="";
+        table.innerHTML = "";
 
         var row = table.insertRow(0);
         row.style.backgroundColor = "#FBFF0B";
@@ -271,26 +242,25 @@ pageNum: <input type="text" name="pageNum" id="pageNum" value="1" />
 
         artId.innnerHTML = "序号";
         content.innerHTML = "内容";
-        createTime.innerHTML =  "创建时间";
+        createTime.innerHTML = "创建时间";
         price.innerHTML = "预算";
         userName.innerHTML = "昵称";
-        status.innerHTML= "状态";
-        operate.innerHTML= "操作";
-        userInfo.innerHTML= "User";
-        copyWechat.innerHTML= "微信号";
-        copyPhone.innerHTML= "手机号";
+        status.innerHTML = "状态";
+        operate.innerHTML = "操作";
+        userInfo.innerHTML = "User";
+        copyWechat.innerHTML = "微信号";
+        copyPhone.innerHTML = "手机号";
     }
 
 
-    function audit_handler()
-    {
-        if (xmlhttp.readyState==4){// 4 = "loaded"
+    function audit_handler() {
+        if (xmlhttp.readyState == 4) {// 4 = "loaded"
             var value = JSON.parse(xmlhttp.responseText);
             var table = document.getElementById("table1");//获得表格
             // alert("响应结果：" + xmlhttp.responseText);
-            var status=value.status;
-            if(!status){
-                alert("操作失败，原因："+value.data);
+            var status = value.status;
+            if (!status) {
+                alert("操作失败，原因：" + value.data);
                 return;
             }
             //刷新列表
@@ -298,23 +268,22 @@ pageNum: <input type="text" name="pageNum" id="pageNum" value="1" />
         }
     }
 
-    function state_Change()
-    {
-        if (xmlhttp.readyState==4){// 4 = "loaded"
+    function state_Change() {
+        if (xmlhttp.readyState == 4) {// 4 = "loaded"
             var value = JSON.parse(xmlhttp.responseText);
             var table = document.getElementById("table1");//获得表格
 
             // alert("响应结果：" + xmlhttp.responseText);
-            var status=value.status;
-            if(!status){
-                alert("操作失败，原因："+value.data);
+            var status = value.status;
+            if (!status) {
+                alert("操作失败，原因：" + value.data);
                 return;
             }
 
             initTable();
-            var list=value.data.list;
+            var list = value.data.list;
             for (i = 0; i < list.length; i++) {
-                var row = table.insertRow(i+1);
+                var row = table.insertRow(i + 1);
 
                 var copyWechat = row.insertCell(0);
                 var copyPhone = row.insertCell(1);
@@ -323,48 +292,48 @@ pageNum: <input type="text" name="pageNum" id="pageNum" value="1" />
                 var createTime = row.insertCell(4);
                 var price = row.insertCell(5);
                 var userName = row.insertCell(6);
-                var status=row.insertCell(7);
+                var status = row.insertCell(7);
                 var operate = row.insertCell(8);
                 var id = row.insertCell(9);
 
 
                 copyWechat.height = "24dp";
-                copyWechat.width="100dp";
+                copyWechat.width = "100dp";
 
                 copyPhone.height = "24dp";
-                copyPhone.width="100dp";
+                copyPhone.width = "100dp";
 
                 content.height = "50dp";
-                content.width="100dp"
+                content.width = "100dp"
                 createTime.height = "24dp";
-                createTime.width="200dp";
+                createTime.width = "200dp";
                 price.height = "24dp";
-                price.width="100dp";
+                price.width = "100dp";
                 userName.height = "24dp";
-                userName.width="100dp";
+                userName.width = "100dp";
                 status.height = "24dp";
-                status.width="50dp";
+                status.width = "50dp";
                 operate.height = "24dp";
-                operate.width="100dp";
+                operate.width = "100dp";
 
                 userInfo.height = "24dp";
-                userInfo.width="100dp";
+                userInfo.width = "100dp";
 
                 id.innerHTML = list[i].id;
-                content.innerHTML = list[i].content.substr(0,50);
+                content.innerHTML = list[i].content.substr(0, 50);
                 createTime.innerHTML = list[i].createTime;
                 price.innerHTML = list[i].price;
                 userName.innerHTML = list[i].username;
-                if(list[i].status){
-                    status.innerHTML="有效";
-                }else{
-                    status.innerHTML="无效";
+                if (list[i].status) {
+                    status.innerHTML = "有效";
+                } else {
+                    status.innerHTML = "无效";
                 }
-                var token=document.getElementById('token').value;
-                operate.innerHTML="<button onclick=\"audit('http://www.ababy.world/bangbang/v2/article/audit?token="+token+"&status=0&id="+list[i].id+"')\">置为无效</button> ";
-                userInfo.innerHTML="<button onclick=\"getUserInfo('http://www.ababy.world/bangbang/v1/user/view?token="+token+"&userId="+list[i].authorId+"')\">查看</button> ";
-                copyWechat.innerHTML="<button id=\"copyWechat\" data-clipboard-target=\"#wechat\">复制</button>";
-                copyPhone.innerHTML="<button id=\"copyPhone\" data-clipboard-target=\"#phone\">复制</button>";
+                var token = document.getElementById('token').value;
+                operate.innerHTML = "<button onclick=\"audit('http://www.ababy.world/bangbang/v2/article/audit?token=" + token + "&status=0&id=" + list[i].id + "')\">置为无效</button> ";
+                userInfo.innerHTML = "<button onclick=\"getUserInfo('http://www.ababy.world/bangbang/v1/user/view?token=" + token + "&userId=" + list[i].authorId + "')\">查看</button> ";
+                copyWechat.innerHTML = "<button id=\"copyWechat\" data-clipboard-target=\"#wechat\">复制</button>";
+                copyPhone.innerHTML = "<button id=\"copyPhone\" data-clipboard-target=\"#phone\">复制</button>";
 
             }
         }

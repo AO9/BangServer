@@ -12,14 +12,14 @@
   </sql>
 
     <!--  获取全站PV相关数据 20210404-->
-    <select id="getPV"  parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="getPV" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from operation
         <where>
             DATE_FORMAT(createTime,'%Y-%m-%d') = CURDATE()
             <if test="operationType != null">
-                and operationType = #{type,jdbcType=VARCHAR}
+                and operationType = #{operationType}
             </if>
         </where>
     </select>

@@ -152,6 +152,76 @@
             </div>
         </td>
     </tr>
+
+    <tr>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p style="font-size: 12px">
+                    公告查看
+                </p>
+                <br/>
+                <strong id="noticeViewsAction" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p style="font-size: 12px">
+                    提问PV
+                </p>
+                <br/>
+                <strong id="answerAction" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p style="font-size: 12px">
+                    降重PV
+                </p>
+                <br/>
+                <strong id="reductionAction" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p style="font-size: 12px">
+                    求助PV
+                </p>
+                <br/>
+                <strong id="supportAction" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+        <td>
+            <div style="height: 200px;width: 200px;background-color: #FFFFFF;" align="center">
+                <br/>
+                <br/>
+                <p style="font-size: 12px">
+                    注册PV
+                </p>
+                <br/>
+                <strong id="registerAction" style="color: red;font-size: 25px">
+                    加载中...
+                </strong>
+            </div>
+        </td>
+    </tr>
+
+
 </table>
 <br/>
 <strong style="font-size: 15px">  </strong>
@@ -228,6 +298,23 @@
 
             var launch = document.getElementById('launch');
             launch.innerHTML = data.launch;
+
+            var noticeViewsAction = document.getElementById('noticeViewsAction');
+            noticeViewsAction.innerHTML = data.noticeViewsAction;
+
+            var answerAction = document.getElementById('answerAction');
+            answerAction.innerHTML = data.answerAction;
+
+            var reductionAction = document.getElementById('reductionAction');
+            reductionAction.innerHTML = data.reductionAction;
+
+            var supportAction = document.getElementById('supportAction');
+            supportAction.innerHTML = data.supportAction;
+
+            var registerAction = document.getElementById('registerAction');
+            registerAction.innerHTML = data.registerAction;
+
+
 
             // operate.innerHTML="<button onclick=\"audit('http://www.ababy.world/bangbang/v2/article/audit?token="+token+"&status=0&id="+list[i].id+"')\">置为无效</button> ";
         }

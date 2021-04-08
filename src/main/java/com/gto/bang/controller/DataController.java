@@ -103,6 +103,26 @@ public class DataController extends BaseController {
 //        List<Operation> originalReadPV = operationService.getPV("");
 //        result.put("originalReadPV", String.valueOf(originalReadPV.size()));
 
+        List<Operation> noticeViewsAction = operationService.getPV("notice|view");
+        result.put("noticeViewsAction", String.valueOf(noticeViewsAction.size()));
+        LOGGER.info("pv|data|v1 noticeViewsAction={}",noticeViewsAction.size());
+
+        List<Operation> answerAction = operationService.getPV("首页-提问");
+        result.put("answerAction", String.valueOf(answerAction.size()));
+        LOGGER.info("pv|data|v1 answerAction={}",answerAction.size());
+
+        List<Operation> reductionAction = operationService.getPV("首页-降重");
+        result.put("reductionAction", String.valueOf(reductionAction.size()));
+        LOGGER.info("pv|data|v1 reductionAction={}",reductionAction.size());
+
+        List<Operation> supportAction = operationService.getPV("首页-论文求助");
+        result.put("supportAction", String.valueOf(supportAction.size()));
+        LOGGER.info("pv|data|v1 supportAction={}",supportAction.size());
+
+        List<Operation> registerAction = operationService.getPV("register.ajax");
+        result.put("registerAction", String.valueOf(registerAction.size()));
+        LOGGER.info("pv|data|v1 registerAction={}",registerAction.size());
+
         res.setData(result);
 
         super.flushResponse(response, res);

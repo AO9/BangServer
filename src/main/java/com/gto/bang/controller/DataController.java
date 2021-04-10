@@ -71,10 +71,16 @@ public class DataController extends BaseController {
         List<Article> articles = articleService.getNewActicles(null);
         result.put("newArticleNum", String.valueOf(articles.size()));
         LOGGER.info("pv|data|v1 newArticleNum={}",articles.size());
-        // 新客
-        List<Article> supportArticles = articleService.getNewActicles(Constant.ART_SUPPORT);
-        result.put("newCustomerNum", String.valueOf(supportArticles.size()));
-        LOGGER.info("pv|data|v1 newCustomerNum={}",supportArticles.size());
+        // 帮写订单
+        List<Article> writingCount = articleService.getNewActicles(Constant.ART_SUPPORT);
+        result.put("newCustomerNum", String.valueOf(writingCount.size()));
+        LOGGER.info("pv|data|v1 newCustomerNum={}",writingCount.size());
+        // 降重订单
+        List<Article> reductionCount = articleService.getNewActicles(Constant.ART_REDUCTION);
+        result.put("reductionCount", String.valueOf(reductionCount.size()));
+        // 润色订单
+        List<Article> polishCount = articleService.getNewActicles(Constant.ART_POLISH);
+        result.put("polishCount", String.valueOf(polishCount.size()));
         // APP启动
         List<Operation> launch = operationService.getPV("APP启动");
         result.put("launch", String.valueOf(launch.size()));
@@ -114,6 +120,10 @@ public class DataController extends BaseController {
         List<Operation> reductionAction = operationService.getPV("首页-降重");
         result.put("reductionAction", String.valueOf(reductionAction.size()));
         LOGGER.info("pv|data|v1 reductionAction={}",reductionAction.size());
+
+        List<Operation> polishAction = operationService.getPV("首页-润色");
+        result.put("polishAction", String.valueOf(polishAction.size()));
+        LOGGER.info("pv|data|v1 polishAction={}",polishAction.size());
 
         List<Operation> supportAction = operationService.getPV("首页-论文求助");
         result.put("supportAction", String.valueOf(supportAction.size()));

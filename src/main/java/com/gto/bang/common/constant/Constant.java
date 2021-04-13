@@ -54,6 +54,11 @@ public abstract class Constant {
     public static final int ART_SUPPORT=4;
     public static final int ART_ARTICLE=5;
 
+    // 降重 6
+    public static final int ART_REDUCTION=6;
+    // 润色 7
+    public static final int ART_POLISH=7;
+
     // 终端类型
     public static final String ANDROID="1";
     public static final String IOS="3";
